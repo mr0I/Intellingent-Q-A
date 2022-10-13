@@ -1,0 +1,163 @@
+/* Dashboard Menu Wrapper */
+.menu-wrapper{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px auto;
+}
+.menu-wrapper .tabs{
+    text-align: right;
+    width: 94%;
+}
+.menu-wrapper .tab{
+    cursor: pointer;
+    padding:10px 20px;
+    margin:0 2px;
+    background:tomato;
+    display:inline-block;
+    color:#fff;
+    border-radius:3px 3px 0 0;
+}
+.menu-wrapper .panels{
+    background:#fffffff6;
+    box-shadow: 0 0 13px #bdbdbd;
+    min-height:500px;
+    width:94%;
+    border-radius:3px;
+    overflow:hidden;
+    padding:20px;
+    position: relative;
+}
+.menu-wrapper .panels .tablenav{
+    float: right;
+}
+.menu-wrapper .panels table td,.menu-wrapper .panels table th{
+    vertical-align: middle;
+}
+.menu-wrapper .panels #panelCover{
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity: 0.7;
+}
+.menu-wrapper .panels #panelCover>p{
+    vertical-align: middle;
+    text-align: center;
+    font-size: 3em;
+    top: 50%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    color: #eee;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+.menu-wrapper .panel{
+    display:none;
+    animation: fadein .8s;
+}
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+.menu-wrapper .panel-title{
+    font-size:1.5em;
+    font-weight:bold
+}
+.menu-wrapper .radio{
+    display:none ;
+}
+#r_one:checked ~ .panels #panel_one,
+#r_two:checked ~ .panels #panel_two{
+    display:block
+}
+#r_one:checked ~ .tabs #tab_one,
+#r_two:checked ~ .tabs #tab_two{
+    background:#fffffff6;
+    color: #424242;
+    border-top: 3px solid tomato;
+}
+
+input[type='search'] , select{
+    height: 40px;
+    margin: 15px 0;
+    border: 1px solid #bdbdbd;
+    border-radius: 0;
+}
+
+.tablenav {
+    margin: 13px auto;
+    width: 100%;
+    text-align: left;
+}
+.tablenav a , .tablenav span.page-numbers.current{
+    padding: 5px 10px;
+    background-color: transparent;
+    font-weight: 700;
+    font-size: 100%;
+    text-decoration: none;
+}
+.tablenav a{
+    border: 1px solid tomato;
+    color: tomato;
+}
+.tablenav span.page-numbers.current{
+    border: 1px solid #bdbdbd;
+    color: #bdbdbd;
+}
+.tablenav a:hover , .tablenav a.active{
+    color: #EEEEEE;
+    background-color: tomato;
+}
+#search_by_owner_submit{
+    cursor: pointer;
+}
+#search_by_owner_submit:disabled{
+    cursor: not-allowed;
+}
+
+.wrap.btn-container{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    padding: 4px 0;
+    margin: 4px auto;
+}
+.wrap.btn-container form p{
+    padding: 0;
+    margin: 0;
+}
+/* Dashboard Menu Wrapper */
+
+.editRow{
+    background-color: #FFFFFF;
+    padding: 24px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+}
+.editRow form{
+    overflow-y: auto;
+    max-height: 400px;
+}
