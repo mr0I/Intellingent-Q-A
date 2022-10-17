@@ -12,28 +12,30 @@
     <div class="panels">
         <div class="panel" id="panel_one">
             <div class="panel-title">منوی بالا</div>
-            <form method="post" action="" id="header_settings_frm" name="header_settings_frm">
+            <form method="post" action="" name="add_qa_frm">
                 <table class="form-table" id="top_menu_links_tbl" role="presentation">
                     <tbody>
                     <tr id="row-1">
-                        <th scope="row">لینک 1</th>
+                        <th scope="row"><?= __('Question','') ?></th>
                         <td>
-                            <input class="left-align" type="text" name="menu_title[]" placeholder="عنوان..."
-                                   value=""
-                                   style="max-width: 100%;min-width: 300px">
-                            <input class="left-align" type="url" name="menu_url[]" placeholder="لینک..."
-                                   value=""
-                                   style="max-width: 100%;min-width: 300px">
-                            <a href="javascript:void(0)" class="button-link-delete top-menu-links-remove-row" ><small>حذف</small></a>
+                            <textarea class="left-align" name="question"
+                                      placeholder="<?= __('Enter Your Question...','intl_qa_lan') ?>" rows="3"></textarea>
+                            <textarea class="left-align" name="answer"
+                                      placeholder="<?= __('Enter Your Answer...','intl_qa_lan') ?>" rows="3"></textarea>
                         </td>
+                    </tr>
+                    <tr>
+                        <input type="text" id="testt" value="1">
+                        <input class="left-align" type="text" name="menu_title[]" placeholder="عنوان..."
+                               value=""
+                               style="max-width: 100%;min-width: 300px">
                     </tr>
                     </tbody>
                 </table>
-                <a href="javascript:void(0)" class="button" id="top_menu_links_add_row">+ سطر جدید</a>
 
                 <p class="submit">
-                    <input type="hidden" name="nonce" value="<?= wp_create_nonce('top-menu-links') ?>">
-                    <input type="submit" name="submit" class="button button-primary" value="ذخیره">
+                    <input type="hidden" name="nonce" value="<?= wp_create_nonce('add_qa') ?>">
+                    <input type="submit" class="button button-primary" name="submit" value="<?= __('Save','intl_qa_lan') ?>">
                 </p>
             </form>
         </div>

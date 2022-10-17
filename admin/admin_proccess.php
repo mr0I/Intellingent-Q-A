@@ -5,18 +5,18 @@ add_action('admin_menu', function (){
     global $iqaPageHook;
 
     $iqaPageHook = add_menu_page(
-        __('Main Settings', 'socialite_lan'),
-        __('Main Settings', 'socialite_lan'),
+        __('Intel Q/A', 'intl_qa_lan'),
+        __('Intel Q/A', 'intl_qa_lan'),
         'administrator',
         'wp_iqa',
         function(){include(IQA_ADMIN_VIEW . 'settings.php');},
-        'dashicons-post-status'
+        'dashicons-lightbulb'
     );
 
 
 //    add_submenu_page(
 //        'wpsoc',
-//        __('Agencies', 'socialite_lan'),
+//        __('Agencies', 'intl_qa_lan'),
 //        __('Agencies', 'socialite_lan'),
 //        'edit_posts',
 //        'rad_agencies',
