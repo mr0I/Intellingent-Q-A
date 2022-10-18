@@ -3,30 +3,24 @@
 
 function IQA_activate_function(){
     ob_start();
-    //register_uninstall_hook(__FILE__, 'my_plugin_uninstall');
-
-
     global $wpdb;
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-    //	$agencies_orders_table = $wpdb->prefix . AGENCIES_ORDERS_TABLE;
-    //
-    //	$createTableQuery1 =
-    //		"
-    //		CREATE TABLE IF NOT EXISTS `{$agencies_orders_table}` (
-    //		  `id` int(11) NOT NULL AUTO_INCREMENT,
-    //		  `user_id` int(11) NOT NULL,
-    //		  `order_detail` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-    //		  `order_number` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-    //		  `total_price` float(10,0) COLLATE utf8_unicode_ci NOT NULL,
-    //		  `approved` tinyint(1) NOT NULL,
-    //		  `date` datetime(6) DEFAULT NULL,
-    //		  PRIMARY KEY (`id`)
-    //		) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-    //		";
-    //
-    //
-    //	dbDelta($createTableQuery1);
+    $qaTable = $wpdb->prefix . QA_TABLE;
+    $createQaTable = "
+                    CREATE TABLE IF NOT EXISTS `{$qaTable}` (
+                  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                  `question` text NOT NULL,
+                  `answer` text NOT NULL,
+                  `keywords` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`keywords`)),
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  `updated_at` timestamp NULL DEFAULT NULL,
+                  PRIMARY KEY (`id`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ";
+
+    dbDelta($createQaTable);
+
+    register_uninstall_hook(__FILE__, 'iqa_uninstall');
     flush_rewrite_rules();
 }
 
@@ -34,4 +28,11 @@ function IQA_deactivate_function(){
     flush_rewrite_rules();
 }
 
-
+function iqa_uninstall()
+{
+    //global $wpdb;
+//$table1 = $wpdb->prefix . AGENCIES_ORDERS_TABLE;
+//$wpdb->query( "DROP TABLE IF EXISTS {$table1}" );
+//
+//delete_option('RADtools_random_posts_cat');
+}

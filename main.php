@@ -14,14 +14,14 @@
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 define('IQA_ROOT_DIR', plugin_dir_path(__FILE__) );
+define('IQA_CSS', plugin_dir_url(__FILE__) . 'static/css/');
+define('IQA_JS', plugin_dir_url(__FILE__) . 'static/js/');
 define('IQA_ADMIN', IQA_ROOT_DIR . 'admin/');
 define('IQA_ADMIN_VIEW', IQA_ROOT_DIR . 'admin/views/');
-//define('IQA_INCS', IQA_ROOT_DIR . 'inc/');
-define('IQA_CSS', plugin_dir_url(__FILE__) . 'static/css/');
-define('IQA_ADMIN_CSS', plugin_dir_url(__FILE__) . 'admin/css/');
-define('IQA_JS', plugin_dir_url(__FILE__) . 'static/js/');
-define('IQA_ADMIN_JS', plugin_dir_url(__FILE__) . 'admin/js/');
-//define('IQA_ASSETS', plugin_dir_url(__FILE__) . 'assets/');
+define('IQA_ADMIN_CSS', plugin_dir_url(__FILE__) . 'admin/static/css/');
+define('IQA_ADMIN_JS', plugin_dir_url(__FILE__) . 'admin/static/js/');
+define('IQA_ADMIN_LIBS', plugin_dir_url(__FILE__) . 'admin/static/libs/');
+define('QA_TABLE', 'qa');
 
 add_action('plugins_loaded', function(){
     load_plugin_textdomain('intl_qa_lan', false, basename(IQA_ROOT_DIR) . '/languages/');
@@ -44,14 +44,18 @@ add_action( 'wp_enqueue_scripts', function(){
     wp_enqueue_style( 'main-styles', IQA_CSS . 'styles.css','1.0.0');
 });
 add_action( 'admin_enqueue_scripts', function(){
-    wp_enqueue_script('admin-script', IQA_ADMIN_JS.'admin-scripts.js', array('jquery'), '1.0.0');
+    wp_enqueue_script('tagify', IQA_ADMIN_LIBS . 'jQuery.tagify.min.js', array('jquery'), '4.8.1');
+    wp_enqueue_script('admin-script', IQA_ADMIN_JS.'admin-scripts.js', '1.0.0');
     wp_localize_script( 'admin-script', 'IQA_ADMIN_Ajax', array(
         'ajaxurl' => admin_url( 'admin-ajax.php' ),
         'security' => wp_create_nonce( 'OwpCojMcdGJ-k-o' ),
         'saving_text' => __('Saving...','intl_qa_lan'),
         'forbidden_text' => __('Forbidden','intl_qa_lan'),
-        'request_timeout'=> 30000
+        'failure_message' => __('Error In Operation ','intl_qa_lan'),
+        'success_message' => __('Successful Operation','intl_qa_lan'),
+        'request_timeout'=> 15000
     ));
+    wp_enqueue_style( 'tagify-styles', IQA_ADMIN_LIBS . 'tagify.min.css','1.0.0');
     wp_enqueue_style( 'admin-styles', IQA_ADMIN_CSS . 'admin-styles.css','1.0.0');
 });
 

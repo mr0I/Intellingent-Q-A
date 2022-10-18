@@ -16,26 +16,23 @@
                 <table class="form-table" id="top_menu_links_tbl" role="presentation">
                     <tbody>
                     <tr id="row-1">
-                        <th scope="row"><?= __('Question','') ?></th>
                         <td>
                             <textarea class="left-align" name="question"
                                       placeholder="<?= __('Enter Your Question...','intl_qa_lan') ?>" rows="3"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <textarea class="left-align" name="answer"
                                       placeholder="<?= __('Enter Your Answer...','intl_qa_lan') ?>" rows="3"></textarea>
                         </td>
                     </tr>
-                    <tr>
-                        <input type="text" id="testt" value="1">
-                        <input class="left-align" type="text" name="menu_title[]" placeholder="عنوان..."
-                               value=""
-                               style="max-width: 100%;min-width: 300px">
-                    </tr>
+                    <tr><td><input type="text" name="tags"></td></tr>
                     </tbody>
                 </table>
-
                 <p class="submit">
                     <input type="hidden" name="nonce" value="<?= wp_create_nonce('add_qa') ?>">
-                    <input type="submit" class="button button-primary" name="submit" value="<?= __('Save','intl_qa_lan') ?>">
+                    <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Save','intl_qa_lan') ?>">
                 </p>
             </form>
         </div>
