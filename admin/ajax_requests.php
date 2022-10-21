@@ -5,12 +5,13 @@ function addQa_callback(){
 
     if ( !wp_verify_nonce($_POST['nonce'], 'add_qa') || !check_ajax_referer( 'OwpCojMcdGJ-k-o', 'security' )) {
         wp_send_json_error('Forbidden',403);
+        exit();
     }
 
+    global $wpdb;
     $question = sanitize_text_field($_POST['question']);
     $answer = sanitize_text_field($_POST['answer']);
     $keywords = sanitize_text_field(stripslashes($_POST['keywords']));
-    global $wpdb;
     $qaTable = $wpdb->prefix . QA_TABLE;
     $insert = $wpdb->insert( $qaTable, [
         'question' => $question,
@@ -21,13 +22,11 @@ function addQa_callback(){
     ], [ '%s', '%s', '%s', '%s', '%s' ]);
 
     if (!$insert) {
-        $response = ['success' => false];
-        echo json_encode($response);
+        wp_send_json(['success' => false]);
         exit();
     }
 
-    $response = ['success' => true];
-    echo json_encode($response);
+    wp_send_json(['success' => true]);
     exit();
 
 }

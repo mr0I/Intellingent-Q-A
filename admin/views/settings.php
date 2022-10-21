@@ -12,7 +12,7 @@
     <div class="panels">
         <div class="panel" id="panel_one">
             <div class="panel-title">منوی بالا</div>
-            <form method="post" action="" name="add_qa_frm">
+            <form method="post" action="" name="add_qa_frm" id="add_qa_frm">
                 <table class="form-table" id="top_menu_links_tbl" role="presentation">
                     <tbody>
                     <tr id="row-1">

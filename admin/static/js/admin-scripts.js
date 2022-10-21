@@ -9,10 +9,12 @@
     });
 })(jQuery);
 jQuery(document).ready(function($){
+
     // Add Q/A form submit
-    const qaForm = document.getElementsByName('add_qa_frm');
+    let qaForm = document.getElementsByName('add_qa_frm');
     $(qaForm).on('submit', function (e) {
         e.preventDefault();
+
         const submitBtn = document.forms['add_qa_frm']['submit'];
         let formObj = {};
         const formArray = $(this).serializeArray();
@@ -20,13 +22,9 @@ jQuery(document).ready(function($){
             formObj[elm.name] = elm.value;
         });
         const {question, answer, nonce, tags} = formObj;
-
         const tagsArray = Object.values(JSON.parse(tags)).map(tag => {
             return tag.value
         });
-
-        // console.log(JSON.stringify(tagsArray));
-        // return;
 
         $.ajax({
             url: IQA_ADMIN_Ajax.ajaxurl,
@@ -40,22 +38,23 @@ jQuery(document).ready(function($){
                 keywords: JSON.stringify(tagsArray)
             },
             beforeSend: function () {
-                submitBtn.value = IQA_ADMIN_Ajax.saving_text;
-                submitBtn.disabled= true;
+                $(submitBtn).val(IQA_ADMIN_Ajax.saving_text).attr('disabled',true);
             },
-            success: function (res , xhr) {
-                console.log('resss: ',res);
-                // if (xhr === 'success' && res.success){
-                //
-                // }
+            success: function (res ,xhr) {
+                if (xhr === 'success' && res.success){
+                    alert(IQA_ADMIN_Ajax.success_message);
+                    $(qaForm).trigger('reset');
+                } else {
+                    alert(IQA_ADMIN_Ajax.failure_message);
+                }
             },error:function (jqXHR, textStatus, errorThrown) {
                 alert(jqXHR.responseJSON.data);
             }
             ,complete:function () {
-                submitBtn.value = 'Save';
-                submitBtn.disabled = false;
+                $(submitBtn).val('Save').attr('disabled',false);
             },
             timeout:IQA_ADMIN_Ajax.request_timeout
         });
     })
+
 });
