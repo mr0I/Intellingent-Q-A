@@ -40,7 +40,8 @@ add_action( 'wp_enqueue_scripts', function(){
 //        'login_frm_submit_btn_txt' => __('Login', 'radshid_lan')
     ));
     wp_enqueue_media();
-//    wp_enqueue_style( 'bootstrap', PL_CSS . 'bootstrap.min.css');
+    // just load on search page
+    wp_enqueue_style( 'front-pico', IQA_CSS . 'pico.min.css','1.5.6');
     wp_enqueue_style( 'main-styles', IQA_CSS . 'styles.css','1.0.0');
 });
 add_action( 'admin_enqueue_scripts', function(){
