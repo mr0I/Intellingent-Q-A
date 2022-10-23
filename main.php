@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 define('IQA_ROOT_DIR', plugin_dir_path(__FILE__) );
 define('IQA_CSS', plugin_dir_url(__FILE__) . 'static/css/');
 define('IQA_JS', plugin_dir_url(__FILE__) . 'static/js/');
+define('IQA_INC', IQA_ROOT_DIR . 'inc/');
 define('IQA_ADMIN', IQA_ROOT_DIR . 'admin/');
 define('IQA_ADMIN_VIEW', IQA_ROOT_DIR . 'admin/views/');
 define('IQA_ADMIN_CSS', plugin_dir_url(__FILE__) . 'admin/static/css/');
@@ -61,11 +62,12 @@ add_action( 'admin_enqueue_scripts', function(){
 });
 
 /*
- * inits
+ * init & includes
  */
 include(IQA_ROOT_DIR. 'base_functions.php' );
 register_activation_hook( __FILE__, 'IQA_activate_function');
 register_deactivation_hook( __FILE__, 'IQA_deactivate_function');
+include(IQA_INC . 'shortcodes.php');
 if ( is_admin() ){
     include(IQA_ADMIN . 'admin_proccess.php');
     include(IQA_ADMIN . 'ajax_requests.php');

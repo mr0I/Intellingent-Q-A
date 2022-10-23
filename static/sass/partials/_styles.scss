@@ -1,0 +1,53 @@
+/* qa search page - start */
+#qa_search_page{
+  form{
+    direction: rtl;
+    .form-group{
+      position: relative;
+      input{
+        border-radius: 0;
+        height: 60px;
+        text-indent: 30px;
+        font-size: 1em;
+        color: $primaryTextColor;
+        cursor: default;
+        border: 1px solid $borderColor;
+        font-family: inherit;
+        background-color: transparent;
+        &:hover{
+          border-color: $hoverBorderColor;
+          box-shadow: none;
+        }
+        &:focus{
+          border-color: $focusBorderColor;
+          box-shadow: none;
+        }
+      }
+      i.fa-times{
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: $secondaryTextColor;
+        cursor: pointer;
+      }
+      button[type=submit]{
+        position: absolute;
+        width: auto;
+        right: 0;
+        top: 0;
+        height: 60px;
+        background-color: transparent;
+        border: none;
+        color: $secondaryTextColor;
+      }
+    }
+  }
+  .most-popular-questions{
+    margin: 50px auto;
+    width: 80%;
+    h2{
+      text-align: center;
+    }
+  }
+}
+/* qa search page - end */

@@ -18,7 +18,7 @@ jQuery(document).ready(function($){
         const submitBtn = document.forms['add_qa_frm']['submit'];
         let formObj = {};
         const formArray = $(this).serializeArray();
-        $(formArray).each((index,elm) => {
+        $(formArray).each((index, elm) => {
             formObj[elm.name] = elm.value;
         });
         const {question, answer, nonce, tags} = formObj;
@@ -37,10 +37,10 @@ jQuery(document).ready(function($){
                 answer: answer,
                 keywords: JSON.stringify(tagsArray)
             },
-            beforeSend: function () {
+            beforeSend: () => {
                 $(submitBtn).val(IQA_ADMIN_Ajax.saving_text).attr('disabled',true);
             },
-            success: function (res ,xhr) {
+            success: (res ,xhr) => {
                 if (xhr == 'success' && res.success){
                     alert(IQA_ADMIN_Ajax.success_message);
                     $(qaForm).trigger('reset');
@@ -48,10 +48,10 @@ jQuery(document).ready(function($){
                     alert(IQA_ADMIN_Ajax.failure_message);
                 }
             },
-            error:function (jqXHR, textStatus, errorThrown) {
+            error: (jqXHR, textStatus, errorThrown) => {
                 alert(jqXHR.responseJSON.data);
             },
-            complete:function () {
+            complete: () => {
                 $(submitBtn).val('Save').attr('disabled',false);
             },
             timeout:IQA_ADMIN_Ajax.request_timeout

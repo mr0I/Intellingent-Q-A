@@ -27,7 +27,7 @@
                                       placeholder="<?= __('Enter Your Answer...','intl_qa_lan') ?>" rows="3"></textarea>
                         </td>
                     </tr>
-                    <tr><td><input type="text" name="tags"></td></tr>
+                    <tr><td><input type="text" name="tags" placeholder="sddad..."></td></tr>
                     </tbody>
                 </table>
                 <p class="submit">
