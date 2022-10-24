@@ -14,6 +14,7 @@
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 define('IQA_ROOT_DIR', plugin_dir_path(__FILE__) );
+define('IQA_ROOT_URL', plugin_dir_url(__FILE__) );
 define('IQA_CSS', plugin_dir_url(__FILE__) . 'static/css/');
 define('IQA_JS', plugin_dir_url(__FILE__) . 'static/js/');
 define('IQA_INC', IQA_ROOT_DIR . 'inc/');
@@ -37,12 +38,10 @@ add_action( 'wp_enqueue_scripts', function(){
     wp_enqueue_script('main-script', IQA_JS.'scripts.js', array('jquery'), '1.0.0');
     wp_localize_script( 'main-script', 'IQA_Ajax', array(
         'ajaxurl' => admin_url( 'admin-ajax.php' ),
-        'security' => wp_create_nonce( 'OwpCojMcdGJ-k-o' ),
-//        'login_frm_submit_btn_txt' => __('Login', 'radshid_lan')
+        'security' => wp_create_nonce( 'mnhUciSW!Zk/oBB' ),
+        'request_timeout' => 30000
     ));
     wp_enqueue_media();
-    // just load on search page
-    wp_enqueue_style( 'front-pico', IQA_CSS . 'pico.min.css','1.5.6');
     wp_enqueue_style( 'main-styles', IQA_CSS . 'styles.css','1.0.0');
 });
 add_action( 'admin_enqueue_scripts', function(){
@@ -55,7 +54,7 @@ add_action( 'admin_enqueue_scripts', function(){
         'forbidden_text' => __('Forbidden','intl_qa_lan'),
         'failure_message' => __('Error In Operation ','intl_qa_lan'),
         'success_message' => __('Successful Operation','intl_qa_lan'),
-        'request_timeout'=> 15000
+        'request_timeout'=> 30000
     ));
     wp_enqueue_style( 'tagify-styles', IQA_ADMIN_LIBS . 'tagify.min.css','1.0.0');
     wp_enqueue_style( 'admin-styles', IQA_ADMIN_CSS . 'admin-styles.css','1.0.0');
