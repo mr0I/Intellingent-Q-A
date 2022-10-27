@@ -49,8 +49,6 @@ function searchQA(e) {
 
 }
 const normalizeText = (input) => {
-    //remove special characters
-    input = input.replace(/([^\u0621-\u063A\u0641-\u064A\u0660-\u0669a-zA-Z 0-9])/g, '');
     //normalize Arabic
     input = input.replace(/(آ|إ|أ)/g, 'ا')
         .replace(/(ة)/g, 'ه')

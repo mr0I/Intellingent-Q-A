@@ -1,5 +1,6 @@
 <?php defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
+require_once IQA_INC . 'helpers.php';
 
 function addQa_callback(){
 
@@ -41,11 +42,38 @@ function searchQa_callback(){
         exit();
     }
 
+    global $wpdb;
+    $table = $wpdb->prefix . QA_TABLE;
+    $query = $wpdb->prepare(
+        "SELECT * FROM $table WHERE enabled=%s",
+        array(true)
+    );
+    $rows = $wpdb->get_results( $query );
     $tokenizeInput = explode(' ', $_POST['input']);
+
+    $i = 0;
+    $score = 0;
+    $eligibleRows = [];
+    while ($i < count($rows)) {
+        $keywords = json_decode($rows[$i]->keywords);
+        foreach ($tokenizeInput as $item){
+            foreach ($keywords as $keyword){
+                if (strpos($keyword, $item)) {
+                    $score++;
+                    array_push($eligibleRows, $rows[$i]->id);
+                }
+            }
+        }
+        $i++;
+    }
+
+    $dsasd = arrayUnique($eligibleRows);
+
 
     wp_send_json([
         'success' => true,
-        'input'=> $tokenizeInput,
+        '$dsasd'=> $dsasd,
+        '$eligibleRows'=> $eligibleRows,
     ]);
     exit();
 
