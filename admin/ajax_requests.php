@@ -44,10 +44,7 @@ function searchQa_callback(){
 
     global $wpdb;
     $table = $wpdb->prefix . QA_TABLE;
-    $query = $wpdb->prepare(
-        "SELECT * FROM $table WHERE enabled=%s",
-        array(true)
-    );
+    $query = $wpdb->prepare("SELECT * FROM $table WHERE enabled=%s", array(true));
     $rows = $wpdb->get_results( $query );
     $tokenizeInput = explode(' ', $_POST['input']);
 
@@ -56,24 +53,33 @@ function searchQa_callback(){
     $eligibleRows = [];
     while ($i < count($rows)) {
         $keywords = json_decode($rows[$i]->keywords);
+        $flattenKeywords = arrayFlatten(array_map( function($item){
+            return explode(' ',$item);
+        }, $keywords));
         foreach ($tokenizeInput as $item){
-            foreach ($keywords as $keyword){
-                if (strpos($keyword, $item)) {
+            foreach ($flattenKeywords as $keyword){
+                if (preg_match("/$keyword/i", $item)) {
                     $score++;
-                    array_push($eligibleRows, $rows[$i]->id);
                 }
             }
         }
+        if ($score > 0) {
+            array_push($eligibleRows, [
+                'id' => $rows[$i]->id,
+                'score' => $score,
+                'answer' => $rows[$i]->answer
+            ]);
+        }
         $i++;
+        $score = 0;
     }
 
-    $dsasd = arrayUnique($eligibleRows);
+//    $dsasd = arrayUnique($eligibleRows);
 
 
     wp_send_json([
         'success' => true,
-        '$dsasd'=> $dsasd,
-        '$eligibleRows'=> $eligibleRows,
+        '$eligibleRows'=> $eligibleRows
     ]);
     exit();
 
