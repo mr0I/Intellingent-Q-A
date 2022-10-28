@@ -65,7 +65,7 @@ const searchQA = (e) => {
                 console.log(finalRows);
 
             } else {
-                alert(IQA_Ajax.failure_message);
+                alert(IQA_Ajax.NO_RESULT);
             }
         },
         error: (jqXHR, textStatus, errorThrown) => {
@@ -74,7 +74,7 @@ const searchQA = (e) => {
         complete: () => {
             // $(submitBtn).val('Save').attr('disabled',false);
         },
-        timeout:IQA_Ajax.request_timeout
+        timeout:IQA_Ajax.REQUEST_TIMEOUT
     });
 
 };

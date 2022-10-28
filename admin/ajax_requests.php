@@ -36,7 +36,6 @@ add_action( 'wp_ajax_nopriv_addQa', 'addQa_callback' );
 
 
 function searchQa_callback(){
-
     if ( !wp_verify_nonce($_POST['nonce'], 'search_qa') || !check_ajax_referer( 'mnhUciSW!Zk/oBB', 'security' )) {
         wp_send_json_error('Forbidden',403);
         exit();
@@ -79,17 +78,11 @@ function searchQa_callback(){
         $score = 0;
     }
 
-   // $sortedRows = $eligibleRows
-
-//    $dsasd = arrayUnique($eligibleRows);
-
-
     wp_send_json([
         'success' => true,
         'result'=> $eligibleRows
     ]);
     exit();
-
 }
 add_action( 'wp_ajax_searchQa', 'searchQa_callback' );
 add_action( 'wp_ajax_nopriv_searchQa', 'searchQa_callback' );

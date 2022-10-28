@@ -38,14 +38,14 @@ jQuery(document).ready(function($){
                 keywords: JSON.stringify(tagsArray)
             },
             beforeSend: () => {
-                $(submitBtn).val(IQA_ADMIN_Ajax.saving_text).attr('disabled',true);
+                $(submitBtn).val(IQA_ADMIN_Ajax.SAVING_TEXT).attr('disabled',true);
             },
             success: (res ,xhr) => {
                 if (xhr == 'success' && res.success){
-                    alert(IQA_ADMIN_Ajax.success_message);
+                    alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
                     $(qaForm).trigger('reset');
                 } else {
-                    alert(IQA_ADMIN_Ajax.failure_message);
+                    alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
                 }
             },
             error: (jqXHR, textStatus, errorThrown) => {
@@ -54,7 +54,7 @@ jQuery(document).ready(function($){
             complete: () => {
                 $(submitBtn).val('Save').attr('disabled',false);
             },
-            timeout:IQA_ADMIN_Ajax.request_timeout
+            timeout:IQA_ADMIN_Ajax.REQUEST_TIMEOUT
         });
     })
 

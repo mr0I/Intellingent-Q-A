@@ -39,7 +39,8 @@ add_action( 'wp_enqueue_scripts', function(){
     wp_localize_script( 'main-script', 'IQA_Ajax', array(
         'ajaxurl' => admin_url( 'admin-ajax.php' ),
         'security' => wp_create_nonce( 'mnhUciSW!Zk/oBB' ),
-        'request_timeout' => 30000
+        'NO_RESULT' => __('No Result Found', 'intl_qa_lan')
+        'REQUEST_TIMEOUT' => 30000
     ));
     wp_enqueue_media();
     wp_enqueue_style( 'main-styles', IQA_CSS . 'styles.css','1.0.0');
@@ -50,11 +51,11 @@ add_action( 'admin_enqueue_scripts', function(){
     wp_localize_script( 'admin-script', 'IQA_ADMIN_Ajax', array(
         'ajaxurl' => admin_url( 'admin-ajax.php' ),
         'security' => wp_create_nonce( 'OwpCojMcdGJ-k-o' ),
-        'saving_text' => __('Saving...','intl_qa_lan'),
-        'forbidden_text' => __('Forbidden','intl_qa_lan'),
-        'failure_message' => __('Error In Operation ','intl_qa_lan'),
-        'success_message' => __('Successful Operation','intl_qa_lan'),
-        'request_timeout'=> 30000
+        'SAVING_TEXT' => __('Saving...','intl_qa_lan'),
+        'FORBIDDEN_TEXT' => __('Forbidden','intl_qa_lan'),
+        'FAILURE_MESSAGE' => __('Error In Operation ','intl_qa_lan'),
+        'SUCCESS_MESSAGE' => __('Successful Operation','intl_qa_lan'),
+        'REQUEST_TIMEOUT'=> 30000
     ));
     wp_enqueue_style( 'tagify-styles', IQA_ADMIN_LIBS . 'tagify.min.css','1.0.0');
     wp_enqueue_style( 'admin-styles', IQA_ADMIN_CSS . 'admin-styles.css','1.0.0');
