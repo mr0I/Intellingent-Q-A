@@ -33,7 +33,7 @@ const searchQA = (e) => {
             if (xhr == 'success' && res.success){
                 const eligibleRows = res.result;
                 const sortedRows = eligibleRows.sort((r1,r2) => {
-                    return (r1.score < r2.score) ? 1 :  (r1.score > r2.score) ? -1 : 0;
+                    return (r1.primary_score < r2.primary_score) ? 1 :  (r1.primary_score > r2.primary_score) ? -1 : 0;
                 });
                 const tokenizeInput = input.split(' ');
 
@@ -43,19 +43,24 @@ const searchQA = (e) => {
                     const tokenizeAnswer = currentAnswer.split(' ');
                     for (let item of tokenizeInput){
                         for (let answer of tokenizeAnswer){
-                            // console.log(answer);
-                            // console.log(item);
-                            const pattern = `/${answer}/`;
-                            console.log(pattern);
-                            if (pattern.test(item)) secondaryScore++;
-                            // if (item.match('/ردیاب/g')) secondaryScore++;
+                            const pattern = new RegExp( answer , 'i');
+                            if (item.match(pattern)) {
+                                secondaryScore++;
+                                console.log(item + '---' + answer);
+                            }
                         }
                     }
                     if (secondaryScore > 0){
-                        finalRows.push(secondaryScore);
+                        finalRows.push({
+                            'id': sortedRows[i].id,
+                            'final_score': (Number(sortedRows[i].primary_score) * 2)
+                                + (Number(secondaryScore) * 1),
+                            'answer': sortedRows[i].answer,
+                        });
                     }
 
                     i++;
+                    secondaryScore = 0;
                 }
                 console.log(finalRows);
 

@@ -71,7 +71,7 @@ function searchQa_callback(){
         if ($score > 0) {
             array_push($eligibleRows, [
                 'id' => $rows[$i]->id,
-                'score' => $score,
+                'primary_score' => $score,
                 'answer' => $rows[$i]->answer
             ]);
         }
