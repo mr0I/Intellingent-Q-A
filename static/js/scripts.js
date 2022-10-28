@@ -9,15 +9,14 @@ jQuery(document).ready(function($) {
 });
 
 
-function searchQA(e) {
+const searchQA = (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
     const input = normalizeText(formData.get('search'));
     const nonce = formData.get('nonce');
-   // const tokenizedInput = input.split(' ');
 
-    window.jq.ajax({
+    jq.ajax({
         url: IQA_Ajax.ajaxurl,
         type: 'POST',
         data: {
@@ -31,12 +30,38 @@ function searchQA(e) {
         },
         success: (res ,xhr) => {
             console.log(res);
-            // if (xhr == 'success' && res.success){
-            //     alert(IQA_Ajax.success_message);
-            //     $(qaForm).trigger('reset');
-            // } else {
-            //     alert(IQA_Ajax.failure_message);
-            // }
+            if (xhr == 'success' && res.success){
+                const eligibleRows = res.result;
+                const sortedRows = eligibleRows.sort((r1,r2) => {
+                    return (r1.score < r2.score) ? 1 :  (r1.score > r2.score) ? -1 : 0;
+                });
+                const tokenizeInput = input.split(' ');
+
+                let i = 0, secondaryScore = 0, finalRows = [];
+                while ( (sortedRows.length>4) ? i <= 4 : i < sortedRows.length ){
+                    const currentAnswer = sortedRows[i].answer;
+                    const tokenizeAnswer = currentAnswer.split(' ');
+                    for (let item of tokenizeInput){
+                        for (let answer of tokenizeAnswer){
+                            // console.log(answer);
+                            // console.log(item);
+                            const pattern = `/${answer}/`;
+                            console.log(pattern);
+                            if (pattern.test(item)) secondaryScore++;
+                            // if (item.match('/ردیاب/g')) secondaryScore++;
+                        }
+                    }
+                    if (secondaryScore > 0){
+                        finalRows.push(secondaryScore);
+                    }
+
+                    i++;
+                }
+                console.log(finalRows);
+
+            } else {
+                alert(IQA_Ajax.failure_message);
+            }
         },
         error: (jqXHR, textStatus, errorThrown) => {
             console.log(jqXHR);
@@ -47,7 +72,7 @@ function searchQA(e) {
         timeout:IQA_Ajax.request_timeout
     });
 
-}
+};
 const normalizeText = (input) => {
     //normalize Arabic
     input = input.replace(/(آ|إ|أ)/g, 'ا')

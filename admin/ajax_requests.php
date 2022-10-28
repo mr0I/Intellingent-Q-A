@@ -48,6 +48,11 @@ function searchQa_callback(){
     $rows = $wpdb->get_results( $query );
     $tokenizeInput = explode(' ', $_POST['input']);
 
+    if (count($rows) === 0){
+        wp_send_json(['success' => false]);
+        exit();
+    }
+
     $i = 0;
     $score = 0;
     $eligibleRows = [];
@@ -74,12 +79,14 @@ function searchQa_callback(){
         $score = 0;
     }
 
+   // $sortedRows = $eligibleRows
+
 //    $dsasd = arrayUnique($eligibleRows);
 
 
     wp_send_json([
         'success' => true,
-        '$eligibleRows'=> $eligibleRows
+        'result'=> $eligibleRows
     ]);
     exit();
 
