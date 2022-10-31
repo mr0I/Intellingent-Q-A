@@ -1,6 +1,7 @@
 <?php defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 echo "<link rel='stylesheet' id='front-pico-css'  href='".IQA_ROOT_URL."static/css/pico.min.css?ver=6.0.1' type='text/css' media='all' />";
+require_once IQA_INC . 'helpers.php';
 ?>
 
 
@@ -51,3 +52,13 @@ echo "<link rel='stylesheet' id='front-pico-css'  href='".IQA_ROOT_URL."static/c
 
     </div>
 </section>
+
+
+<?php
+$stopWords = json_encode(getStopWords());
+?>
+<script type="application/ld+json" id="stop_words_array">
+    {
+        "stop_words" : <?= $stopWords; ?>
+    }
+</script>

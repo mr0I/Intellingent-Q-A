@@ -61,6 +61,7 @@ function searchQa_callback(){
             return explode(' ',$item);
         }, $keywords));
         foreach ($tokenizeInput as $item){
+//            foreach ($keywords as $keyword){
             foreach ($flattenKeywords as $keyword){
                 if (preg_match("/$keyword/i", $item)) {
                     $score++;
@@ -70,7 +71,7 @@ function searchQa_callback(){
         if ($score > 0) {
             array_push($eligibleRows, [
                 'id' => $rows[$i]->id,
-                'primary_score' => $score,
+                'primary_score' => $score + ($score/sizeof($flattenKeywords)),
                 'answer' => $rows[$i]->answer
             ]);
         }

@@ -5,7 +5,6 @@
 })(jQuery);
 jQuery(document).ready(function($) {
     window.jq = $;
-
 });
 
 
@@ -39,10 +38,14 @@ const searchQA = (e) => {
 
                 let i = 0, secondaryScore = 0, finalRows = [];
                 while ( (sortedRows.length>4) ? i <= 4 : i < sortedRows.length ){
-                    const currentAnswer = sortedRows[i].answer;
+                    const currentAnswer = normalizeText(sortedRows[i].answer);
                     const tokenizeAnswer = currentAnswer.split(' ');
+                    const answersArray = removeStopWords(tokenizeAnswer);
+                    // console.log('aa',answersArray);
+                    console.log('ps',sortedRows[i].primary_score);
+
                     for (let item of tokenizeInput){
-                        for (let answer of tokenizeAnswer){
+                        for (let answer of answersArray){
                             const pattern = new RegExp( answer , 'i');
                             if (item.match(pattern)) {
                                 secondaryScore++;
@@ -53,8 +56,8 @@ const searchQA = (e) => {
                     if (secondaryScore > 0){
                         finalRows.push({
                             'id': sortedRows[i].id,
-                            'final_score': (Number(sortedRows[i].primary_score) * 2)
-                                + (Number(secondaryScore) * 1),
+                            'overall_score': Math.ceil((Number(sortedRows[i].primary_score) * 3)
+                                + (Number(secondaryScore) * 1)),
                             'answer': sortedRows[i].answer,
                         });
                     }
@@ -63,7 +66,6 @@ const searchQA = (e) => {
                     secondaryScore = 0;
                 }
                 console.log(finalRows);
-
             } else {
                 alert(IQA_Ajax.NO_RESULT);
             }
@@ -78,6 +80,7 @@ const searchQA = (e) => {
     });
 
 };
+
 const normalizeText = (input) => {
     //normalize Arabic
     input = input.replace(/(آ|إ|أ)/g, 'ا')
@@ -92,4 +95,20 @@ const normalizeText = (input) => {
     }
 
     return input.trim();
+};
+
+const removeStopWords = (array) => {
+    const jsonData = JSON.parse(document.getElementById("stop_words_array").innerHTML,false);
+    const stopWords = jsonData.stop_words;
+    // console.log(stopWords);
+
+    // console.log(array);
+        array.forEach((item, index) => {
+            if (stopWords.includes(item)) {
+                array.splice(index, 1);
+                // console.log(item);
+            }
+    });
+
+    return array;
 };

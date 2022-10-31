@@ -39,7 +39,7 @@ add_action( 'wp_enqueue_scripts', function(){
     wp_localize_script( 'main-script', 'IQA_Ajax', array(
         'ajaxurl' => admin_url( 'admin-ajax.php' ),
         'security' => wp_create_nonce( 'mnhUciSW!Zk/oBB' ),
-        'NO_RESULT' => __('No Result Found', 'intl_qa_lan')
+        'NO_RESULT' => __('No Result Found', 'intl_qa_lan'),
         'REQUEST_TIMEOUT' => 30000
     ));
     wp_enqueue_media();
