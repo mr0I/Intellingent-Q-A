@@ -11,7 +11,7 @@
 
     <div class="panels">
         <div class="panel" id="panel_one">
-            <div class="panel-title">منوی بالا</div>
+            <div class="panel-title"><?= __('Add Question and Answer', 'intl_qa_lan') ?></div>
             <form method="post" action="" name="add_qa_frm" id="add_qa_frm">
                 <table class="form-table" id="top_menu_links_tbl" role="presentation">
                     <tbody>
@@ -35,6 +35,28 @@
                     <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Save','intl_qa_lan') ?>">
                 </p>
             </form>
+
+            <hr>
+
+            <div class="panel-title"><?= __('Stopwords', 'intl_qa_lan') ?></div>
+            <form method="post" action="" name="stopwords_frm" id="stopwords_frm">
+                <table class="form-table" id="top_menu_links_tbl" role="presentation">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" name="stopwords" placeholder="Enter Stopwords...">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <span><?= var_dump(get_option('iqa_stopwords')); ?></span>
+                <p class="submit">
+                    <input type="hidden" name="nonce" value="<?= wp_create_nonce('stopwords') ?>">
+                    <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Save','intl_qa_lan') ?>">
+                </p>
+            </form>
+
+
         </div>
         <div class="panel" id="panel_two">
             <div class="panel-title">افزودن نمایندگی</div>

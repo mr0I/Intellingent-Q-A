@@ -10,6 +10,8 @@ jQuery(document).ready(function($) {
 
 const searchQA = (e) => {
     e.preventDefault();
+    const answersList = jq('.answers-list').find('ul');
+    showHideResults(answersList, 'fast');
 
     const formData = new FormData(e.target);
     const input = normalizeText(formData.get('search'));
@@ -30,6 +32,7 @@ const searchQA = (e) => {
         success: (res ,xhr) => {
             console.log(res);
             if (xhr == 'success' && res.success){
+
                 const eligibleRows = res.result;
                 const sortedRows = eligibleRows.sort((r1,r2) => {
                     return (r1.primary_score < r2.primary_score) ? 1 :  (r1.primary_score > r2.primary_score) ? -1 : 0;
@@ -37,7 +40,7 @@ const searchQA = (e) => {
                 const tokenizeInput = input.split(' ');
 
                 let i = 0, secondaryScore = 0, finalRows = [];
-                while ( (sortedRows.length>4) ? i <= 4 : i < sortedRows.length ){
+                while ( (sortedRows.length > 4) ? i <= 4 : i < sortedRows.length ){
                     const currentAnswer = normalizeText(sortedRows[i].answer);
                     const tokenizeAnswer = currentAnswer.split(' ');
                     const answersArray = removeStopWords(tokenizeAnswer);
@@ -65,7 +68,31 @@ const searchQA = (e) => {
                     i++;
                     secondaryScore = 0;
                 }
-                console.log(finalRows);
+
+                if (finalRows.length === 0){
+                    showHideResults(answersList);
+                    jq(answersList).append(`
+                          <li>
+                            <span>No Result!!!</span>
+                          </li>  
+                        `);
+                    return;
+                }
+                const sortedFinalRows = finalRows.sort((r1,r2) => {
+                    return (r1.overall_score < r2.overall_score) ? 1 :  (r1.overall_score > r2.overall_score) ? -1 : 0;
+                });
+  showHideResults(answersList);
+                sortedFinalRows.forEach((row, index) => {
+                    console.log('sorted', index + '---' + row);
+                    if (index < 2){
+                        jq(answersList).append(`
+                          <li>
+                            <span>${++index}</span>
+                            <span>${row.answer}</span>
+                          </li>  
+                        `)
+                    }
+                });
             } else {
                 alert(IQA_Ajax.NO_RESULT);
             }
@@ -100,15 +127,19 @@ const normalizeText = (input) => {
 const removeStopWords = (array) => {
     const jsonData = JSON.parse(document.getElementById("stop_words_array").innerHTML,false);
     const stopWords = jsonData.stop_words;
-    // console.log(stopWords);
+    console.log('sww',stopWords);
 
     // console.log(array);
-        array.forEach((item, index) => {
-            if (stopWords.includes(item)) {
-                array.splice(index, 1);
-                // console.log(item);
-            }
+    array.forEach((item, index) => {
+        if (stopWords.includes(item)) {
+            array.splice(index, 1);
+            // console.log(item);
+        }
     });
 
     return array;
+};
+
+const showHideResults = (elm, speed='slow') => {
+    jq(elm).html('').slideDown(speed);
 };

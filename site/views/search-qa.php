@@ -14,11 +14,17 @@ require_once IQA_INC . 'helpers.php';
                     <input type="text" name="search"
                            placeholder="<?= __('Input your question...', 'intl_qa_lan') ?>">
                     <i class="fa fa-times"
-                       onclick="document.querySelector('input[name=search]').value = ''"></i>
+                       onclick="document.querySelector('input[name=search]').value = '';
+                       document.querySelector('input[name=search]').focus();">
+                    </i>
                     <button type="submit"><i class="fa fa-search"></i></button>
                 </div>
                 <input type="hidden" name="nonce" value="<?= wp_create_nonce('search_qa') ?>">
             </form>
+        </div>
+
+        <div class="row">
+            <div class="answers-list"><ul></ul></div>
         </div>
 
         <div class="row">
@@ -35,27 +41,14 @@ require_once IQA_INC . 'helpers.php';
             </div>
         </div>
 
-        <div class="row">
-            <div class="answers">
-                <ul>
-                    <li>
-                        <span>1</span>
-                        <span>answer1</span>
-                    </li>
-                    <li>
-                        <span>2</span>
-                        <span>answer2</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
     </div>
 </section>
 
 
 <?php
-$stopWords = json_encode(getStopWords());
+$stopWords = json_encode(get_option('iqa_stopwords'));
+//$stopWords = json_encode(getStopWords());
+print_r($stopWords);
 ?>
 <script type="application/ld+json" id="stop_words_array">
     {
