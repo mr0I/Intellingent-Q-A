@@ -44,15 +44,15 @@
                     <tbody>
                     <tr>
                         <td>
-                            <input type="text" name="stopwords" placeholder="Enter Stopwords...">
+                            <input type="text" name="stopwords"
+                                   value="<?= implode(',', get_option('iqa_stopwords')); ?>" placeholder="Enter Stopwords...">
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <span><?= var_dump(get_option('iqa_stopwords')); ?></span>
                 <p class="submit">
                     <input type="hidden" name="nonce" value="<?= wp_create_nonce('stopwords') ?>">
-                    <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Save','intl_qa_lan') ?>">
+                    <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Update','intl_qa_lan') ?>">
                 </p>
             </form>
 

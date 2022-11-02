@@ -51,7 +51,10 @@ add_action( 'admin_enqueue_scripts', function(){
     wp_localize_script( 'admin-script', 'IQA_ADMIN_Ajax', array(
         'ajaxurl' => admin_url( 'admin-ajax.php' ),
         'security' => wp_create_nonce( 'OwpCojMcdGJ-k-o' ),
+        'SAVE_TEXT' => __('Save','intl_qa_lan'),
+        'UPDATE_TEXT' => __('Update','intl_qa_lan'),
         'SAVING_TEXT' => __('Saving...','intl_qa_lan'),
+        'UPDATING_TEXT' => __('Updating...','intl_qa_lan'),
         'FORBIDDEN_TEXT' => __('Forbidden','intl_qa_lan'),
         'FAILURE_MESSAGE' => __('Error In Operation ','intl_qa_lan'),
         'SUCCESS_MESSAGE' => __('Successful Operation','intl_qa_lan'),

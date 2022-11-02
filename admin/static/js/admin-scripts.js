@@ -55,13 +55,13 @@ jQuery(document).ready(function($){
                 alert(jqXHR.responseJSON.data);
             },
             complete: () => {
-                $(submitBtn).val('Save').attr('disabled',false);
+                $(submitBtn).val(IQA_ADMIN_Ajax.SAVE_TEXT).attr('disabled',false);
             },
             timeout:IQA_ADMIN_Ajax.REQUEST_TIMEOUT
         });
-    })
+    });
 
-    // Add stopwords form
+    // Add stop-words form
     let stopwordsForm = document.getElementsByName('stopwords_frm');
     $(stopwordsForm).on('submit', function (e) {
         e.preventDefault();
@@ -87,22 +87,17 @@ jQuery(document).ready(function($){
                 nonce: nonce
             },
             beforeSend: () => {
-                $(submitBtn).val(IQA_ADMIN_Ajax.SAVING_TEXT).attr('disabled',true);
+                $(submitBtn).val(IQA_ADMIN_Ajax.UPDATING_TEXT).attr('disabled',true);
             },
             success: (res ,xhr) => {
-                console.log(res);
-                // if (xhr == 'success' && res.success){
-                //     alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
-                //     $(stopwordsForm).trigger('reset');
-                // } else {
-                //     alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
-                // }
+                if (xhr == 'success' && res.success) alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
+                else alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
             },
             error: (jqXHR, textStatus, errorThrown) => {
                 alert(jqXHR.responseJSON.data);
             },
             complete: () => {
-                $(submitBtn).val('Save').attr('disabled',false);
+                $(submitBtn).val(IQA_ADMIN_Ajax.UPDATE_TEXT).attr('disabled',false);
             },
             timeout:IQA_ADMIN_Ajax.REQUEST_TIMEOUT
         });

@@ -96,9 +96,15 @@ function addStopWord_callback(){
     $stopwords = sanitize_text_field(stripslashes($_POST['stopwords']));
     $res = update_option('iqa_stopwords', json_decode($stopwords));
 
+    if (!$res){
+        wp_send_json([
+            'success' => false
+        ]);
+        exit();
+    }
     wp_send_json([
         'success' => true,
-        'result'=> $res
+        'result'=> $stopwords
     ]);
     exit();
 }

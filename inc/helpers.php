@@ -19,7 +19,3 @@ function arrayFlatten($array) {
     }
     return $result;
 }
-
-function getStopWords(){
-    return array( 'یا','يا', 'و', 'از', 'که', 'این', 'با', 'در', 'به', 'ها');
-}

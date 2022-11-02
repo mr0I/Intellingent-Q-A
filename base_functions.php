@@ -13,6 +13,8 @@ function IQA_activate_function(){
                   `question` text NOT NULL,
                   `answer` text NOT NULL,
                   `keywords` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`keywords`)),
+                  `views` int(10) unsigned DEFAULT 0,
+                  `enabled` tinyint(4) DEFAULT 1,
                   `created_at` timestamp NULL DEFAULT NULL,
                   `updated_at` timestamp NULL DEFAULT NULL,
                   PRIMARY KEY (`id`)
@@ -30,9 +32,10 @@ function IQA_deactivate_function(){
 
 function iqa_uninstall()
 {
-    //global $wpdb;
-//$table1 = $wpdb->prefix . AGENCIES_ORDERS_TABLE;
-//$wpdb->query( "DROP TABLE IF EXISTS {$table1}" );
-//
-//delete_option('RADtools_random_posts_cat');
+    if (get_option('should_delete_iqa_db')) {
+        global $wpdb;
+        $table = $wpdb->prefix . QA_TABLE;
+        $wpdb->query( "DROP TABLE IF EXISTS ${table}" );
+    }
+    delete_option('iqa_stopwords');
 }

@@ -44,7 +44,6 @@ const searchQA = (e) => {
                     const currentAnswer = normalizeText(sortedRows[i].answer);
                     const tokenizeAnswer = currentAnswer.split(' ');
                     const answersArray = removeStopWords(tokenizeAnswer);
-                    // console.log('aa',answersArray);
                     console.log('ps',sortedRows[i].primary_score);
 
                     for (let item of tokenizeInput){
@@ -129,11 +128,9 @@ const removeStopWords = (array) => {
     const stopWords = jsonData.stop_words;
     console.log('sww',stopWords);
 
-    // console.log(array);
     array.forEach((item, index) => {
         if (stopWords.includes(item)) {
             array.splice(index, 1);
-            // console.log(item);
         }
     });
 

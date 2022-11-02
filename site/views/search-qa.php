@@ -40,15 +40,12 @@ require_once IQA_INC . 'helpers.php';
                 </details>
             </div>
         </div>
-
     </div>
 </section>
 
 
 <?php
-$stopWords = json_encode(get_option('iqa_stopwords'));
-//$stopWords = json_encode(getStopWords());
-print_r($stopWords);
+    $stopWords = json_encode(get_option('iqa_stopwords'));
 ?>
 <script type="application/ld+json" id="stop_words_array">
     {
