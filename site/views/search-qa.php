@@ -23,6 +23,11 @@ require_once IQA_INC . 'helpers.php';
             </form>
         </div>
 
+        <div class="alert alert-outline">
+            <span class="loading-dots"></span>
+            <p><?= __('Processing founded results', 'intl_qa_lan') ?></p>
+        </div>
+
         <div class="row">
             <div class="answers-list"><ul></ul></div>
         </div>

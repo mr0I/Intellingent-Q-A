@@ -17,93 +17,128 @@ const searchQA = (e) => {
     const input = normalizeText(formData.get('search'));
     const nonce = formData.get('nonce');
 
-    jq.ajax({
-        url: IQA_Ajax.ajaxurl,
-        type: 'POST',
-        data: {
-            security : IQA_Ajax.security,
-            action: 'searchQa',
-            nonce: nonce,
-            input: input
-        },
-        beforeSend: () => {
-            // $(submitBtn).val(IQA_Ajax.saving_text).attr('disabled',true);
-        },
-        success: (res ,xhr) => {
-            console.log(res);
-            if (xhr == 'success' && res.success){
+    return new Promise( (resolve, reject) => {
+        jq.ajax({
+            url: IQA_Ajax.ajaxurl,
+            type: 'POST',
+            data: {
+                security : IQA_Ajax.security,
+                action: 'searchQa',
+                nonce: nonce,
+                input: input
+            },
+            beforeSend: () => {
+                // $(submitBtn).val(IQA_Ajax.saving_text).attr('disabled',true);
+            },
+            success: (res ,xhr) => {
+                console.log(res);
+                if (xhr == 'success' && res.success){
+                    // show processing loader
+                    jq('.alert').css('display', 'block');
 
-                const eligibleRows = res.result;
-                const sortedRows = eligibleRows.sort((r1,r2) => {
-                    return (r1.primary_score < r2.primary_score) ? 1 :  (r1.primary_score > r2.primary_score) ? -1 : 0;
-                });
-                const tokenizeInput = input.split(' ');
 
-                let i = 0, secondaryScore = 0, finalRows = [];
-                while ( (sortedRows.length > 4) ? i <= 4 : i < sortedRows.length ){
-                    const currentAnswer = normalizeText(sortedRows[i].answer);
-                    const tokenizeAnswer = currentAnswer.split(' ');
-                    const answersArray = removeStopWords(tokenizeAnswer);
-                    console.log('ps',sortedRows[i].primary_score);
+                    const eligibleRows = res.result;
+                    const sortedRows = eligibleRows.sort((r1,r2) => {
+                        return (r1.primary_score < r2.primary_score) ? 1 :  (r1.primary_score > r2.primary_score) ? -1 : 0;
+                    });
+                    const tokenizeInput = input.split(' ');
 
-                    for (let item of tokenizeInput){
-                        for (let answer of answersArray){
-                            const pattern = new RegExp( answer , 'i');
-                            if (item.match(pattern)) {
-                                secondaryScore++;
-                                console.log(item + '---' + answer);
+                    let i = 0, secondaryScore = 0, finalRows = [];
+                    while ( (sortedRows.length > 4) ? i <= 4 : i < sortedRows.length ){
+                        const currentAnswer = normalizeText(sortedRows[i].answer);
+                        const tokenizeAnswer = currentAnswer.split(' ');
+                        const answersArray = removeStopWords(tokenizeAnswer);
+                        console.log('ps',sortedRows[i].primary_score);
+
+                        for (let item of tokenizeInput){
+                            for (let answer of answersArray){
+                                const pattern = new RegExp( answer , 'i');
+                                if (item.match(pattern)) {
+                                    secondaryScore++;
+                                    console.log(item + '---' + answer);
+                                }
                             }
                         }
-                    }
-                    if (secondaryScore > 0){
-                        finalRows.push({
-                            'id': sortedRows[i].id,
-                            'overall_score': Math.ceil((Number(sortedRows[i].primary_score) * 3)
-                                + (Number(secondaryScore) * 1)),
-                            'answer': sortedRows[i].answer,
-                        });
+                        if (secondaryScore > 0){
+                            finalRows.push({
+                                'id': sortedRows[i].id,
+                                'overall_score': Math.ceil((Number(sortedRows[i].primary_score) * 3)
+                                    + (Number(secondaryScore) * 1)),
+                                'answer': sortedRows[i].answer,
+                            });
+                        }
+
+                        i++;
+                        secondaryScore = 0;
                     }
 
-                    i++;
-                    secondaryScore = 0;
-                }
-
-                if (finalRows.length === 0){
-                    showHideResults(answersList);
-                    jq(answersList).append(`
+                    if (finalRows.length === 0){
+                        jq('.alert').css('display', 'none');
+                        showHideResults(answersList);
+                        jq(answersList).append(`
                           <li>
                             <span>No Result!!!</span>
                           </li>  
                         `);
-                    return;
-                }
-                const sortedFinalRows = finalRows.sort((r1,r2) => {
-                    return (r1.overall_score < r2.overall_score) ? 1 :  (r1.overall_score > r2.overall_score) ? -1 : 0;
-                });
-  showHideResults(answersList);
-                sortedFinalRows.forEach((row, index) => {
-                    console.log('sorted', index + '---' + row);
-                    if (index < 2){
-                        jq(answersList).append(`
+                        return;
+                    }
+
+
+                    // increment views count
+                    // jq.ajax({
+                    //     url: IQA_Ajax.ajaxurl,
+                    //     type: 'POST',
+                    //     data: {
+                    //         security : IQA_Ajax.security,
+                    //         action: 'searchQa',
+                    //         nonce: nonce,
+                    //         input: input
+                    //     },
+                    //     beforeSend: () => {
+                    //         // $(submitBtn).val(IQA_Ajax.saving_text).attr('disabled',true);
+                    //     },
+                    //     success: (res ,xhr) => {
+                    //         console.log(res);
+                    //
+                    //     },
+                    //     error: (jqXHR, textStatus, errorThrown) => {
+                    //         console.log(jqXHR);
+                    //     },
+                    //     complete: () => {
+                    //         // $(submitBtn).val('Save').attr('disabled',false);
+                    //     },
+                    //     timeout:IQA_Ajax.REQUEST_TIMEOUT
+                    // });
+
+                    const sortedFinalRows = finalRows.sort((r1, r2) => {
+                        return (r1.overall_score < r2.overall_score) ? 1 :  (r1.overall_score > r2.overall_score) ? -1 : 0;
+                    });
+                    sortedFinalRows.forEach((row, index) => {
+                        console.log('sorted', index + '---' + row);
+                        if (index < 2){
+                            jq(answersList).append(`
                           <li>
                             <span>${++index}</span>
                             <span>${row.answer}</span>
                           </li>  
                         `)
-                    }
-                });
-            } else {
-                alert(IQA_Ajax.NO_RESULT);
-            }
-        },
-        error: (jqXHR, textStatus, errorThrown) => {
-            console.log(jqXHR);
-        },
-        complete: () => {
-            // $(submitBtn).val('Save').attr('disabled',false);
-        },
-        timeout:IQA_Ajax.REQUEST_TIMEOUT
+                        }
+                    });
+                    showHideResults(answersList);
+                } else {
+                    alert(IQA_Ajax.NO_RESULT);
+                }
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                console.log(jqXHR);
+            },
+            complete: () => {
+                // $(submitBtn).val('Save').attr('disabled',false);
+            },
+            timeout:IQA_Ajax.REQUEST_TIMEOUT
+        });
     });
+
 
 };
 

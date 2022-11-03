@@ -55,4 +55,31 @@
     display: none;
   }
 }
+.alert{
+  //display: none;
+  text-align: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+// Dot Pulse
+.loading-dots:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4, end) 1500ms infinite;
+  animation: ellipsis steps(4, end) 1500ms infinite;
+  content: "\2026";  // ascii code for the ellipsis character
+  width: 0;
+}
+@keyframes ellipsis {
+  to {
+    width: 40px;
+  }
+}
+@-webkit-keyframes ellipsis {
+  to {
+    width: 40px;
+  }
+}
 /* qa search page - end */
