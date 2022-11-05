@@ -118,9 +118,27 @@ function incrementViewsCount_callback(){
         exit();
     }
 
+    global $wpdb;
+    $table = $wpdb->prefix . QA_TABLE;
+    $sortedRows = json_decode(stripslashes($_POST['rows']), false);
+    $i = 0; $j = 0;
+    foreach ($sortedRows as $row){
+        if ($i < 2) {
+            $res = $wpdb->query(
+                $wpdb->prepare("UPDATE ${table} SET views=views+1 WHERE id=%d",
+                array($row->id))
+            );
+            if ($res) $j++;
+        }
+        $i++;
+    }
+
+//    if ($i !== $j) {
+//        // log to file
+//    }
+
     wp_send_json([
-        'success' => true,
-        'result'=> 'OK'
+        'success' => true
     ]);
     exit();
 }

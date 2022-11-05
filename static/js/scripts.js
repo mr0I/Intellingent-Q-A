@@ -104,7 +104,7 @@ const searchQA = async (e) => {
                 security: IQA_Ajax.security,
                 action: 'incrementViewsCount',
                 nonce: nonce,
-                rows: sortedFinalRows
+                rows: JSON.stringify(sortedFinalRows)
             })
         }).then(async (response2) => {
             const res2 = await response2.json();
@@ -131,6 +131,7 @@ const searchQA = async (e) => {
         alert(e);
     });
 };
+
 
 const normalizeText = (input) => {
     //normalize Arabic
