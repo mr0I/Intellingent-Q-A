@@ -51,14 +51,14 @@
   }
 }
 .answers-list{
-  > ul {
+   ul {
     display: none;
   }
 }
 .alert{
-  //display: none;
+  display: none;
   text-align: center;
-  display: flex;
+  //display: flex;
   flex-flow: row wrap;
   justify-content: center;
 }

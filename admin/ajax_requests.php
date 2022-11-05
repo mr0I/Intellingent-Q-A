@@ -111,3 +111,19 @@ function addStopWord_callback(){
 add_action( 'wp_ajax_addStopWord', 'addStopWord_callback' );
 add_action( 'wp_ajax_nopriv_addStopWord', 'addStopWord_callback' );
 
+
+function incrementViewsCount_callback(){
+    if ( !wp_verify_nonce($_POST['nonce'], 'search_qa') || !check_ajax_referer( 'mnhUciSW!Zk/oBB', 'security' )) {
+        wp_send_json_error('Forbidden',403);
+        exit();
+    }
+
+    wp_send_json([
+        'success' => true,
+        'result'=> 'OK'
+    ]);
+    exit();
+}
+add_action( 'wp_ajax_incrementViewsCount', 'incrementViewsCount_callback' );
+add_action( 'wp_ajax_nopriv_incrementViewsCount', 'incrementViewsCount_callback' );
+
