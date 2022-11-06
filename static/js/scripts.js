@@ -80,11 +80,7 @@ const searchQA = async (e) => {
             if (finalRows.length === 0){
                 showHideProccessingLoader('.alert', 'none');
                 showHideResults(answersList,'show');
-                jq(answersList).append(`
-                          <li>
-                            <span>No Result!!!</span>
-                          </li>  
-                        `);
+                jq(answersList).append(` <li> <span>No Result!!!</span> </li> `);
                 return;
             }
 
@@ -93,7 +89,8 @@ const searchQA = async (e) => {
             });
             resolve({
                 'final_rows': sortedFinalRows,
-                'results_num': resultsNum
+                'results_num': resultsNum,
+                'input': input
             });
         });
     }).then((resolve_data) => {
@@ -108,7 +105,8 @@ const searchQA = async (e) => {
                 security: IQA_Ajax.security,
                 action: 'incrementViewsCount',
                 nonce: nonce,
-                rows: JSON.stringify(sortedFinalRows)
+                rows: JSON.stringify(sortedFinalRows),
+                input: input
             })
         }).then(async (response2) => {
             const res2 = await response2.json();

@@ -122,20 +122,27 @@ function incrementViewsCount_callback(){
     $table = $wpdb->prefix . QA_TABLE;
     $sortedRows = json_decode(stripslashes($_POST['rows']), false);
     $i = 0; $j = 0;
+    $resultsNum = intval(get_option('results_num'));
+
     foreach ($sortedRows as $row){
-        if ($i < 2) {
+        if ($i < $resultsNum) {
             $res = $wpdb->query(
                 $wpdb->prepare("UPDATE ${table} SET views=views+1 WHERE id=%d",
                     array($row->id))
             );
             if ($res) $j++;
+            $i++;
         }
-        $i++;
     }
 
-//    if ($i !== $j) {
-//        // log to file
-//    }
+    if ($i !== $j) {
+        $date = date('Y/m/d - h:i:sa');
+        $searchQuery = sanitize_text_field($_POST['input']);
+        $debugFile = fopen(IQA_ROOT_DIR . 'debug.log', 'a')
+        or die(__('Unable to open file!', 'intl_qa_lan'));
+        fwrite($debugFile, "[${date}] Increment Views Error: sq=${searchQuery} \n");
+        fclose($debugFile);
+    }
 
     wp_send_json([
         'success' => true
