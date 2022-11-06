@@ -40,7 +40,7 @@
 
             <div class="panel-title"><?= __('Stopwords', 'intl_qa_lan') ?></div>
             <form method="post" action="" name="stopwords_frm" id="stopwords_frm">
-                <table class="form-table" id="top_menu_links_tbl" role="presentation">
+                <table class="form-table" id="" role="presentation">
                     <tbody>
                     <tr>
                         <td>
@@ -56,6 +56,27 @@
                 </p>
             </form>
 
+            <hr>
+
+            <div class="panel-title"><?= __('Results Num', 'intl_qa_lan') ?></div>
+            <form method="post" action="" name="results_num_frm" id="results_num_frm">
+                <table class="form-table" id="" role="presentation">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input type="number" name="results_num"
+                                   value="<?= get_option('results_num'); ?>"
+                                   placeholder="Enter Results Number..." min="1" max="10">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="submit">
+                    <input type="hidden" name="nonce" value="<?= wp_create_nonce('results_num') ?>">
+                    <input type="submit" class="button button-primary pull-left" name="submit"
+                           value="<?= __('Save','intl_qa_lan') ?>">
+                </p>
+            </form>
 
         </div>
         <div class="panel" id="panel_two">

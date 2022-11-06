@@ -5,6 +5,8 @@
 })(jQuery);
 jQuery(document).ready(function($) {
     window.jq = $;
+    window.jsonData = JSON.parse(document.getElementById("stop_words_array")
+        .innerHTML,false);
 });
 
 
@@ -47,7 +49,8 @@ const searchQA = async (e) => {
             const tokenizeInput = input.split(' ');
 
             let i = 0, secondaryScore = 0, finalRows = [];
-            while ( (sortedRows.length > 4) ? i <= 4 : i < sortedRows.length ){
+            const resultsNum = jsonData.results_num;
+            while ( (sortedRows.length > (resultsNum*2) ) ? i <= (resultsNum*2) : i < sortedRows.length ){
                 const currentAnswer = normalizeText(sortedRows[i].answer);
                 const tokenizeAnswer = currentAnswer.split(' ');
                 const answersArray = removeStopWords(tokenizeAnswer);
@@ -89,7 +92,8 @@ const searchQA = async (e) => {
                 return (r1.overall_score < r2.overall_score) ? 1 :  (r1.overall_score > r2.overall_score) ? -1 : 0;
             });
             resolve({
-                'final_rows': sortedFinalRows
+                'final_rows': sortedFinalRows,
+                'results_num': resultsNum
             });
         });
     }).then((resolve_data) => {
@@ -117,7 +121,7 @@ const searchQA = async (e) => {
             showHideProccessingLoader('.alert', 'none');
             sortedFinalRows.forEach((row, index) => {
                 // console.log('sorted', index + '---' + row);
-                if (index < 2){
+                if (index < (resolve_data.results_num)){
                     jq(answersList).append(`
                           <li>
                             <span>${++index}</span>
@@ -150,7 +154,6 @@ const normalizeText = (input) => {
 };
 
 const removeStopWords = (array) => {
-    const jsonData = JSON.parse(document.getElementById("stop_words_array").innerHTML,false);
     const stopWords = jsonData.stop_words;
 
     array.forEach((item, index) => {
@@ -158,7 +161,6 @@ const removeStopWords = (array) => {
             array.splice(index, 1);
         }
     });
-
     return array;
 };
 

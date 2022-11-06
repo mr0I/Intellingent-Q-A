@@ -126,7 +126,7 @@ function incrementViewsCount_callback(){
         if ($i < 2) {
             $res = $wpdb->query(
                 $wpdb->prepare("UPDATE ${table} SET views=views+1 WHERE id=%d",
-                array($row->id))
+                    array($row->id))
             );
             if ($res) $j++;
         }
@@ -144,4 +144,28 @@ function incrementViewsCount_callback(){
 }
 add_action( 'wp_ajax_incrementViewsCount', 'incrementViewsCount_callback' );
 add_action( 'wp_ajax_nopriv_incrementViewsCount', 'incrementViewsCount_callback' );
+
+
+function SetResultNum_callback(){
+    if ( !wp_verify_nonce($_POST['nonce'], 'results_num') || !check_ajax_referer( 'OwpCojMcdGJ-k-o', 'security' )) {
+        wp_send_json_error('Forbidden',403);
+        exit();
+    }
+
+    $num = absint($_POST['results_num']);
+    $res = update_option('results_num', $num);
+
+    if (!$res){
+        wp_send_json([
+            'success' => false
+        ]);
+        exit();
+    }
+    wp_send_json([
+        'success' => true
+    ]);
+    exit();
+}
+add_action( 'wp_ajax_SetResultNum', 'SetResultNum_callback' );
+add_action( 'wp_ajax_nopriv_SetResultNum', 'SetResultNum_callback' );
 

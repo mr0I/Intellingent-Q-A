@@ -103,4 +103,43 @@ jQuery(document).ready(function($){
         });
     })
 
+    // Set results number form
+    let resultsNumForm = document.getElementsByName('results_num_frm');
+    $(resultsNumForm).on('submit', function (e) {
+        e.preventDefault();
+
+        const submitBtn = document.forms['results_num_frm']['submit'];
+        let formObj = {};
+        const formArray = $(this).serializeArray();
+        $(formArray).each((index, elm) => {
+            formObj[elm.name] = elm.value;
+        });
+        const {results_num, nonce} = formObj;
+
+        $.ajax({
+            url: IQA_ADMIN_Ajax.ajaxurl,
+            type: 'POST',
+            data: {
+                security : IQA_ADMIN_Ajax.security,
+                action: 'SetResultNum',
+                results_num: Number(results_num),
+                nonce: nonce
+            },
+            beforeSend: () => {
+                $(submitBtn).val(IQA_ADMIN_Ajax.SAVING_TEXT).attr('disabled',true);
+            },
+            success: (res ,xhr) => {
+                if (xhr == 'success' && res.success) alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
+                else alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                alert(jqXHR.responseJSON.data);
+            },
+            complete: () => {
+                $(submitBtn).val(IQA_ADMIN_Ajax.SAVE_TEXT).attr('disabled',false);
+            },
+            timeout:IQA_ADMIN_Ajax.REQUEST_TIMEOUT
+        });
+    })
+
 });
