@@ -24,13 +24,10 @@ function addQa_callback(){
     ], [ '%s', '%s', '%s', '%s', '%s' ]);
 
     if (!$insert) {
-        wp_send_json(['success' => false]);
-        exit();
+        sendResponse(['success' => false]);
     }
 
-    wp_send_json(['success' => true]);
-    exit();
-
+    sendResponse(['success' => true]);
 }
 add_action( 'wp_ajax_addQa', 'addQa_callback' );
 add_action( 'wp_ajax_nopriv_addQa', 'addQa_callback' );
@@ -48,8 +45,7 @@ function searchQa_callback(){
     $tokenizeInput = explode(' ', $_POST['input']);
 
     if (count($rows) === 0){
-        wp_send_json(['success' => false]);
-        exit();
+        sendResponse(['success' => false]);
     }
 
     $i = 0;
@@ -78,11 +74,10 @@ function searchQa_callback(){
         $score = 0;
     }
 
-    wp_send_json([
+    sendResponse([
         'success' => true,
         'result'=> $eligibleRows
     ]);
-    exit();
 }
 add_action( 'wp_ajax_searchQa', 'searchQa_callback' );
 add_action( 'wp_ajax_nopriv_searchQa', 'searchQa_callback' );
@@ -97,16 +92,14 @@ function addStopWord_callback(){
     $res = update_option('iqa_stopwords', json_decode($stopwords));
 
     if (!$res){
-        wp_send_json([
+        sendResponse([
             'success' => false
         ]);
-        exit();
     }
-    wp_send_json([
+    sendResponse([
         'success' => true,
         'result'=> $stopwords
     ]);
-    exit();
 }
 add_action( 'wp_ajax_addStopWord', 'addStopWord_callback' );
 add_action( 'wp_ajax_nopriv_addStopWord', 'addStopWord_callback' );
@@ -144,10 +137,9 @@ function incrementViewsCount_callback(){
         fclose($debugFile);
     }
 
-    wp_send_json([
+    sendResponse([
         'success' => true
     ]);
-    exit();
 }
 add_action( 'wp_ajax_incrementViewsCount', 'incrementViewsCount_callback' );
 add_action( 'wp_ajax_nopriv_incrementViewsCount', 'incrementViewsCount_callback' );
@@ -163,15 +155,14 @@ function SetResultNum_callback(){
     $res = update_option('results_num', $num);
 
     if (!$res){
-        wp_send_json([
+        sendResponse([
             'success' => false
         ]);
-        exit();
     }
-    wp_send_json([
+
+    sendResponse([
         'success' => true
     ]);
-    exit();
 }
 add_action( 'wp_ajax_SetResultNum', 'SetResultNum_callback' );
 add_action( 'wp_ajax_nopriv_SetResultNum', 'SetResultNum_callback' );

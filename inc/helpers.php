@@ -19,3 +19,8 @@ function arrayFlatten($array) {
     }
     return $result;
 }
+
+function sendResponse(...$res_data){
+    wp_send_json(...$res_data);
+    exit();
+}
