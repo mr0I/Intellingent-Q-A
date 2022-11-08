@@ -10,7 +10,7 @@ function IQA_activate_function(){
     $createQaTable = "
                     CREATE TABLE IF NOT EXISTS `{$qaTable}` (
                   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-                  `question` text NOT NULL,
+                  `question` varchar(255) NOT NULL,
                   `answer` text NOT NULL,
                   `keywords` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`keywords`)),
                   `views` int(10) unsigned DEFAULT 0,

@@ -15,7 +15,8 @@
             <form method="post" action="" name="add_qa_frm" id="add_qa_frm">
                 <table class="form-table" id="top_menu_links_tbl" role="presentation">
                     <tbody>
-                    <tr id="row-1">
+                    <tr><td><input type="text" name="tags" placeholder="sddad..."></td></tr>
+                    <tr>
                         <td>
                             <textarea class="left-align" name="question"
                                       placeholder="<?= __('Enter Your Question...','intl_qa_lan') ?>" rows="3"></textarea>
@@ -23,11 +24,15 @@
                     </tr>
                     <tr>
                         <td>
-                            <textarea class="left-align" name="answer"
-                                      placeholder="<?= __('Enter Your Answer...','intl_qa_lan') ?>" rows="3"></textarea>
+<!--                            <textarea class="left-align" name="answer"-->
+<!--                                      placeholder="--><?//= __('Enter Your Answer...','intl_qa_lan') ?><!--" rows="3"></textarea>-->
+
+                            <?php wp_editor(__('Enter Your Answer...','intl_qa_lan'), 'id1', array(
+                                    'textarea_rows' => 1,
+                                    'textarea_name' => 'answer',
+                            )) ?>
                         </td>
                     </tr>
-                    <tr><td><input type="text" name="tags" placeholder="sddad..."></td></tr>
                     </tbody>
                 </table>
                 <p class="submit">

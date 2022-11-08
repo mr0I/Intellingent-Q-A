@@ -12,7 +12,7 @@ function addQa_callback(){
 
     global $wpdb;
     $question = sanitize_text_field($_POST['question']);
-    $answer = sanitize_text_field($_POST['answer']);
+    $answer = stripslashes($_POST['answer']);
     $keywords = sanitize_text_field(stripslashes($_POST['keywords']));
     $qaTable = $wpdb->prefix . QA_TABLE;
     $insert = $wpdb->insert( $qaTable, [
@@ -27,7 +27,7 @@ function addQa_callback(){
         sendResponse(['success' => false]);
     }
 
-    sendResponse(['success' => true]);
+    sendResponse(['success' => true, 'ans' => $answer]);
 }
 add_action( 'wp_ajax_addQa', 'addQa_callback' );
 add_action( 'wp_ajax_nopriv_addQa', 'addQa_callback' );
