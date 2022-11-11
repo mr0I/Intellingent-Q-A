@@ -54,13 +54,14 @@ const searchQA = async (e) => {
                 const currentAnswer = normalizeText(sortedRows[i].answer);
                 const tokenizeAnswer = currentAnswer.split(' ');
                 const answersArray = removeStopWords(tokenizeAnswer);
+                console.log('arr',answersArray);
 
                 for (let item of tokenizeInput){
                     for (let answer of answersArray){
                         const pattern = new RegExp( answer , 'i');
                         if (item.match(pattern)) {
                             secondaryScore++;
-                            // console.log(item + '---' + answer);
+                            console.log(item + '---' + answer);
                         }
                     }
                 }

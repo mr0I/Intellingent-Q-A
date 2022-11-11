@@ -1,7 +1,9 @@
 <?php defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-echo "<link rel='stylesheet' id='front-pico-css'  href='".IQA_ROOT_URL."static/css/pico.min.css?ver=6.0.1' type='text/css' media='all' />";
+echo "<link rel='stylesheet' id='front-pico-css'  href='". IQA_CSS . "pico.min.css?ver=6.0.1' type='text/css' media='all' />";
 require_once IQA_INC . 'helpers.php';
+
+$mostPopularQuestions = getMostPopularQuestions(3);
 ?>
 
 
@@ -35,14 +37,12 @@ require_once IQA_INC . 'helpers.php';
         <div class="row">
             <div class="most-popular-questions">
                 <h2><?= __('The most popular questions', 'intl_qa_lan') ?></h2>
-                <details>
-                    <summary>dadad</summary>
-                    <p>sdsadad</p>
-                </details>
-                <details>
-                    <summary>dadad</summary>
-                    <p>sdsadad</p>
-                </details>
+                <?php foreach ($mostPopularQuestions as $item): ?>
+                    <details>
+                        <summary><?= $item->question; ?></summary>
+                        <p><?= $item->answer; ?></p>
+                    </details>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>

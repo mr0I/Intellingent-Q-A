@@ -15,8 +15,8 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 define('IQA_ROOT_DIR', plugin_dir_path(__FILE__) );
 define('IQA_ROOT_URL', plugin_dir_url(__FILE__) );
-define('IQA_CSS', plugin_dir_url(__FILE__) . 'static/css/');
-define('IQA_JS', plugin_dir_url(__FILE__) . 'static/js/');
+define('IQA_CSS', plugin_dir_url(__FILE__) . 'site/static/css/');
+define('IQA_JS', plugin_dir_url(__FILE__) . 'site/static/js/');
 define('IQA_INC', IQA_ROOT_DIR . 'inc/');
 define('IQA_ADMIN', IQA_ROOT_DIR . 'admin/');
 define('IQA_ADMIN_VIEW', IQA_ROOT_DIR . 'admin/views/');

@@ -24,12 +24,15 @@
                     </tr>
                     <tr>
                         <td>
-<!--                            <textarea class="left-align" name="answer"-->
-<!--                                      placeholder="--><?//= __('Enter Your Answer...','intl_qa_lan') ?><!--" rows="3"></textarea>-->
-
                             <?php wp_editor(__('Enter Your Answer...','intl_qa_lan'), 'id1', array(
-                                    'textarea_rows' => 1,
-                                    'textarea_name' => 'answer',
+                                'textarea_rows' => 2,
+                                'textarea_name' => 'answer',
+//                                'content_css' => '
+//                                    <style>
+//                                        iframe body#tinymce{
+//                                            max-width: 100% !important;
+//                                        }
+//                                    </style>',
                             )) ?>
                         </td>
                     </tr>

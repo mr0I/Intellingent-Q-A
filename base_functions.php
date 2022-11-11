@@ -3,9 +3,9 @@
 
 function IQA_activate_function(){
     ob_start();
-    global $wpdb;
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
+    global $wpdb;
     $qaTable = $wpdb->prefix . QA_TABLE;
     $createQaTable = "
                     CREATE TABLE IF NOT EXISTS `{$qaTable}` (
