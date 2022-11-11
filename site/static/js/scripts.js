@@ -54,14 +54,14 @@ const searchQA = async (e) => {
                 const currentAnswer = normalizeText(sortedRows[i].answer);
                 const tokenizeAnswer = currentAnswer.split(' ');
                 const answersArray = removeStopWords(tokenizeAnswer);
-                console.log('arr',answersArray);
 
                 for (let item of tokenizeInput){
                     for (let answer of answersArray){
-                        const pattern = new RegExp( answer , 'i');
-                        if (item.match(pattern)) {
+                        const strippedAnswer = await stripHtmlTags(answer);
+                        const pattern = new RegExp(strippedAnswer, 'i');
+                        if (item.match(pattern) && pattern.source !== '(?:)') {
                             secondaryScore++;
-                            console.log(item + '---' + answer);
+                            // console.log(item + '---' + answer + 'ppp' + pattern) ;
                         }
                     }
                 }
@@ -178,4 +178,8 @@ const showHideResults = (elm, type, speed='slow') => {
 
 const showHideProccessingLoader = (elm, type) => {
     jq(elm).css('display', type);
+};
+
+const stripHtmlTags = async str => {
+  return str.replace(/<\/?[^>]+(>|$)/g, '');
 };
