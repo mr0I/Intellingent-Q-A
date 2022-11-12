@@ -50,8 +50,8 @@ $mostPopularQuestions = getMostPopularQuestions(3);
 
 
 <?php
-    $stopWords = json_encode(get_option('iqa_stopwords'));
-    $resultsNum = get_option('results_num');
+    $stopWords = json_encode(get_option('iqa_stopwords', []));
+    $resultsNum = get_option('results_num', 3);
 ?>
 <script type="application/ld+json" id="stop_words_array">
     {

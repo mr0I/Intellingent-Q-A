@@ -53,7 +53,7 @@
                     <tr>
                         <td>
                             <input type="text" name="stopwords"
-                                   value="<?= implode(',', get_option('iqa_stopwords')); ?>" placeholder="Enter Stopwords...">
+                                   value="<?= implode(',', get_option('iqa_stopwords', [])); ?>" placeholder="Enter Stopwords...">
                         </td>
                     </tr>
                     </tbody>
@@ -73,7 +73,7 @@
                     <tr>
                         <td>
                             <input type="number" name="results_num"
-                                   value="<?= get_option('results_num'); ?>"
+                                   value="<?= get_option('results_num', 3); ?>"
                                    placeholder="Enter Results Number..." min="1" max="10">
                         </td>
                     </tr>
