@@ -24,6 +24,7 @@ define('IQA_ADMIN_CSS', plugin_dir_url(__FILE__) . 'admin/static/css/');
 define('IQA_ADMIN_JS', plugin_dir_url(__FILE__) . 'admin/static/js/');
 define('IQA_ADMIN_LIBS', plugin_dir_url(__FILE__) . 'admin/static/libs/');
 define('QA_TABLE', 'qa');
+define('REPORT_TABLE', 'report_sqs');
 
 add_action('plugins_loaded', function(){
     load_plugin_textdomain('intl_qa_lan', false, basename(IQA_ROOT_DIR) . '/languages/');
@@ -40,6 +41,8 @@ add_action( 'wp_enqueue_scripts', function(){
         'ajaxurl' => admin_url( 'admin-ajax.php' ),
         'security' => wp_create_nonce( 'mnhUciSW!Zk/oBB' ),
         'NO_RESULT' => __('No Result Found', 'intl_qa_lan'),
+        'SUCCESS_MESSAGE' => __('Successful Operation','intl_qa_lan'),
+        'FAILURE_MESSAGE' => __('Error In Operation ','intl_qa_lan'),
         'REQUEST_TIMEOUT' => 30000
     ));
     wp_enqueue_media();

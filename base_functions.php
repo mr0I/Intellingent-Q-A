@@ -7,6 +7,8 @@ function IQA_activate_function(){
 
     global $wpdb;
     $qaTable = $wpdb->prefix . QA_TABLE;
+    $reportTable = $wpdb->prefix . REPORT_TABLE;
+
     $createQaTable = "
                     CREATE TABLE IF NOT EXISTS `{$qaTable}` (
                   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -20,7 +22,19 @@ function IQA_activate_function(){
                   PRIMARY KEY (`id`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ";
 
+    $createReportTable = "CREATE TABLE `${reportTable}` (
+                  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+                  `input` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                  `count` int(10) unsigned NOT NULL,
+                  `created_at` timestamp NULL DEFAULT NULL,
+                  `updated_at` timestamp NULL DEFAULT NULL,
+                  PRIMARY KEY (`id`),
+                  FULLTEXT KEY `idx_input` (`input`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+
+
     dbDelta($createQaTable);
+    dbDelta($createReportTable);
 
     register_uninstall_hook(__FILE__, 'iqa_uninstall');
     flush_rewrite_rules();

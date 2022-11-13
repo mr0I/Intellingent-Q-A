@@ -1,12 +1,20 @@
 <?php defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); ?>
 
+<?php
+global $wpdb;
+$reportsTable = $wpdb->prefix . REPORT_TABLE;
+$reports = $wpdb->get_results("SELECT * FROM ${reportsTable} ORDER BY updated_at DESC ");
+?>
+
 <div class="menu-wrapper">
     <input class="radio" id="r_one" name="group" type="radio" checked>
     <input class="radio" id="r_two" name="group" type="radio">
+    <input class="radio" id="r_three" name="group" type="radio">
 
     <div class="tabs">
-        <label class="tab" id="tab_one" for="r_one">تنظیمات هدر</label>
-        <label class="tab" id="tab_two" for="r_two">افزودن نمایندگی</label>
+        <label class="tab" id="tab_one" for="r_one"><?= __('General Settings', 'intl_qa_lan') ?></label>
+        <label class="tab" id="tab_two" for="r_two"><?= __('Q/A List', 'intl_qa_lan') ?></label>
+        <label class="tab" id="tab_three" for="r_three"><?= __('Users Reports', 'intl_qa_lan') ?></label>
     </div>
 
     <div class="panels">
@@ -26,13 +34,7 @@
                         <td>
                             <?php wp_editor(__('Enter Your Answer...','intl_qa_lan'), 'id1', array(
                                 'textarea_rows' => 2,
-                                'textarea_name' => 'answer',
-//                                'content_css' => '
-//                                    <style>
-//                                        iframe body#tinymce{
-//                                            max-width: 100% !important;
-//                                        }
-//                                    </style>',
+                                'textarea_name' => 'answer'
                             )) ?>
                         </td>
                     </tr>
@@ -88,99 +90,30 @@
 
         </div>
         <div class="panel" id="panel_two">
-            <div class="panel-title">افزودن نمایندگی</div>
-            <form method="post" action="" id="" name="agencies_frm">
-                <table class="form-table" role="presentation">
-                    <tbody>
+            two
+        </div>
+        <div class="panel" id="panel_three">
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col"><?= __('Search Phrase', 'intl_qa_lan') ?></th>
+                    <th scope="col"><?= __('Count', 'intl_qa_lan') ?></th>
+                    <th scope="col"><?= __('Date', 'intl_qa_lan') ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php $counter = 1; foreach ($reports as $report): ?>
                     <tr>
-                        <th scope="row">استان</th>
-                        <td>
-                            <select name="city_parent_select" id="city_parent_select" style="max-width: 100%;min-width: 400px">
-                                <option value="0">انتخاب استان...</option>
-                            </select>
-                        </td>
+                        <th scope="row"><?= $counter++; ?></th>
+                        <td><?= $report->input ?></td>
+                        <td><?= $report->count ?></td>
+                        <td><?= $report->updated_at ?></td>
                     </tr>
-                    <tr>
-                        <th scope="row">شهر</th>
-                        <td>
-                            <select name="city_name_select" id="city_name_select" style="max-width: 100%;min-width: 400px">
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">عنوان</th>
-                        <td>
-                            <input class="left-align" type="text" name="title"
-                                   style="max-width: 100%;min-width: 400px">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">فروشگاه</th>
-                        <td>
-                            <input class=" left-align" type="text" name="shop"
-                                   style="max-width: 100%;min-width: 400px" required="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">مالک</th>
-                        <td>
-                            <input class=" left-align" type="text" name="owner"
-                                   style="max-width: 100%;min-width: 400px" required="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">شماره تماس</th>
-                        <td>
-                            <input class=" left-align" type="text" name="phone_number"
-                                   style="max-width: 100%;min-width: 400px" required="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">آدرس</th>
-                        <td>
-                            <input class=" left-align" type="text" name="address"
-                                   style="max-width: 100%;min-width: 400px" required="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">نقشه</th>
-                        <td>
-                            <input class=" left-align" type="text" name="map"
-                                   style="max-width: 100%;min-width: 400px" required="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">لینک برگه نمایندگی</th>
-                        <td>
-                            <input class=" left-align" type="text" name="page_url"
-                                   style="max-width: 100%;min-width: 400px" required="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">گرید</th>
-                        <td>
-                            <select name="grade" id="" style="max-width: 100%;min-width: 400px">
-                                <option value="1">A</option>
-                                <option value="2">B</option>
-                                <option value="3">C</option>
-                                <option value="4">D</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">وضعیت</th>
-                        <td>
-                            <select name="status" style="max-width: 100%;min-width: 400px">
-                                <option value="true">منتشر شده</option>
-                                <option value="false">منتشر نشده</option>
-                            </select>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <input type="hidden" id="add_agency_nonce" value="<?= wp_create_nonce('add-agency-nonce') ?>">
-                <p class="submit"><input type="submit" id="agency_submit_btn" class="button button-primary" value="ذخیره"></p>
-            </form>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

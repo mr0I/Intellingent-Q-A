@@ -81,7 +81,10 @@ const searchQA = async (e) => {
             if (finalRows.length === 0){
                 showHideProccessingLoader('.alert', 'none');
                 showHideResults(answersList,'show');
-                jq(answersList).append(` <li> <span>No Result!!!</span> </li> `);
+                jq(answersList).append(` 
+                    <li><span>${IQA_Ajax.NO_RESULT}</span></li>
+                    <button data-sq="${input}" onclick="reportNonExistence(event)">Report</button>
+                `);
                 return;
             }
 
@@ -182,4 +185,34 @@ const showHideProccessingLoader = (elm, type) => {
 
 const stripHtmlTags = async str => {
   return str.replace(/<\/?[^>]+(>|$)/g, '');
+};
+
+const reportNonExistence = (e) => {
+    const thisElm = e.target;
+    thisElm.innerHTML = 'Sending...';
+    thisElm.disabled = true;
+
+     fetch(IQA_Ajax.ajaxurl, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }),
+        body: new URLSearchParams({
+            security: IQA_Ajax.security,
+            action: 'reportNonExistence',
+            input: e.target.getAttribute('data-sq')
+        })
+    }).then(async (response) =>{
+        const res = await response.json();
+
+         if (!res.success) {
+             alert(IQA_Ajax.FAILURE_MESSAGE);
+             return;
+         }
+
+         thisElm.hidden = true;
+         alert(IQA_Ajax.SUCCESS_MESSAGE);
+     });
+
 };

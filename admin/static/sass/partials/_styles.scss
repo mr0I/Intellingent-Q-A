@@ -52,11 +52,15 @@
     display:none ;
   }
   #r_one:checked ~ .panels #panel_one,
-  #r_two:checked ~ .panels #panel_two{
+  #r_two:checked ~ .panels #panel_two,
+  #r_three:checked ~ .panels #panel_three
+  {
     display:block
   }
   #r_one:checked ~ .tabs #tab_one,
-  #r_two:checked ~ .tabs #tab_two{
+  #r_two:checked ~ .tabs #tab_two,
+  #r_three:checked ~ .tabs #tab_three
+  {
     background-color: $backgroundColor;
     color: $primaryTextColor;
     border: 1px solid $backgroundColor;

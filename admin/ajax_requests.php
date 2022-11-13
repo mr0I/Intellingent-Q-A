@@ -167,3 +167,39 @@ function SetResultNum_callback(){
 add_action( 'wp_ajax_SetResultNum', 'SetResultNum_callback' );
 add_action( 'wp_ajax_nopriv_SetResultNum', 'SetResultNum_callback' );
 
+
+function reportNonExistence_callback(){
+    if ( !check_ajax_referer( 'mnhUciSW!Zk/oBB', 'security' )) {
+        wp_send_json_error('Forbidden',403);
+        exit();
+    }
+
+    global $wpdb;
+    $input = sanitize_text_field($_POST['input']);
+    $reportTable = $wpdb->prefix . REPORT_TABLE;
+
+    $isExisted = $wpdb->get_var(
+        $wpdb->prepare("SELECT COUNT(id) FROM ${reportTable} WHERE input=%s ", array($input))
+    );
+
+    if (intval($isExisted) !== 0) {
+        $update = $wpdb->query(
+            $wpdb->prepare("UPDATE ${reportTable} SET count=count+1, updated_at=%s WHERE input=%s",
+                array(current_time('mysql'), $input))
+        );
+        if (!$update) sendResponse(['success' => false]);
+    } else {
+        $insert = $wpdb->insert( $reportTable, [
+            'input' => $input,
+            'count' => 1,
+            'created_at' => current_time('mysql'),
+            'updated_at' => current_time('mysql'),
+        ], [ '%s', '%d', '%s', '%s' ]);
+        if (!$insert) sendResponse(['success' => false]);
+    }
+
+    sendResponse(['success' => true]);
+}
+add_action( 'wp_ajax_reportNonExistence', 'reportNonExistence_callback' );
+add_action( 'wp_ajax_nopriv_reportNonExistence', 'reportNonExistence_callback' );
+
