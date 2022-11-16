@@ -1,9 +1,11 @@
-<?php defined( 'ABSPATH' ) or die( 'No script kiddies please!' ); ?>
+<?php defined('ABSPATH') or die('No script kiddies please!'); ?>
 
 <?php
 global $wpdb;
 $reportsTable = $wpdb->prefix . REPORT_TABLE;
+$qaTable = $wpdb->prefix . QA_TABLE;
 $reports = $wpdb->get_results("SELECT * FROM ${reportsTable} ORDER BY updated_at DESC ");
+$qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC ");
 ?>
 
 <div class="menu-wrapper">
@@ -18,31 +20,33 @@ $reports = $wpdb->get_results("SELECT * FROM ${reportsTable} ORDER BY updated_at
     </div>
 
     <div class="panels">
+
         <div class="panel" id="panel_one">
             <div class="panel-title"><?= __('Add Question and Answer', 'intl_qa_lan') ?></div>
             <form method="post" action="" name="add_qa_frm" id="add_qa_frm">
                 <table class="form-table" id="top_menu_links_tbl" role="presentation">
                     <tbody>
-                    <tr><td><input type="text" name="tags" placeholder="sddad..."></td></tr>
-                    <tr>
-                        <td>
-                            <textarea class="left-align" name="question"
-                                      placeholder="<?= __('Enter Your Question...','intl_qa_lan') ?>" rows="3"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <?php wp_editor(__('Enter Your Answer...','intl_qa_lan'), 'id1', array(
-                                'textarea_rows' => 2,
-                                'textarea_name' => 'answer'
-                            )) ?>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td><input type="text" name="tags" placeholder="sddad..."></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <textarea class="left-align" name="question" placeholder="<?= __('Enter Your Question...', 'intl_qa_lan') ?>" rows="3"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php wp_editor(__('Enter Your Answer...', 'intl_qa_lan'), 'id1', array(
+                                    'textarea_rows' => 2,
+                                    'textarea_name' => 'answer'
+                                )) ?>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <p class="submit">
                     <input type="hidden" name="nonce" value="<?= wp_create_nonce('add_qa') ?>">
-                    <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Save','intl_qa_lan') ?>">
+                    <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Save', 'intl_qa_lan') ?>">
                 </p>
             </form>
 
@@ -52,17 +56,16 @@ $reports = $wpdb->get_results("SELECT * FROM ${reportsTable} ORDER BY updated_at
             <form method="post" action="" name="stopwords_frm" id="stopwords_frm">
                 <table class="form-table" id="" role="presentation">
                     <tbody>
-                    <tr>
-                        <td>
-                            <input type="text" name="stopwords"
-                                   value="<?= implode(',', get_option('iqa_stopwords', [])); ?>" placeholder="Enter Stopwords...">
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <input type="text" name="stopwords" value="<?= implode(',', get_option('iqa_stopwords', [])); ?>" placeholder="Enter Stopwords...">
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <p class="submit">
                     <input type="hidden" name="nonce" value="<?= wp_create_nonce('stopwords') ?>">
-                    <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Update','intl_qa_lan') ?>">
+                    <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Update', 'intl_qa_lan') ?>">
                 </p>
             </form>
 
@@ -72,48 +75,75 @@ $reports = $wpdb->get_results("SELECT * FROM ${reportsTable} ORDER BY updated_at
             <form method="post" action="" name="results_num_frm" id="results_num_frm">
                 <table class="form-table" id="" role="presentation">
                     <tbody>
-                    <tr>
-                        <td>
-                            <input type="number" name="results_num"
-                                   value="<?= get_option('results_num', 3); ?>"
-                                   placeholder="Enter Results Number..." min="1" max="10">
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <input type="number" name="results_num" value="<?= get_option('results_num', 3); ?>" placeholder="Enter Results Number..." min="1" max="10">
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <p class="submit">
                     <input type="hidden" name="nonce" value="<?= wp_create_nonce('results_num') ?>">
-                    <input type="submit" class="button button-primary pull-left" name="submit"
-                           value="<?= __('Save','intl_qa_lan') ?>">
+                    <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Save', 'intl_qa_lan') ?>">
                 </p>
             </form>
-
         </div>
+
         <div class="panel" id="panel_two">
-            two
-        </div>
-        <div class="panel" id="panel_three">
-
             <table class="table">
                 <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col"><?= __('Search Phrase', 'intl_qa_lan') ?></th>
-                    <th scope="col"><?= __('Count', 'intl_qa_lan') ?></th>
-                    <th scope="col"><?= __('Date', 'intl_qa_lan') ?></th>
-                </tr>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"><?= __('Question', 'intl_qa_lan') ?></th>
+                        <th scope="col"><?= __('Keywords', 'intl_qa_lan') ?></th>
+                        <th scope="col"><?= __('Views', 'intl_qa_lan') ?></th>
+                        <th scope="col"><?= __('Enabled', 'intl_qa_lan') ?></th>
+                        <th scope="col"><?= __('Date', 'intl_qa_lan') ?></th>
+                        <th scope="col"><?= __('Operation', 'intl_qa_lan') ?></th>
+                    </tr>
                 </thead>
                 <tbody>
-                <?php $counter = 1; foreach ($reports as $report): ?>
-                    <tr>
-                        <th scope="row"><?= $counter++; ?></th>
-                        <td><?= $report->input ?></td>
-                        <td><?= $report->count ?></td>
-                        <td><?= $report->updated_at ?></td>
-                    </tr>
-                <?php endforeach; ?>
+                    <?php $counter = 1;
+                    foreach ($qanswes as $qa) : ?>
+                        <tr>
+                            <th scope="row"><?= $counter++; ?></th>
+                            <td><?= $qa->question ?></td>
+                            <td><?= $qa->keywords ?></td>
+                            <td><?= $qa->views ?></td>
+                            <td><?= $qa->enabled ?></td>
+                            <td><?= $qa->updated_at ?></td>
+                            <td>
+                                <button type="button" class="button">Del</button>|<button>Edit</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
+
+        <div class="panel" id="panel_three">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col"><?= __('Search Phrase', 'intl_qa_lan') ?></th>
+                        <th scope="col"><?= __('Count', 'intl_qa_lan') ?></th>
+                        <th scope="col"><?= __('Date', 'intl_qa_lan') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $counter = 1;
+                    foreach ($reports as $report) : ?>
+                        <tr>
+                            <th scope="row"><?= $counter++; ?></th>
+                            <td><?= $report->input ?></td>
+                            <td><?= $report->count ?></td>
+                            <td><?= $report->updated_at ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </div>
