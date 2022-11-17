@@ -117,7 +117,9 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                                 <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="<?= $qa->id ?>" data-nonce="<?= $nonce ?>">
                                     Delete
                                 </button>
-                                <button type="button" class="button button-outline-primary">Edit</button>
+                                <button type="button" class="button button-outline-primary" onclick="editQA(this)" data-id="<?= $qa->id ?>">
+                                    Edit
+                                </button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -148,6 +150,9 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                 </tbody>
             </table>
         </div>
+
+        <!-- Modal -->
+        <?php require_once(IQA_ADMIN . 'components/edit-qa-modal.php'); ?>
 
     </div>
 </div>

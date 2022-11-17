@@ -2,6 +2,7 @@
     $(window).on("load", function () {
         "use strict";
 
+        // tagify
         $('input[name=tags]').tagify({
             duplicates: false,
             maxTags: 10
@@ -9,6 +10,13 @@
         $('input[name=stopwords]').tagify({
             duplicates: false
         });
+
+        // modal
+        window.modal = document.getElementById("simple_modal");
+        window.onclick = function (event) {
+            if (event.target == modal) modal.style.display = "none";
+        }
+
     });
 })(jQuery);
 jQuery(document).ready(function ($) {
@@ -182,4 +190,13 @@ function deleteQA(d) {
         });
     }
 
+}
+function editQA(d) {
+    const qaID = d.getAttribute('data-id');
+    modal.style.display = "block";
+    let elm = document.getElementById('textt');
+    elm.innerText = qaID;
+}
+const closeModal = () => {
+    modal.style.display = "none";
 }
