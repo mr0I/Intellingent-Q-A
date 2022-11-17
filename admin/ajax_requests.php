@@ -1,12 +1,13 @@
-<?php defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+<?php defined('ABSPATH') or die('No script kiddies please!');
 
 require_once IQA_INC . 'helpers.php';
 
 
-function addQa_callback(){
+function addQa_callback()
+{
 
-    if ( !wp_verify_nonce($_POST['nonce'], 'add_qa') || !check_ajax_referer( 'OwpCojMcdGJ-k-o', 'security' )) {
-        wp_send_json_error('Forbidden',403);
+    if (!wp_verify_nonce($_POST['nonce'], 'add_qa') || !check_ajax_referer('OwpCojMcdGJ-k-o', 'security')) {
+        wp_send_json_error('Forbidden', 403);
         exit();
     }
 
@@ -15,13 +16,13 @@ function addQa_callback(){
     $answer = stripslashes($_POST['answer']);
     $keywords = sanitize_text_field(stripslashes($_POST['keywords']));
     $qaTable = $wpdb->prefix . QA_TABLE;
-    $insert = $wpdb->insert( $qaTable, [
+    $insert = $wpdb->insert($qaTable, [
         'question' => $question,
         'answer' => $answer,
         'keywords' => $keywords,
         'created_at' => current_time('mysql'),
         'updated_at' => current_time('mysql'),
-    ], [ '%s', '%s', '%s', '%s', '%s' ]);
+    ], ['%s', '%s', '%s', '%s', '%s']);
 
     if (!$insert) {
         sendResponse(['success' => false]);
@@ -29,22 +30,23 @@ function addQa_callback(){
 
     sendResponse(['success' => true, 'ans' => $answer]);
 }
-add_action( 'wp_ajax_addQa', 'addQa_callback' );
-add_action( 'wp_ajax_nopriv_addQa', 'addQa_callback' );
+add_action('wp_ajax_addQa', 'addQa_callback');
+add_action('wp_ajax_nopriv_addQa', 'addQa_callback');
 
-function searchQa_callback(){
-    if ( !wp_verify_nonce($_POST['nonce'], 'search_qa') || !check_ajax_referer( 'mnhUciSW!Zk/oBB', 'security' )) {
-        wp_send_json_error('Forbidden',403);
+function searchQa_callback()
+{
+    if (!wp_verify_nonce($_POST['nonce'], 'search_qa') || !check_ajax_referer('mnhUciSW!Zk/oBB', 'security')) {
+        wp_send_json_error('Forbidden', 403);
         exit();
     }
 
     global $wpdb;
     $table = $wpdb->prefix . QA_TABLE;
     $query = $wpdb->prepare("SELECT * FROM $table WHERE enabled=%s", array(true));
-    $rows = $wpdb->get_results( $query );
+    $rows = $wpdb->get_results($query);
     $tokenizeInput = explode(' ', $_POST['input']);
 
-    if (count($rows) === 0){
+    if (count($rows) === 0) {
         sendResponse(['success' => false]);
     }
 
@@ -53,11 +55,11 @@ function searchQa_callback(){
     $eligibleRows = [];
     while ($i < count($rows)) {
         $keywords = json_decode($rows[$i]->keywords);
-        $flattenKeywords = arrayFlatten(array_map( function($item){
-            return explode(' ',$item);
+        $flattenKeywords = arrayFlatten(array_map(function ($item) {
+            return explode(' ', $item);
         }, $keywords));
-        foreach ($tokenizeInput as $item){
-            foreach ($flattenKeywords as $keyword){
+        foreach ($tokenizeInput as $item) {
+            foreach ($flattenKeywords as $keyword) {
                 if (preg_match("/$keyword/i", $item)) {
                     $score++;
                 }
@@ -66,7 +68,7 @@ function searchQa_callback(){
         if ($score > 0) {
             array_push($eligibleRows, [
                 'id' => $rows[$i]->id,
-                'primary_score' => $score + ($score/sizeof($flattenKeywords)),
+                'primary_score' => $score + ($score / sizeof($flattenKeywords)),
                 'answer' => $rows[$i]->answer
             ]);
         }
@@ -76,52 +78,57 @@ function searchQa_callback(){
 
     sendResponse([
         'success' => true,
-        'result'=> $eligibleRows
+        'result' => $eligibleRows
     ]);
 }
-add_action( 'wp_ajax_searchQa', 'searchQa_callback' );
-add_action( 'wp_ajax_nopriv_searchQa', 'searchQa_callback' );
+add_action('wp_ajax_searchQa', 'searchQa_callback');
+add_action('wp_ajax_nopriv_searchQa', 'searchQa_callback');
 
-function addStopWord_callback(){
-    if ( !wp_verify_nonce($_POST['nonce'], 'stopwords') || !check_ajax_referer( 'OwpCojMcdGJ-k-o', 'security' )) {
-        wp_send_json_error('Forbidden',403);
+function addStopWord_callback()
+{
+    if (!wp_verify_nonce($_POST['nonce'], 'stopwords') || !check_ajax_referer('OwpCojMcdGJ-k-o', 'security')) {
+        wp_send_json_error('Forbidden', 403);
         exit();
     }
 
     $stopwords = sanitize_text_field(stripslashes($_POST['stopwords']));
     $res = update_option('iqa_stopwords', json_decode($stopwords));
 
-    if (!$res){
+    if (!$res) {
         sendResponse([
             'success' => false
         ]);
     }
     sendResponse([
         'success' => true,
-        'result'=> $stopwords
+        'result' => $stopwords
     ]);
 }
-add_action( 'wp_ajax_addStopWord', 'addStopWord_callback' );
-add_action( 'wp_ajax_nopriv_addStopWord', 'addStopWord_callback' );
+add_action('wp_ajax_addStopWord', 'addStopWord_callback');
+add_action('wp_ajax_nopriv_addStopWord', 'addStopWord_callback');
 
 
-function incrementViewsCount_callback(){
-    if ( !wp_verify_nonce($_POST['nonce'], 'search_qa') || !check_ajax_referer( 'mnhUciSW!Zk/oBB', 'security' )) {
-        wp_send_json_error('Forbidden',403);
+function incrementViewsCount_callback()
+{
+    if (!wp_verify_nonce($_POST['nonce'], 'search_qa') || !check_ajax_referer('mnhUciSW!Zk/oBB', 'security')) {
+        wp_send_json_error('Forbidden', 403);
         exit();
     }
 
     global $wpdb;
     $table = $wpdb->prefix . QA_TABLE;
     $sortedRows = json_decode(stripslashes($_POST['rows']), false);
-    $i = 0; $j = 0;
+    $i = 0;
+    $j = 0;
     $resultsNum = intval(get_option('results_num'));
 
-    foreach ($sortedRows as $row){
+    foreach ($sortedRows as $row) {
         if ($i < $resultsNum) {
             $res = $wpdb->query(
-                $wpdb->prepare("UPDATE ${table} SET views=views+1 WHERE id=%d",
-                    array($row->id))
+                $wpdb->prepare(
+                    "UPDATE ${table} SET views=views+1 WHERE id=%d",
+                    array($row->id)
+                )
             );
             if ($res) $j++;
             $i++;
@@ -132,7 +139,7 @@ function incrementViewsCount_callback(){
         $date = date('Y/m/d - h:i:sa');
         $searchQuery = sanitize_text_field($_POST['input']);
         $debugFile = fopen(IQA_ROOT_DIR . 'debug.log', 'a')
-        or die(__('Unable to open file!', 'intl_qa_lan'));
+            or die(__('Unable to open file!', 'intl_qa_lan'));
         fwrite($debugFile, "[${date}] Increment Views Error: sq=${searchQuery} \n");
         fclose($debugFile);
     }
@@ -141,20 +148,21 @@ function incrementViewsCount_callback(){
         'success' => true
     ]);
 }
-add_action( 'wp_ajax_incrementViewsCount', 'incrementViewsCount_callback' );
-add_action( 'wp_ajax_nopriv_incrementViewsCount', 'incrementViewsCount_callback' );
+add_action('wp_ajax_incrementViewsCount', 'incrementViewsCount_callback');
+add_action('wp_ajax_nopriv_incrementViewsCount', 'incrementViewsCount_callback');
 
 
-function SetResultNum_callback(){
-    if ( !wp_verify_nonce($_POST['nonce'], 'results_num') || !check_ajax_referer( 'OwpCojMcdGJ-k-o', 'security' )) {
-        wp_send_json_error('Forbidden',403);
+function SetResultNum_callback()
+{
+    if (!wp_verify_nonce($_POST['nonce'], 'results_num') || !check_ajax_referer('OwpCojMcdGJ-k-o', 'security')) {
+        wp_send_json_error('Forbidden', 403);
         exit();
     }
 
     $num = absint($_POST['results_num']);
     $res = update_option('results_num', $num);
 
-    if (!$res){
+    if (!$res) {
         sendResponse([
             'success' => false
         ]);
@@ -164,13 +172,14 @@ function SetResultNum_callback(){
         'success' => true
     ]);
 }
-add_action( 'wp_ajax_SetResultNum', 'SetResultNum_callback' );
-add_action( 'wp_ajax_nopriv_SetResultNum', 'SetResultNum_callback' );
+add_action('wp_ajax_SetResultNum', 'SetResultNum_callback');
+add_action('wp_ajax_nopriv_SetResultNum', 'SetResultNum_callback');
 
 
-function reportNonExistence_callback(){
-    if ( !check_ajax_referer( 'mnhUciSW!Zk/oBB', 'security' )) {
-        wp_send_json_error('Forbidden',403);
+function reportNonExistence_callback()
+{
+    if (!check_ajax_referer('mnhUciSW!Zk/oBB', 'security')) {
+        wp_send_json_error('Forbidden', 403);
         exit();
     }
 
@@ -184,22 +193,43 @@ function reportNonExistence_callback(){
 
     if (intval($isExisted) !== 0) {
         $update = $wpdb->query(
-            $wpdb->prepare("UPDATE ${reportTable} SET count=count+1, updated_at=%s WHERE input=%s",
-                array(current_time('mysql'), $input))
+            $wpdb->prepare(
+                "UPDATE ${reportTable} SET count=count+1, updated_at=%s WHERE input=%s",
+                array(current_time('mysql'), $input)
+            )
         );
         if (!$update) sendResponse(['success' => false]);
     } else {
-        $insert = $wpdb->insert( $reportTable, [
+        $insert = $wpdb->insert($reportTable, [
             'input' => $input,
             'count' => 1,
             'created_at' => current_time('mysql'),
             'updated_at' => current_time('mysql'),
-        ], [ '%s', '%d', '%s', '%s' ]);
+        ], ['%s', '%d', '%s', '%s']);
         if (!$insert) sendResponse(['success' => false]);
     }
 
     sendResponse(['success' => true]);
 }
-add_action( 'wp_ajax_reportNonExistence', 'reportNonExistence_callback' );
-add_action( 'wp_ajax_nopriv_reportNonExistence', 'reportNonExistence_callback' );
+add_action('wp_ajax_reportNonExistence', 'reportNonExistence_callback');
+add_action('wp_ajax_nopriv_reportNonExistence', 'reportNonExistence_callback');
 
+
+function DeleteQA_callback()
+{
+    if (!wp_verify_nonce($_POST['nonce'], 'delete_qa') || !check_ajax_referer('OwpCojMcdGJ-k-o', 'security')) {
+        wp_send_json_error('Forbidden', 403);
+        exit();
+    }
+
+    global $wpdb;
+    $qaID = $_POST['qa_id'];
+    $res = $wpdb->delete($wpdb->prefix . QA_TABLE, [
+        'id' => $qaID
+    ], ['%d']);
+
+    if (!$res) sendResponse(['success' => false]);
+    sendResponse(['success' => true]);
+}
+add_action('wp_ajax_DeleteQA', 'DeleteQA_callback');
+add_action('wp_ajax_nopriv_DeleteQA', 'DeleteQA_callback');

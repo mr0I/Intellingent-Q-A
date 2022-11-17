@@ -104,6 +104,7 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                 </thead>
                 <tbody>
                     <?php $counter = 1;
+                    $nonce = wp_create_nonce('delete_qa');
                     foreach ($qanswes as $qa) : ?>
                         <tr>
                             <th scope="row"><?= $counter++; ?></th>
@@ -113,7 +114,10 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                             <td><?= $qa->enabled ?></td>
                             <td><?= $qa->updated_at ?></td>
                             <td>
-                                <button type="button" class="button">Del</button>|<button>Edit</button>
+                                <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="<?= $qa->id ?>" data-nonce="<?= $nonce ?>">
+                                    Delete
+                                </button>
+                                <button type="button" class="button button-outline-primary">Edit</button>
                             </td>
                         </tr>
                     <?php endforeach; ?>

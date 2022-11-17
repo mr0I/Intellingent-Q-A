@@ -1,17 +1,20 @@
-(function($) {
-    $(window).on("load", function() {
+(function ($) {
+    $(window).on("load", function () {
         "use strict";
 
         $('input[name=tags]').tagify({
-            duplicates:false,
-            maxTags:10
+            duplicates: false,
+            maxTags: 10
         });
         $('input[name=stopwords]').tagify({
-            duplicates:false
+            duplicates: false
         });
     });
 })(jQuery);
-jQuery(document).ready(function($){
+jQuery(document).ready(function ($) {
+
+    // constants
+    window.jq = $;
 
     // Add Q/A form
     let qaForm = document.getElementsByName('add_qa_frm');
@@ -24,7 +27,7 @@ jQuery(document).ready(function($){
         $(formArray).each((index, elm) => {
             formObj[elm.name] = elm.value;
         });
-        const {question, answer, nonce, tags} = formObj;
+        const { question, answer, nonce, tags } = formObj;
         const tagsArray = Object.values(JSON.parse(tags)).map(tag => {
             return tag.value
         });
@@ -33,7 +36,7 @@ jQuery(document).ready(function($){
             url: IQA_ADMIN_Ajax.ajaxurl,
             type: 'POST',
             data: {
-                security : IQA_ADMIN_Ajax.security,
+                security: IQA_ADMIN_Ajax.security,
                 action: 'addQa',
                 nonce: nonce,
                 question: question,
@@ -41,10 +44,10 @@ jQuery(document).ready(function($){
                 keywords: JSON.stringify(tagsArray)
             },
             beforeSend: () => {
-                $(submitBtn).val(IQA_ADMIN_Ajax.SAVING_TEXT).attr('disabled',true);
+                $(submitBtn).val(IQA_ADMIN_Ajax.SAVING_TEXT).attr('disabled', true);
             },
-            success: (res ,xhr) => {
-                if (xhr == 'success' && res.success){
+            success: (res, xhr) => {
+                if (xhr == 'success' && res.success) {
                     alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
                     $(qaForm).trigger('reset');
                 } else {
@@ -55,9 +58,9 @@ jQuery(document).ready(function($){
                 alert(jqXHR.responseJSON.data);
             },
             complete: () => {
-                $(submitBtn).val(IQA_ADMIN_Ajax.SAVE_TEXT).attr('disabled',false);
+                $(submitBtn).val(IQA_ADMIN_Ajax.SAVE_TEXT).attr('disabled', false);
             },
-            timeout:IQA_ADMIN_Ajax.REQUEST_TIMEOUT
+            timeout: IQA_ADMIN_Ajax.REQUEST_TIMEOUT
         });
     });
 
@@ -72,7 +75,7 @@ jQuery(document).ready(function($){
         $(formArray).each((index, elm) => {
             formObj[elm.name] = elm.value;
         });
-        const {stopwords, nonce} = formObj;
+        const { stopwords, nonce } = formObj;
         const stopwordsArray = Object.values(JSON.parse(stopwords)).map(stopword => {
             return stopword.value
         });
@@ -81,15 +84,15 @@ jQuery(document).ready(function($){
             url: IQA_ADMIN_Ajax.ajaxurl,
             type: 'POST',
             data: {
-                security : IQA_ADMIN_Ajax.security,
+                security: IQA_ADMIN_Ajax.security,
                 action: 'addStopWord',
                 stopwords: JSON.stringify(stopwordsArray),
                 nonce: nonce
             },
             beforeSend: () => {
-                $(submitBtn).val(IQA_ADMIN_Ajax.UPDATING_TEXT).attr('disabled',true);
+                $(submitBtn).val(IQA_ADMIN_Ajax.UPDATING_TEXT).attr('disabled', true);
             },
-            success: (res ,xhr) => {
+            success: (res, xhr) => {
                 if (xhr == 'success' && res.success) alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
                 else alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
             },
@@ -97,9 +100,9 @@ jQuery(document).ready(function($){
                 alert(jqXHR.responseJSON.data);
             },
             complete: () => {
-                $(submitBtn).val(IQA_ADMIN_Ajax.UPDATE_TEXT).attr('disabled',false);
+                $(submitBtn).val(IQA_ADMIN_Ajax.UPDATE_TEXT).attr('disabled', false);
             },
-            timeout:IQA_ADMIN_Ajax.REQUEST_TIMEOUT
+            timeout: IQA_ADMIN_Ajax.REQUEST_TIMEOUT
         });
     })
 
@@ -114,21 +117,21 @@ jQuery(document).ready(function($){
         $(formArray).each((index, elm) => {
             formObj[elm.name] = elm.value;
         });
-        const {results_num, nonce} = formObj;
+        const { results_num, nonce } = formObj;
 
         $.ajax({
             url: IQA_ADMIN_Ajax.ajaxurl,
             type: 'POST',
             data: {
-                security : IQA_ADMIN_Ajax.security,
+                security: IQA_ADMIN_Ajax.security,
                 action: 'SetResultNum',
                 results_num: Number(results_num),
                 nonce: nonce
             },
             beforeSend: () => {
-                $(submitBtn).val(IQA_ADMIN_Ajax.SAVING_TEXT).attr('disabled',true);
+                $(submitBtn).val(IQA_ADMIN_Ajax.SAVING_TEXT).attr('disabled', true);
             },
-            success: (res ,xhr) => {
+            success: (res, xhr) => {
                 if (xhr == 'success' && res.success) alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
                 else alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
             },
@@ -136,10 +139,47 @@ jQuery(document).ready(function($){
                 alert(jqXHR.responseJSON.data);
             },
             complete: () => {
-                $(submitBtn).val(IQA_ADMIN_Ajax.SAVE_TEXT).attr('disabled',false);
+                $(submitBtn).val(IQA_ADMIN_Ajax.SAVE_TEXT).attr('disabled', false);
             },
-            timeout:IQA_ADMIN_Ajax.REQUEST_TIMEOUT
+            timeout: IQA_ADMIN_Ajax.REQUEST_TIMEOUT
         });
     })
 
 });
+
+
+function deleteQA(d) {
+    if (window.confirm(IQA_ADMIN_Ajax.CONFIRM_TEXT)) {
+        const qaID = d.getAttribute('data-id');
+        const nonce = d.getAttribute('data-nonce');
+
+        jq.ajax({
+            url: IQA_ADMIN_Ajax.ajaxurl,
+            type: 'POST',
+            data: {
+                security: IQA_ADMIN_Ajax.security,
+                action: 'DeleteQA',
+                qa_id: Number(qaID),
+                nonce: nonce
+            },
+            beforeSend: () => {
+                // $(submitBtn).val(IQA_ADMIN_Ajax.SAVING_TEXT).attr('disabled', true);
+            },
+            success: (res, xhr) => {
+                if (xhr == 'success' && res.success) {
+                    alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
+                    window.location.reload();
+                }
+                else alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                alert(jqXHR.responseJSON.data);
+            },
+            complete: () => {
+                // $(submitBtn).val(IQA_ADMIN_Ajax.SAVE_TEXT).attr('disabled', false);
+            },
+            timeout: IQA_ADMIN_Ajax.REQUEST_TIMEOUT
+        });
+    }
+
+}

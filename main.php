@@ -61,6 +61,7 @@ add_action('admin_enqueue_scripts', function () {
         'UPDATE_TEXT' => __('Update', 'intl_qa_lan'),
         'SAVING_TEXT' => __('Saving...', 'intl_qa_lan'),
         'UPDATING_TEXT' => __('Updating...', 'intl_qa_lan'),
+        'CONFIRM_TEXT' => __('Are you sure you want to delete this item?', 'intl_qa_lan'),
         'FORBIDDEN_TEXT' => __('Forbidden', 'intl_qa_lan'),
         'FAILURE_MESSAGE' => __('Error In Operation ', 'intl_qa_lan'),
         'SUCCESS_MESSAGE' => __('Successful Operation', 'intl_qa_lan'),
