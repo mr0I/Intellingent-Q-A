@@ -153,6 +153,56 @@ jQuery(document).ready(function ($) {
         });
     })
 
+    // Update Q/A form
+    let editQAForm = document.getElementsByName('edit_qa_frm');
+    $(editQAForm).on('submit', function (e) {
+        e.preventDefault();
+
+        const submitBtn = document.forms['edit_qa_frm']['submit'];
+        let formObj = {};
+        const formArray = $(this).serializeArray();
+        $(formArray).each((index, elm) => {
+            formObj[elm.name] = elm.value;
+        });
+        const { question, answer, nonce, tags, qa_id } = formObj;
+        const tagsArray = Object.values(JSON.parse(tags)).map(tag => {
+            return tag.value
+        });
+
+        $.ajax({
+            url: IQA_ADMIN_Ajax.ajaxurl,
+            type: 'POST',
+            data: {
+                security: IQA_ADMIN_Ajax.security,
+                action: 'editQa',
+                qa_id: qa_id,
+                nonce: nonce,
+                question: question,
+                answer: answer,
+                keywords: JSON.stringify(tagsArray)
+            },
+            beforeSend: () => {
+                $(submitBtn).val(IQA_ADMIN_Ajax.UPDATING_TEXT).attr('disabled', true);
+            },
+            success: (res, xhr) => {
+                if (xhr == 'success' && res.success) {
+                    alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
+                    $(editQAForm).trigger('reset');
+                    closeModal();
+                } else {
+                    alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+                }
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                alert(jqXHR.responseJSON.data);
+            },
+            complete: () => {
+                $(submitBtn).val(IQA_ADMIN_Ajax.UPDATE_TEXT).attr('disabled', false);
+            },
+            timeout: IQA_ADMIN_Ajax.REQUEST_TIMEOUT
+        });
+    });
+
 });
 
 
@@ -214,14 +264,16 @@ function editQA(d) {
             return;
         }
 
-        const qaTable = document.getElementById('edit_qa_tbl');
+        const editQAFrm = document.getElementById('edit_qa_frm');
         const tagsInput = document.getElementById('editQA_tags');
         const questionInput = document.getElementById('editQA_question');
         const answerIframe = document.getElementById('editqa_wpe_ifr');
+        const idInput = document.getElementById('qa_id');
 
-        jq(qaTable).delay(4000).fadeIn();
+        jq(editQAFrm).delay(200).fadeIn();
         tagsInput.value = res.qa_data[0].keywords;
         questionInput.value = res.qa_data[0].question;
+        idInput.value = qaID;
         await delay(500);
         answerIframe.contentWindow.document.open();
         answerIframe.contentWindow.document.write(res.qa_data[0].answer);

@@ -28,7 +28,7 @@ function addQa_callback()
         sendResponse(['success' => false]);
     }
 
-    sendResponse(['success' => true, 'ans' => $answer]);
+    sendResponse(['success' => true]);
 }
 add_action('wp_ajax_addQa', 'addQa_callback');
 add_action('wp_ajax_nopriv_addQa', 'addQa_callback');
@@ -254,3 +254,35 @@ function getQAData_callback()
 }
 add_action('wp_ajax_getQAData', 'getQAData_callback');
 add_action('wp_ajax_nopriv_getQAData', 'getQAData_callback');
+
+
+function editQa_callback()
+{
+    if (!wp_verify_nonce($_POST['nonce'], 'edit_qa') || !check_ajax_referer('OwpCojMcdGJ-k-o', 'security')) {
+        wp_send_json_error('Forbidden', 403);
+        exit();
+    }
+
+    global $wpdb;
+    $qa_id = sanitize_text_field($_POST['qa_id']);
+    $question = sanitize_text_field($_POST['question']);
+    $answer = stripslashes($_POST['answer']);
+    $keywords = sanitize_text_field(stripslashes($_POST['keywords']));
+
+    $update = $wpdb->update($wpdb->prefix . QA_TABLE, [
+        'question' => $question,
+        'answer' => $answer,
+        'keywords' => $keywords,
+        'updated_at' => current_time('mysql'),
+    ], [
+        'id' => $qa_id
+    ], ['%s', '%s', '%s', '%s'], '%d');
+
+    if (!$update) {
+        sendResponse(['success' => false]);
+    }
+
+    sendResponse(['success' => true]);
+}
+add_action('wp_ajax_editQa', 'editQa_callback');
+add_action('wp_ajax_nopriv_editQa', 'editQa_callback');
