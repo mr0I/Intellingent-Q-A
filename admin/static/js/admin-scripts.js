@@ -194,9 +194,44 @@ function deleteQA(d) {
 function editQA(d) {
     const qaID = d.getAttribute('data-id');
     modal.style.display = "block";
-    let elm = document.getElementById('textt');
-    elm.innerText = qaID;
+
+    fetch(IQA_ADMIN_Ajax.ajaxurl, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }),
+        body: new URLSearchParams({
+            security: IQA_ADMIN_Ajax.security,
+            action: 'getQAData',
+            qa_id: qaID
+        })
+    }).then(async (response) => {
+        const res = await response.json();
+
+        if (!res.success) {
+            alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+            return;
+        }
+
+        const qaTable = document.getElementById('edit_qa_tbl');
+        const tagsInput = document.getElementById('editQA_tags');
+        const questionInput = document.getElementById('editQA_question');
+        const answerIframe = document.getElementById('editqa_wpe_ifr');
+
+        jq(qaTable).delay(4000).fadeIn();
+        tagsInput.value = res.qa_data[0].keywords;
+        questionInput.value = res.qa_data[0].question;
+        await delay(500);
+        answerIframe.contentWindow.document.open();
+        answerIframe.contentWindow.document.write(res.qa_data[0].answer);
+        answerIframe.contentWindow.document.close();
+    })
 }
+
 const closeModal = () => {
     modal.style.display = "none";
 }
+const delay = (ms) => new Promise((resolve, reject) => {
+    setTimeout(resolve, ms);
+});

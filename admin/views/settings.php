@@ -36,7 +36,7 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                         </tr>
                         <tr>
                             <td>
-                                <?php wp_editor(__('Enter Your Answer...', 'intl_qa_lan'), 'id1', array(
+                                <?php wp_editor(__('Enter Your Answer...', 'intl_qa_lan'), 'addqa_wpe', array(
                                     'textarea_rows' => 2,
                                     'textarea_name' => 'answer'
                                 )) ?>
@@ -49,7 +49,6 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                     <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Save', 'intl_qa_lan') ?>">
                 </p>
             </form>
-
             <hr>
 
             <div class="panel-title"><?= __('Stopwords', 'intl_qa_lan') ?></div>
@@ -68,7 +67,6 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                     <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Update', 'intl_qa_lan') ?>">
                 </p>
             </form>
-
             <hr>
 
             <div class="panel-title"><?= __('Results Num', 'intl_qa_lan') ?></div>

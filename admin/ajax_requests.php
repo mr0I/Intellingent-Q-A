@@ -233,3 +233,24 @@ function DeleteQA_callback()
 }
 add_action('wp_ajax_DeleteQA', 'DeleteQA_callback');
 add_action('wp_ajax_nopriv_DeleteQA', 'DeleteQA_callback');
+
+
+function getQAData_callback()
+{
+    if (!check_ajax_referer('OwpCojMcdGJ-k-o', 'security')) {
+        wp_send_json_error('Forbidden', 403);
+        exit();
+    }
+
+    global $wpdb;
+    $qaID = absint($_POST['qa_id']);
+    $qaTable = $wpdb->prefix . QA_TABLE;
+    $res = $wpdb->get_results(
+        $wpdb->prepare("SELECT question, answer, keywords FROM ${qaTable} WHERE id=%d ", array($qaID))
+    );
+
+    if (!res) sendResponse(['success' => false]);
+    sendResponse(['success' => true, 'qa_data' => $res]);
+}
+add_action('wp_ajax_getQAData', 'getQAData_callback');
+add_action('wp_ajax_nopriv_getQAData', 'getQAData_callback');

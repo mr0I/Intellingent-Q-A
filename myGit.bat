@@ -28,16 +28,16 @@ exit
 
 
 :show_chnages
-set /p commitID = "Enter commit id:"
+set /p commitID="Enter commit id:"
 powershell -c git show --pretty="" --name-only "%commitID%"
 pause
 cls
 exit
 
 :set_proxy
-set /p proxyType = "Enter proxy type: "
-set /p proxyIP = "Enter proxy ip: "
-set /p proxyPort = "Enter proxy port: "
+set /p proxyType="Enter proxy type: "
+set /p proxyIP="Enter proxy ip: "
+set /p proxyPort="Enter proxy port: "
 powershell -c git config --global http.proxy "%proxyType%"://"%proxyIP%":"%proxyPort%"
 pause
 cls
