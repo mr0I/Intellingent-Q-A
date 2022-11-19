@@ -278,10 +278,7 @@ function editQa_callback()
         'id' => $qa_id
     ], ['%s', '%s', '%s', '%s'], '%d');
 
-    if (!$update) {
-        sendResponse(['success' => false]);
-    }
-
+    if (!$update) sendResponse(['success' => false]);
     sendResponse(['success' => true]);
 }
 add_action('wp_ajax_editQa', 'editQa_callback');

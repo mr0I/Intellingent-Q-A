@@ -75,11 +75,11 @@ add_action('admin_enqueue_scripts', function () {
 /*
  * init & includes
  */
-include(IQA_ROOT_DIR . 'base_functions.php');
+include(IQA_ROOT_DIR . 'base-functions.php');
 register_activation_hook(__FILE__, 'IQA_activate_function');
 register_deactivation_hook(__FILE__, 'IQA_deactivate_function');
 include(IQA_INC . 'shortcodes.php');
 if (is_admin()) {
-    include(IQA_ADMIN . 'admin_proccess.php');
-    include(IQA_ADMIN . 'ajax_requests.php');
+    include(IQA_ADMIN . 'admin-proccess.php');
+    include(IQA_ADMIN . 'ajax-requests.php');
 }

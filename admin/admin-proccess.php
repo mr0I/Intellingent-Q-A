@@ -22,7 +22,7 @@ add_action('admin_menu', function () {
         'administrator',
         'iqa_editQA',
         function () {
-            include(IQA_ADMIN_VIEW . 'update_qa.php');
+            include(IQA_ADMIN_VIEW . 'qa-update.php');
         }
     );
 });

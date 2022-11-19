@@ -1,22 +1,34 @@
 <?php defined('ABSPATH') or die('No script kiddies please!'); ?>
 
+<?php
+global $wpdb;
+$qaID = absint($_GET['id']);
+$qaTable = $wpdb->prefix . QA_TABLE;
+$res = $wpdb->get_results(
+    $wpdb->prepare("SELECT question, answer, keywords FROM ${qaTable} WHERE id=%d ", array($qaID))
+);
+
+// wp_die(json_encode($res, JSON_PRETTY_PRINT));
+// exit();
+
+?>
+
 
 <div class="container">
-    <span><?= $_GET['id'] ?></span>
     <form method="post" action="" name="edit_qa_frm" id="edit_qa_frm">
         <table class="form-table" role="presentation">
             <tbody>
                 <tr>
-                    <td><input type="text" name="tags" id="editQA_tags" placeholder="<?= __('Enter Keywords...', 'intl_qa_lan') ?>"></td>
+                    <td><input type="text" name="tags" id="editQA_tags" placeholder="<?= __('Enter Keywords...', 'intl_qa_lan') ?>" value="<?= $res[0]->keywords ?>"></td>
                 </tr>
                 <tr>
                     <td>
-                        <textarea class="left-align" name="question" id="editQA_question" placeholder="<?= __('Enter Your Question...', 'intl_qa_lan') ?>" rows="3"></textarea>
+                        <textarea class="left-align" name="question" id="editQA_question" placeholder="<?= __('Enter Your Question...', 'intl_qa_lan') ?>" rows="3"><?= $res[0]->question ?></textarea>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <?php wp_editor(__('Enter Your Answer...', 'intl_qa_lan'), 'editqa_wpe', array(
+                        <?php wp_editor($res[0]->answer, 'editqa_wpe', array(
                             'textarea_rows' => 2,
                             'textarea_name' => 'answer',
                             // 'quicktags' => false
