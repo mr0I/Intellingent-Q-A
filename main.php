@@ -24,6 +24,7 @@ define('IQA_ADMIN_VIEW', IQA_ROOT_DIR . 'admin/views/');
 define('IQA_ADMIN_CSS', plugin_dir_url(__FILE__) . 'admin/static/css/');
 define('IQA_ADMIN_JS', plugin_dir_url(__FILE__) . 'admin/static/js/');
 define('IQA_ADMIN_LIBS', plugin_dir_url(__FILE__) . 'admin/static/libs/');
+define('ADMIN_URL', get_admin_url());
 define('QA_TABLE', 'qa');
 define('REPORT_TABLE', 'report_sqs');
 

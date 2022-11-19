@@ -115,9 +115,12 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                                 <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="<?= $qa->id ?>" data-nonce="<?= $nonce ?>">
                                     Delete
                                 </button>
-                                <button type="button" class="button button-outline-primary" onclick="editQA(this)" data-id="<?= $qa->id ?>">
+                                <!-- <button type="button" class="button button-outline-primary" onclick="editQA(this)" data-id="">
                                     Edit
-                                </button>
+                                </button> -->
+                                <a href="<?= ADMIN_URL . 'admin.php?page=iqa_editQA&id=' . $qa->id ?>" class="button button-outline-primary" data-id="<?= $qa->id ?>">
+                                    Edit
+                                </a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
