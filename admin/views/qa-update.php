@@ -8,18 +8,25 @@ $res = $wpdb->get_results(
     $wpdb->prepare("SELECT question, answer, keywords FROM ${qaTable} WHERE id=%d ", array($qaID))
 );
 
-// wp_die(json_encode($res, JSON_PRETTY_PRINT));
+$keywordsArray = json_decode($res[0]->keywords);
+
+// wp_die(gettype($res[0]->keywords));
 // exit();
 
 ?>
 
 
 <div class="container">
+    <a href="javascript:history.back()">
+        <?= __('Back', 'intl_qa_lan') ?>
+        <i class="fa fa-back"></i>
+    </a>
+
     <form method="post" action="" name="edit_qa_frm" id="edit_qa_frm">
         <table class="form-table" role="presentation">
             <tbody>
                 <tr>
-                    <td><input type="text" name="tags" id="editQA_tags" placeholder="<?= __('Enter Keywords...', 'intl_qa_lan') ?>" value="<?= $res[0]->keywords ?>"></td>
+                    <td><input type="text" name="tags" id="editQA_tags" placeholder="<?= __('Enter Keywords...', 'intl_qa_lan') ?>" value="<?= implode(',', $keywordsArray) ?>"></td>
                 </tr>
                 <tr>
                     <td>
@@ -38,7 +45,7 @@ $res = $wpdb->get_results(
             </tbody>
         </table>
         <p class="submit">
-            <input type="hidden" name="qa_id" id="qa_id">
+            <input type="hidden" name="qa_id" value="<?= $qaID ?>">
             <input type="hidden" name="nonce" value="<?= wp_create_nonce('edit_qa') ?>">
             <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Edit', 'intl_qa_lan') ?>">
         </p>

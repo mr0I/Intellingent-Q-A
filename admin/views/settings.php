@@ -1,4 +1,7 @@
-<?php defined('ABSPATH') or die('No script kiddies please!'); ?>
+<?php defined('ABSPATH') or die('No script kiddies please!');
+require_once(IQA_ROOT_DIR . 'lib/jdatetime.class.php');
+$date = new jDateTime(true, true, 'Asia/Tehran');
+?>
 
 <?php
 global $wpdb;
@@ -27,9 +30,6 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                 <table class="form-table" id="top_menu_links_tbl" role="presentation">
                     <tbody>
                         <tr>
-                            <td><input type="text" name="tags" placeholder="sddad..."></td>
-                        </tr>
-                        <tr>
                             <td>
                                 <textarea class="left-align" name="question" placeholder="<?= __('Enter Your Question...', 'intl_qa_lan') ?>" rows="3"></textarea>
                             </td>
@@ -41,6 +41,9 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                                     'textarea_name' => 'answer'
                                 )) ?>
                             </td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="tags" placeholder="<?= __('Enter Keywords...', 'intl_qa_lan') ?>"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -93,7 +96,6 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col"><?= __('Question', 'intl_qa_lan') ?></th>
-                        <th scope="col"><?= __('Keywords', 'intl_qa_lan') ?></th>
                         <th scope="col"><?= __('Views', 'intl_qa_lan') ?></th>
                         <th scope="col"><?= __('Enabled', 'intl_qa_lan') ?></th>
                         <th scope="col"><?= __('Date', 'intl_qa_lan') ?></th>
@@ -107,19 +109,18 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                         <tr>
                             <th scope="row"><?= $counter++; ?></th>
                             <td><?= $qa->question ?></td>
-                            <td><?= $qa->keywords ?></td>
                             <td><?= $qa->views ?></td>
                             <td><?= $qa->enabled ?></td>
-                            <td><?= $qa->updated_at ?></td>
+                            <td><?= $date->date("l - j/F/Y", strtotime($qa->updated_at)) ?></td>
                             <td>
-                                <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="<?= $qa->id ?>" data-nonce="<?= $nonce ?>">
-                                    Delete
+                                <button type="button" class="button button-outline-primary" onclick="QaInfo(this)" data-id="<?= $qa->id ?>">
+                                    <?= __('Info', 'intl_qa_lan') ?>
                                 </button>
-                                <!-- <button type="button" class="button button-outline-primary" onclick="editQA(this)" data-id="">
-                                    Edit
-                                </button> -->
+                                <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="<?= $qa->id ?>" data-nonce="<?= $nonce ?>">
+                                    <?= __('Delete', 'intl_qa_lan') ?>
+                                </button>
                                 <a href="<?= ADMIN_URL . 'admin.php?page=iqa_editQA&id=' . $qa->id ?>" class="button button-outline-primary" data-id="<?= $qa->id ?>">
-                                    Edit
+                                    <?= __('Edit', 'intl_qa_lan') ?>
                                 </a>
                             </td>
                         </tr>
@@ -145,7 +146,7 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                             <th scope="row"><?= $counter++; ?></th>
                             <td><?= $report->input ?></td>
                             <td><?= $report->count ?></td>
-                            <td><?= $report->updated_at ?></td>
+                            <td><?= $date->date("l - j/F/Y - H:i", strtotime($report->updated_at)) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -153,7 +154,7 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
         </div>
 
         <!-- Modal -->
-        <?php require_once(IQA_ADMIN . 'components/edit-qa-modal.php'); ?>
+        <?php require_once(IQA_ADMIN . 'components/qa-info-modal.php'); ?>
 
     </div>
 </div>

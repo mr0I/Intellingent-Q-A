@@ -24,7 +24,7 @@ jQuery(document).ready(function ($) {
     // constants
     window.jq = $;
 
-    // Add Q/A form
+    // add Q/A form
     let qaForm = document.getElementsByName('add_qa_frm');
     $(qaForm).on('submit', function (e) {
         e.preventDefault();
@@ -72,7 +72,7 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    // Add stop-words form
+    // add stop-words form
     let stopwordsForm = document.getElementsByName('stopwords_frm');
     $(stopwordsForm).on('submit', function (e) {
         e.preventDefault();
@@ -114,7 +114,7 @@ jQuery(document).ready(function ($) {
         });
     })
 
-    // Set results number form
+    // set results number form
     let resultsNumForm = document.getElementsByName('results_num_frm');
     $(resultsNumForm).on('submit', function (e) {
         e.preventDefault();
@@ -153,7 +153,7 @@ jQuery(document).ready(function ($) {
         });
     })
 
-    // Update Q/A form
+    // edit Q/A form
     let editQAForm = document.getElementsByName('edit_qa_frm');
     $(editQAForm).on('submit', function (e) {
         e.preventDefault();
@@ -175,8 +175,8 @@ jQuery(document).ready(function ($) {
             data: {
                 security: IQA_ADMIN_Ajax.security,
                 action: 'editQa',
-                qa_id: qa_id,
                 nonce: nonce,
+                qa_id: qa_id,
                 question: question,
                 answer: answer,
                 keywords: JSON.stringify(tagsArray)
@@ -187,8 +187,8 @@ jQuery(document).ready(function ($) {
             success: (res, xhr) => {
                 if (xhr == 'success' && res.success) {
                     alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
-                    $(editQAForm).trigger('reset');
-                    closeModal();
+                    if ('referrer' in document) window.location = document.referrer;
+                    else window.history.back();
                 } else {
                     alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
                 }
@@ -241,8 +241,13 @@ function deleteQA(d) {
     }
 
 }
-function editQA(d) {
+
+function QaInfo(d) {
     const qaID = d.getAttribute('data-id');
+    if (qaID === '') {
+        alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+        return;
+    }
     modal.style.display = "block";
 
     fetch(IQA_ADMIN_Ajax.ajaxurl, {
@@ -258,32 +263,25 @@ function editQA(d) {
         })
     }).then(async (response) => {
         const res = await response.json();
-
         if (!res.success) {
             alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
             return;
         }
 
-        const editQAFrm = document.getElementById('edit_qa_frm');
-        const tagsInput = document.getElementById('editQA_tags');
-        const questionInput = document.getElementById('editQA_question');
-        const answerIframe = document.getElementById('editqa_wpe_ifr');
-        const idInput = document.getElementById('qa_id');
-
-        jq(editQAFrm).delay(200).fadeIn();
-        tagsInput.value = res.qa_data[0].keywords;
-        questionInput.value = res.qa_data[0].question;
-        idInput.value = qaID;
         await delay(500);
-        answerIframe.contentWindow.document.open();
-        answerIframe.contentWindow.document.write(res.qa_data[0].answer);
-        answerIframe.contentWindow.document.close();
+        const questionCol = document.getElementById('qa_info_tbl_question');
+        const keywordsCol = document.getElementById('qa_info_tbl_keywords');
+        const answerCol = document.getElementById('qa_info_tbl_answer');
+        keywordsCol.innerHTML = res.qa_data[0].keywords;
+        questionCol.innerHTML = res.qa_data[0].question;
+        answerCol.innerHTML = res.qa_data[0].answer;
     })
 }
 
 const closeModal = () => {
     modal.style.display = "none";
 }
+
 const delay = (ms) => new Promise((resolve, reject) => {
     setTimeout(resolve, ms);
 });
