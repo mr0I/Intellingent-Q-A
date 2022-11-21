@@ -5,7 +5,6 @@ require_once IQA_INC . 'helpers.php';
 
 function addQa_callback()
 {
-
     if (!wp_verify_nonce($_POST['nonce'], 'add_qa') || !check_ajax_referer('OwpCojMcdGJ-k-o', 'security')) {
         wp_send_json_error('Forbidden', 403);
         exit();

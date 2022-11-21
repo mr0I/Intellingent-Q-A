@@ -9,10 +9,6 @@ $res = $wpdb->get_results(
 );
 
 $keywordsArray = json_decode($res[0]->keywords);
-
-// wp_die(gettype($res[0]->keywords));
-// exit();
-
 ?>
 
 
@@ -23,11 +19,9 @@ $keywordsArray = json_decode($res[0]->keywords);
     </a>
 
     <form method="post" action="" name="edit_qa_frm" id="edit_qa_frm">
+        <?php wp_nonce_field('edit_qa', 'nonce'); ?>
         <table class="form-table" role="presentation">
             <tbody>
-                <tr>
-                    <td><input type="text" name="tags" id="editQA_tags" placeholder="<?= __('Enter Keywords...', 'intl_qa_lan') ?>" value="<?= implode(',', $keywordsArray) ?>"></td>
-                </tr>
                 <tr>
                     <td>
                         <textarea class="left-align" name="question" id="editQA_question" placeholder="<?= __('Enter Your Question...', 'intl_qa_lan') ?>" rows="3"><?= $res[0]->question ?></textarea>
@@ -42,11 +36,14 @@ $keywordsArray = json_decode($res[0]->keywords);
                         )) ?>
                     </td>
                 </tr>
+                <tr>
+                    <td><input type="text" name="tags" id="editQA_tags" placeholder="<?= __('Enter Keywords...', 'intl_qa_lan') ?>" value="<?= implode(',', $keywordsArray) ?>"></td>
+                </tr>
             </tbody>
         </table>
         <p class="submit">
             <input type="hidden" name="qa_id" value="<?= $qaID ?>">
-            <input type="hidden" name="nonce" value="<?= wp_create_nonce('edit_qa') ?>">
+            <!-- <input type="hidden" name="nonce" value="<?= sanitize_text_field($_GET['_wpnonce']) ?>"> -->
             <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Edit', 'intl_qa_lan') ?>">
         </p>
     </form>

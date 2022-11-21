@@ -27,6 +27,7 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
         <div class="panel" id="panel_one">
             <div class="panel-title"><?= __('Add Question and Answer', 'intl_qa_lan') ?></div>
             <form method="post" action="" name="add_qa_frm" id="add_qa_frm">
+                <?php wp_nonce_field('add_qa', 'nonce') ?>
                 <table class="form-table" id="top_menu_links_tbl" role="presentation">
                     <tbody>
                         <tr>
@@ -48,7 +49,6 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                     </tbody>
                 </table>
                 <p class="submit">
-                    <input type="hidden" name="nonce" value="<?= wp_create_nonce('add_qa') ?>">
                     <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Save', 'intl_qa_lan') ?>">
                 </p>
             </form>
@@ -56,6 +56,7 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
 
             <div class="panel-title"><?= __('Stopwords', 'intl_qa_lan') ?></div>
             <form method="post" action="" name="stopwords_frm" id="stopwords_frm">
+                <?php wp_nonce_field('stopwords', 'nonce') ?>
                 <table class="form-table" id="" role="presentation">
                     <tbody>
                         <tr>
@@ -66,7 +67,6 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                     </tbody>
                 </table>
                 <p class="submit">
-                    <input type="hidden" name="nonce" value="<?= wp_create_nonce('stopwords') ?>">
                     <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Update', 'intl_qa_lan') ?>">
                 </p>
             </form>
@@ -74,6 +74,7 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
 
             <div class="panel-title"><?= __('Results Num', 'intl_qa_lan') ?></div>
             <form method="post" action="" name="results_num_frm" id="results_num_frm">
+                <?php wp_nonce_field('results_num', 'nonce') ?>
                 <table class="form-table" id="" role="presentation">
                     <tbody>
                         <tr>
@@ -84,7 +85,6 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                     </tbody>
                 </table>
                 <p class="submit">
-                    <input type="hidden" name="nonce" value="<?= wp_create_nonce('results_num') ?>">
                     <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Save', 'intl_qa_lan') ?>">
                 </p>
             </form>
