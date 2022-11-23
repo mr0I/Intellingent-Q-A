@@ -1,12 +1,12 @@
-(function($) {
-    $(window).on("load", function() {
+(function ($) {
+    $(window).on("load", function () {
         "use strict";
     });
 })(jQuery);
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
     window.jq = $;
     window.jsonData = JSON.parse(document.getElementById("stop_words_array")
-        .innerHTML,false);
+        .innerHTML, false);
 });
 
 
@@ -16,9 +16,9 @@ const searchQA = async (e) => {
     const formData = new FormData(e.target);
     const input = normalizeText(formData.get('search'));
     const nonce = formData.get('nonce');
-    showHideResults(answersList,'hide','fast');
+    showHideResults(answersList, 'hide', 'fast');
 
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         // $(submitBtn).val(IQA_Ajax.saving_text).attr('disabled',true);
 
         fetch(IQA_Ajax.ajaxurl, {
@@ -29,34 +29,34 @@ const searchQA = async (e) => {
                 //'Cache-Control': 'no-cache'
             }),
             body: new URLSearchParams({
-                security : IQA_Ajax.security,
+                security: IQA_Ajax.security,
                 action: 'searchQa',
                 nonce: nonce,
                 input: input
             })
         }).then(async (response) => {
             const res = await response.json();
-            if (!res.success){
+            if (!res.success) {
                 reject(IQA_Ajax.NO_RESULT);
             }
             // show processing loader
             showHideProccessingLoader('.alert', 'flex');
 
             const eligibleRows = res.result;
-            const sortedRows = eligibleRows.sort((r1,r2) => {
-                return (r1.primary_score < r2.primary_score) ? 1 :  (r1.primary_score > r2.primary_score) ? -1 : 0;
+            const sortedRows = eligibleRows.sort((r1, r2) => {
+                return (r1.primary_score < r2.primary_score) ? 1 : (r1.primary_score > r2.primary_score) ? -1 : 0;
             });
             const tokenizeInput = input.split(' ');
 
             let i = 0, secondaryScore = 0, finalRows = [];
             const resultsNum = jsonData.results_num;
-            while ( (sortedRows.length > (resultsNum*2) ) ? i <= (resultsNum*2) : i < sortedRows.length ){
+            while ((sortedRows.length > (resultsNum * 2)) ? i <= (resultsNum * 2) : i < sortedRows.length) {
                 const currentAnswer = normalizeText(sortedRows[i].answer);
                 const tokenizeAnswer = currentAnswer.split(' ');
                 const answersArray = removeStopWords(tokenizeAnswer);
 
-                for (let item of tokenizeInput){
-                    for (let answer of answersArray){
+                for (let item of tokenizeInput) {
+                    for (let answer of answersArray) {
                         const strippedAnswer = await stripHtmlTags(answer);
                         const pattern = new RegExp(strippedAnswer, 'i');
                         if (item.match(pattern) && pattern.source !== '(?:)') {
@@ -65,7 +65,7 @@ const searchQA = async (e) => {
                         }
                     }
                 }
-                if (secondaryScore > 0){
+                if (secondaryScore > 0) {
                     finalRows.push({
                         'id': sortedRows[i].id,
                         'overall_score': Math.ceil((Number(sortedRows[i].primary_score) * 3)
@@ -78,9 +78,9 @@ const searchQA = async (e) => {
                 secondaryScore = 0;
             }
 
-            if (finalRows.length === 0){
+            if (finalRows.length === 0) {
                 showHideProccessingLoader('.alert', 'none');
-                showHideResults(answersList,'show');
+                showHideResults(answersList, 'show');
                 jq(answersList).append(` 
                     <li><span>${IQA_Ajax.NO_RESULT}</span></li>
                     <button data-sq="${input}" onclick="reportNonExistence(event)">Report</button>
@@ -89,7 +89,7 @@ const searchQA = async (e) => {
             }
 
             const sortedFinalRows = finalRows.sort((r1, r2) => {
-                return (r1.overall_score < r2.overall_score) ? 1 :  (r1.overall_score > r2.overall_score) ? -1 : 0;
+                return (r1.overall_score < r2.overall_score) ? 1 : (r1.overall_score > r2.overall_score) ? -1 : 0;
             });
             resolve({
                 'final_rows': sortedFinalRows,
@@ -119,11 +119,11 @@ const searchQA = async (e) => {
                 return false;
             }
 
-            showHideResults(answersList,'show');
+            showHideResults(answersList, 'show');
             showHideProccessingLoader('.alert', 'none');
             sortedFinalRows.forEach((row, index) => {
                 // console.log('sorted', index + '---' + row);
-                if (index < (resolve_data.results_num)){
+                if (index < (resolve_data.results_num)) {
                     jq(answersList).append(`
                           <li>
                             <span>${++index}</span>
@@ -166,7 +166,7 @@ const removeStopWords = (array) => {
     return array;
 };
 
-const showHideResults = (elm, type, speed='slow') => {
+const showHideResults = (elm, type, speed = 'slow') => {
     switch (type) {
         case 'show':
             jq(elm).html('').slideDown(speed);
@@ -184,7 +184,7 @@ const showHideProccessingLoader = (elm, type) => {
 };
 
 const stripHtmlTags = async str => {
-  return str.replace(/<\/?[^>]+(>|$)/g, '');
+    return str.replace(/<\/?[^>]+(>|$)/g, '');
 };
 
 const reportNonExistence = (e) => {
@@ -192,7 +192,7 @@ const reportNonExistence = (e) => {
     thisElm.innerHTML = 'Sending...';
     thisElm.disabled = true;
 
-     fetch(IQA_Ajax.ajaxurl, {
+    fetch(IQA_Ajax.ajaxurl, {
         method: 'POST',
         credentials: 'same-origin',
         headers: new Headers({
@@ -203,16 +203,16 @@ const reportNonExistence = (e) => {
             action: 'reportNonExistence',
             input: e.target.getAttribute('data-sq')
         })
-    }).then(async (response) =>{
+    }).then(async (response) => {
         const res = await response.json();
 
-         if (!res.success) {
-             alert(IQA_Ajax.FAILURE_MESSAGE);
-             return;
-         }
+        if (!res.success) {
+            alert(IQA_Ajax.FAILURE_MESSAGE);
+            return;
+        }
 
-         thisElm.hidden = true;
-         alert(IQA_Ajax.SUCCESS_MESSAGE);
-     });
+        thisElm.hidden = true;
+        alert(IQA_Ajax.SUCCESS_MESSAGE);
+    });
 
 };

@@ -278,6 +278,37 @@ function QaInfo(d) {
     })
 }
 
+function goToNextPrevPage(type, np, d) {
+    const currentPage = d.getAttribute('data-cp');
+    const offset = d.getAttribute('data-offset');
+    const limit = d.getAttribute('data-limit');
+    console.log(currentPage, 'type', type);
+
+    switch (type) {
+        case 'qanswers':
+            fetch(IQA_ADMIN_Ajax.ajaxurl, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: new Headers({
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }),
+                body: new URLSearchParams({
+                    security: IQA_ADMIN_Ajax.security,
+                    action: 'goToNextPrevPage',
+                    type: type,
+                    offset: offset,
+                    limit: limit
+                })
+            }).then(async (response) => {
+                const res = await response.json();
+                console.log(res);
+
+            })
+
+    }
+}
+
+
 const closeModal = () => {
     modal.style.display = "none";
 }

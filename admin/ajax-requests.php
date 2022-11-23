@@ -282,3 +282,25 @@ function editQa_callback()
 }
 add_action('wp_ajax_editQa', 'editQa_callback');
 add_action('wp_ajax_nopriv_editQa', 'editQa_callback');
+
+function goToNextPrevPage_callback()
+{
+    if (!check_ajax_referer('OwpCojMcdGJ-k-o', 'security')) {
+        wp_send_json_error('Forbidden', 403);
+        exit();
+    }
+
+    $type = $_POST['type'];
+    $offset = absint($_POST['offset']) + absint($_POST['limit']);
+    $limit = absint($_POST['limit']);
+
+    switch ($type) {
+        case 'qanswers':
+            $res = getPaginatedQAnswers($offset, $limit);
+            break;
+    }
+
+    sendResponse(['success' => $res]);
+}
+add_action('wp_ajax_goToNextPrevPage', 'goToNextPrevPage_callback');
+add_action('wp_ajax_nopriv_goToNextPrevPage', 'goToNextPrevPage_callback');

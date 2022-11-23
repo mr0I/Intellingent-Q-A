@@ -1,4 +1,5 @@
 <?php defined('ABSPATH') or die('No script kiddies please!');
+require_once(IQA_INC . 'helpers.php');
 require_once(IQA_ROOT_DIR . 'lib/jdatetime.class.php');
 $date = new jDateTime(true, true, 'Asia/Tehran');
 ?>
@@ -6,9 +7,24 @@ $date = new jDateTime(true, true, 'Asia/Tehran');
 <?php
 global $wpdb;
 $reportsTable = $wpdb->prefix . REPORT_TABLE;
-$qaTable = $wpdb->prefix . QA_TABLE;
-$reports = $wpdb->get_results("SELECT * FROM ${reportsTable} ORDER BY updated_at DESC ");
-$qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC ");
+// $qaTable = $wpdb->prefix . QA_TABLE;
+$offset = 0;
+$limit = 5;
+// $qanswes = $wpdb->get_results(" SELECT * FROM ${qaTable} ORDER BY updated_at DESC  LIMIT ${offset},${limit} ");
+// $qanswesCount = $wpdb->get_var(" SELECT COUNT(id) FROM ${qaTable} ");
+// $reports = $wpdb->get_results(" SELECT * FROM ${reportsTable} ORDER BY updated_at DESC ");
+
+// $paginatedQAnswers = new stdClass();
+// $paginatedQAnswers->results = $qanswes;
+// $paginatedQAnswers->paginate = [
+//     'current_page' => ($offset / $limit) + 1,
+//     'last_page' => ceil(intval($qanswesCount) / $limit)
+// ];
+
+$paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
+
+// wp_die(json_encode($paginatedQAnswers->paginate['last_page'], JSON_PRETTY_PRINT));
+// exit();
 ?>
 
 <div class="menu-wrapper">
@@ -105,7 +121,7 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                 <tbody>
                     <?php $counter = 1;
                     $nonce = wp_create_nonce('delete_qa');
-                    foreach ($qanswes as $qa) : ?>
+                    foreach ($paginatedQAnswers->results as $qa) : ?>
                         <tr>
                             <th scope="row"><?= $counter++; ?></th>
                             <td><?= $qa->question ?></td>
@@ -127,6 +143,21 @@ $qanswes = $wpdb->get_results("SELECT * FROM ${qaTable} ORDER BY updated_at DESC
                     <?php endforeach; ?>
                 </tbody>
             </table>
+
+            <div class="pagination">
+                <ul>
+                    <li>
+                        <a href="javascript:void(0)" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'prev', this)"><i class="fa fa-arrow-right"></i></a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'next', this)">
+                            <i class="fa fa-arrow-left"></i>
+                        </a>
+                    </li>
+                    <li>1-20 from 300</li>
+                </ul>
+            </div>
+
         </div>
 
         <div class="panel" id="panel_three">
