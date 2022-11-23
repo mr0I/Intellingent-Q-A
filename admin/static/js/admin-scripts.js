@@ -282,7 +282,6 @@ function goToNextPrevPage(type, np, d) {
     const currentPage = d.getAttribute('data-cp');
     const offset = d.getAttribute('data-offset');
     const limit = d.getAttribute('data-limit');
-    console.log(currentPage, 'type', type);
 
     switch (type) {
         case 'qanswers':
@@ -296,13 +295,39 @@ function goToNextPrevPage(type, np, d) {
                     security: IQA_ADMIN_Ajax.security,
                     action: 'goToNextPrevPage',
                     type: type,
+                    np: np,
                     offset: offset,
                     limit: limit
                 })
             }).then(async (response) => {
                 const res = await response.json();
-                console.log(res);
+                const tableData = res.res.results;
+                const newOffset = res.res.paginate.new_offset;
+                const table = document.getElementById('qanswers_tbl');
 
+                // d.setAttribute('data-offset', newOffset);
+                jq('.qanswers-np-btn').attr('data-offset', newOffset);
+                table.innerHTML = '';
+
+                tableData.forEach((qa, index) => {
+                    jq(table).append(`
+                        <tr>
+                            <th scope="row">${++index}</th>
+                            <td>${qa.question}</td>
+                            <td>${qa.views}</td>
+                            <td>${qa.enabled}</td>
+                            <td>${qa.updated_at}</td>
+                            <td>
+                                <button type="button" class="button button-outline-primary" onclick="QaInfo(this)" data-id="25">
+                                    Info                                </button>
+                                <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="25" data-nonce="70983d146a">
+                                    Delete                                </button>
+                                <a href="http://localhost/foton-wp/wp-admin/admin.php?page=iqa_editQA&amp;id=25" class="button button-outline-primary" data-id="25">
+                                    Edit                                </a>
+                            </td>
+                        </tr>
+                `);
+                });
             })
 
     }

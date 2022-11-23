@@ -291,8 +291,11 @@ function goToNextPrevPage_callback()
     }
 
     $type = $_POST['type'];
-    $offset = absint($_POST['offset']) + absint($_POST['limit']);
+    $np = $_POST['np'];
     $limit = absint($_POST['limit']);
+    $offset = $np === 'next'
+        ? absint($_POST['offset']) + $limit
+        : absint($_POST['offset']) - $limit;
 
     switch ($type) {
         case 'qanswers':
@@ -300,7 +303,7 @@ function goToNextPrevPage_callback()
             break;
     }
 
-    sendResponse(['success' => $res]);
+    sendResponse(['success' => true, 'res' => $res]);
 }
 add_action('wp_ajax_goToNextPrevPage', 'goToNextPrevPage_callback');
 add_action('wp_ajax_nopriv_goToNextPrevPage', 'goToNextPrevPage_callback');

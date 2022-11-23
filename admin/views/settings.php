@@ -7,12 +7,12 @@ $date = new jDateTime(true, true, 'Asia/Tehran');
 <?php
 global $wpdb;
 $reportsTable = $wpdb->prefix . REPORT_TABLE;
+$reports = $wpdb->get_results(" SELECT * FROM ${reportsTable} ORDER BY updated_at DESC ");
 // $qaTable = $wpdb->prefix . QA_TABLE;
 $offset = 0;
 $limit = 5;
 // $qanswes = $wpdb->get_results(" SELECT * FROM ${qaTable} ORDER BY updated_at DESC  LIMIT ${offset},${limit} ");
 // $qanswesCount = $wpdb->get_var(" SELECT COUNT(id) FROM ${qaTable} ");
-// $reports = $wpdb->get_results(" SELECT * FROM ${reportsTable} ORDER BY updated_at DESC ");
 
 // $paginatedQAnswers = new stdClass();
 // $paginatedQAnswers->results = $qanswes;
@@ -107,7 +107,7 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
         </div>
 
         <div class="panel" id="panel_two">
-            <table class="table">
+            <table class="table" id="qanswers_tbl">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -147,10 +147,10 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
             <div class="pagination">
                 <ul>
                     <li>
-                        <a href="javascript:void(0)" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'prev', this)"><i class="fa fa-arrow-right"></i></a>
+                        <a href="javascript:void(0)" class="qanswers-np-btn" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'prev', this)"><i class="fa fa-arrow-right"></i></a>
                     </li>
                     <li>
-                        <a href="javascript:void(0)" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'next', this)">
+                        <a href="javascript:void(0)" class="qanswers-np-btn" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'next', this)">
                             <i class="fa fa-arrow-left"></i>
                         </a>
                     </li>

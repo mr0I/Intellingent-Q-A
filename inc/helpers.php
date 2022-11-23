@@ -59,8 +59,6 @@ function getPaginatedQAnswers($offset, $limit)
 {
     global $wpdb;
     $qaTable = $wpdb->prefix . QA_TABLE;
-    // $offset = 0;
-    // $limit = 5;
     $qanswes = $wpdb->get_results(" SELECT * FROM ${qaTable} ORDER BY updated_at DESC  LIMIT ${offset},${limit} ");
     $qanswesCount = $wpdb->get_var(" SELECT COUNT(id) FROM ${qaTable} ");
     $reports = $wpdb->get_results(" SELECT * FROM ${reportsTable} ORDER BY updated_at DESC ");
@@ -68,7 +66,10 @@ function getPaginatedQAnswers($offset, $limit)
     $paginatedQAnswers = new stdClass();
     $paginatedQAnswers->results = $qanswes;
     $paginatedQAnswers->paginate = [
+        'new_offset' => $offset,
         'current_page' => ($offset / $limit) + 1,
         'last_page' => ceil(intval($qanswesCount) / $limit)
     ];
+
+    return $paginatedQAnswers;
 }
