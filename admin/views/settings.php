@@ -121,7 +121,7 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
                 <tbody>
                     <?php $counter = 1;
                     $nonce = wp_create_nonce('delete_qa');
-                    foreach ($paginatedQAnswers->results as $qa) : ?>
+                    foreach ($paginatedQAnswers->data as $qa) : ?>
                         <tr>
                             <th scope="row"><?= $counter++; ?></th>
                             <td><?= $qa->question ?></td>
@@ -145,6 +145,11 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
             </table>
 
             <div class="pagination">
+                <?php
+                //wp_die(json_encode($paginatedQAnswers, JSON_PRETTY_PRINT));
+                $currentPage = $paginatedQAnswers->paginate['current_page'];
+                $lastPage = $paginatedQAnswers->paginate['last_page'];
+                ?>
                 <ul>
                     <li>
                         <a href="javascript:void(0)" class="qanswers-np-btn" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'prev', this)"><i class="fa fa-arrow-right"></i></a>
@@ -154,7 +159,12 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
                             <i class="fa fa-arrow-left"></i>
                         </a>
                     </li>
-                    <li>1-20 from 300</li>
+                    <li>
+                        <span><?= __('Page', 'intl_qa_lan') ?></span>
+                        <span>&nbsp;<?= $currentPage ?></span>
+                        <span><?= __('From', 'intl_qa_lan') ?></span>
+                        <span>&nbsp;<?= $lastPage ?></span>
+                    </li>
                 </ul>
             </div>
 

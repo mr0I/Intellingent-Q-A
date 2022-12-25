@@ -318,12 +318,12 @@ function goToNextPrevPage(type, np, d) {
                             <td>${qa.enabled}</td>
                             <td>${qa.updated_at}</td>
                             <td>
-                                <button type="button" class="button button-outline-primary" onclick="QaInfo(this)" data-id="25">
-                                    Info                                </button>
-                                <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="25" data-nonce="70983d146a">
-                                    Delete                                </button>
-                                <a href="http://localhost/foton-wp/wp-admin/admin.php?page=iqa_editQA&amp;id=25" class="button button-outline-primary" data-id="25">
-                                    Edit                                </a>
+                                <button type="button" class="button button-outline-primary" onclick="QaInfo(this)" data-id="25">Info
+                                </button>
+                                <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="25" data-nonce="70983d146a">Delete 
+                                </button>
+                                <a href="http://localhost/foton-wp/wp-admin/admin.php?page=iqa_editQA&amp;id=25" class="button button-outline-primary" data-id="25">Edit
+                                </a>
                             </td>
                         </tr>
                 `);

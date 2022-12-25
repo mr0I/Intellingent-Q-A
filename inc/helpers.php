@@ -64,7 +64,7 @@ function getPaginatedQAnswers($offset, $limit)
     $reports = $wpdb->get_results(" SELECT * FROM ${reportsTable} ORDER BY updated_at DESC ");
 
     $paginatedQAnswers = new stdClass();
-    $paginatedQAnswers->results = $qanswes;
+    $paginatedQAnswers->data = $qanswes;
     $paginatedQAnswers->paginate = [
         'new_offset' => $offset,
         'current_page' => ($offset / $limit) + 1,
