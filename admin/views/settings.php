@@ -101,73 +101,86 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
                     </tbody>
                 </table>
                 <p class="submit">
-                    <input type="submit" class="button button-primary pull-left" name="submit" value="<?= __('Save', 'intl_qa_lan') ?>">
+                    <input type="submit" class="btn btn-primary pull-left" name="submit" value="<?= __('Save', 'intl_qa_lan') ?>">
                 </p>
             </form>
         </div>
 
+
         <div class="panel" id="panel_two">
-            <table class="table" id="qanswers_tbl">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col"><?= __('Question', 'intl_qa_lan') ?></th>
-                        <th scope="col"><?= __('Views', 'intl_qa_lan') ?></th>
-                        <th scope="col"><?= __('Enabled', 'intl_qa_lan') ?></th>
-                        <th scope="col"><?= __('Date', 'intl_qa_lan') ?></th>
-                        <th scope="col"><?= __('Operation', 'intl_qa_lan') ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $counter = 1;
-                    $nonce = wp_create_nonce('delete_qa');
-                    foreach ($paginatedQAnswers->data as $qa) : ?>
-                        <tr>
-                            <th scope="row"><?= $counter++; ?></th>
-                            <td><?= $qa->question ?></td>
-                            <td><?= $qa->views ?></td>
-                            <td><?= $qa->enabled ?></td>
-                            <td><?= $date->date("l - j/F/Y", strtotime($qa->updated_at)) ?></td>
-                            <td>
-                                <button type="button" class="button button-outline-primary" onclick="QaInfo(this)" data-id="<?= $qa->id ?>">
-                                    <?= __('Info', 'intl_qa_lan') ?>
-                                </button>
-                                <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="<?= $qa->id ?>" data-nonce="<?= $nonce ?>">
-                                    <?= __('Delete', 'intl_qa_lan') ?>
-                                </button>
-                                <a href="<?= ADMIN_URL . 'admin.php?page=iqa_editQA&id=' . $qa->id ?>" class="button button-outline-primary" data-id="<?= $qa->id ?>">
-                                    <?= __('Edit', 'intl_qa_lan') ?>
-                                </a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+            <?php if (sizeof($paginatedQAnswers->data) === 0) : ?>
+                <div class="toast">
+                    <span class="icon-bell"></span>
+                    <?= __('There is no item to show!', 'intl_qa_lan') ?>
+                </div>
+            <?php else : ?>
+                <div class="container">
+                    <div class="columns">
+                        <div class="column col-12">
+                            <table class="table table-striped table-hover" id="qanswers_tbl">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col"><?= __('Question', 'intl_qa_lan') ?></th>
+                                        <th scope="col"><?= __('Views', 'intl_qa_lan') ?></th>
+                                        <th scope="col"><?= __('Enabled', 'intl_qa_lan') ?></th>
+                                        <th scope="col"><?= __('Date', 'intl_qa_lan') ?></th>
+                                        <th scope="col"><?= __('Operation', 'intl_qa_lan') ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $counter = 1;
+                                    $nonce = wp_create_nonce('delete_qa');
+                                    foreach ($paginatedQAnswers->data as $qa) : ?>
+                                        <tr>
+                                            <th scope="row"><?= $counter++; ?></th>
+                                            <td><?= $qa->question ?></td>
+                                            <td><?= $qa->views ?></td>
+                                            <td><?= $qa->enabled ?></td>
+                                            <td><?= $date->date("l - j/F/Y", strtotime($qa->updated_at)) ?></td>
+                                            <td>
+                                                <button type="button" class="button button-outline-primary" onclick="QaInfo(this)" data-id="<?= $qa->id ?>">
+                                                    <?= __('Info', 'intl_qa_lan') ?>
+                                                </button>
+                                                <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="<?= $qa->id ?>" data-nonce="<?= $nonce ?>">
+                                                    <?= __('Delete', 'intl_qa_lan') ?>
+                                                </button>
+                                                <a href="<?= ADMIN_URL . 'admin.php?page=iqa_editQA&id=' . $qa->id ?>" class="button button-outline-primary" data-id="<?= $qa->id ?>">
+                                                    <?= __('Edit', 'intl_qa_lan') ?>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="pagination">
-                <?php
-                //wp_die(json_encode($paginatedQAnswers, JSON_PRETTY_PRINT));
-                $currentPage = $paginatedQAnswers->paginate['current_page'];
-                $lastPage = $paginatedQAnswers->paginate['last_page'];
-                ?>
-                <ul>
-                    <li>
-                        <a href="javascript:void(0)" class="qanswers-np-btn" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'prev', this)"><i class="fa fa-arrow-right"></i></a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)" class="qanswers-np-btn" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'next', this)">
-                            <i class="fa fa-arrow-left"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <span><?= __('Page', 'intl_qa_lan') ?></span>
-                        <span>&nbsp;<?= $currentPage ?></span>
-                        <span><?= __('From', 'intl_qa_lan') ?></span>
-                        <span>&nbsp;<?= $lastPage ?></span>
-                    </li>
-                </ul>
-            </div>
-
+                <div class="pagination">
+                    <?php
+                    //wp_die(json_encode($paginatedQAnswers, JSON_PRETTY_PRINT));
+                    $currentPage = $paginatedQAnswers->paginate['current_page'];
+                    $lastPage = $paginatedQAnswers->paginate['last_page'];
+                    ?>
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0)" class="qanswers-np-btn" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'prev', this)"><i class="fa fa-arrow-right"></i></a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="qanswers-np-btn" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'next', this)">
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <span><?= __('Page', 'intl_qa_lan') ?></span>
+                            <span>&nbsp;<?= $currentPage ?></span>
+                            <span><?= __('From', 'intl_qa_lan') ?></span>
+                            <span>&nbsp;<?= $lastPage ?></span>
+                        </li>
+                    </ul>
+                </div>
+            <?php endif; ?>
         </div>
 
         <div class="panel" id="panel_three">
