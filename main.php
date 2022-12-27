@@ -71,7 +71,7 @@ add_action('admin_enqueue_scripts', function () {
     wp_enqueue_style('icomoon', IQA_STATIC . 'css/global.css', '1.0.0');
     wp_enqueue_style('spectre', IQA_STATIC . 'css/spectre.min.css', '0.5.9');
     wp_enqueue_style('tagify-styles', IQA_ADMIN_LIBS . 'tagify.min.css', '1.0.0');
-    wp_enqueue_style('admin-styles', IQA_ADMIN_CSS . 'admin-styles.css', '1.0.0');
+    wp_enqueue_style('admin-styles', IQA_ADMIN_CSS . 'admin-styles.css', '1.0.1');
 });
 
 /*

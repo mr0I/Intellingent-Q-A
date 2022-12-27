@@ -25,11 +25,6 @@
     border-radius: 3px;
     overflow: hidden;
     position: relative;
-
-    table td,
-    table th {
-      vertical-align: middle;
-    }
   }
 
   .tablenav {
@@ -116,4 +111,10 @@
   to {
     opacity: 1;
   }
+}
+
+.table td,
+th {
+  vertical-align: middle;
+  text-align: center;
 }

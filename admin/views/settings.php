@@ -5,9 +5,6 @@ $date = new jDateTime(true, true, 'Asia/Tehran');
 ?>
 
 <?php
-global $wpdb;
-$reportsTable = $wpdb->prefix . REPORT_TABLE;
-$reports = $wpdb->get_results(" SELECT * FROM ${reportsTable} ORDER BY updated_at DESC ");
 // $qaTable = $wpdb->prefix . QA_TABLE;
 $offset = 0;
 $limit = 5;
@@ -30,12 +27,10 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
 <div class="menu-wrapper">
     <input class="radio" id="r_one" name="group" type="radio" checked>
     <input class="radio" id="r_two" name="group" type="radio">
-    <input class="radio" id="r_three" name="group" type="radio">
 
     <div class="tabs">
         <label class="tab" id="tab_one" for="r_one"><?= __('General Settings', 'intl_qa_lan') ?></label>
         <label class="tab" id="tab_two" for="r_two"><?= __('Q/A List', 'intl_qa_lan') ?></label>
-        <label class="tab" id="tab_three" for="r_three"><?= __('Users Reports', 'intl_qa_lan') ?></label>
     </div>
 
     <div class="panels">
@@ -105,7 +100,6 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
                 </p>
             </form>
         </div>
-
 
         <div class="panel" id="panel_two">
             <?php if (sizeof($paginatedQAnswers->data) === 0) : ?>
@@ -182,48 +176,7 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
             <?php endif; ?>
         </div>
 
-        <div class="panel" id="panel_three">
-            <?php if (sizeof($reports) === 0) : ?>
-                <div class="empty">
-                    <div class="empty-icon">
-                        <i class="icon icon-people"></i>
-                    </div>
-                    <p class="empty-title h5">You have no new messages</p>
-                    <p class="empty-subtitle">Click the button to start a conversation.</p>
-                    <div class="empty-action">
-                        <button class="btn btn-primary">Send a message</button>
-                    </div>
-                </div>
-            <?php else : ?>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col"><?= __('Search Phrase', 'intl_qa_lan') ?></th>
-                            <th scope="col"><?= __('Count', 'intl_qa_lan') ?></th>
-                            <th scope="col"><?= __('Date', 'intl_qa_lan') ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $counter = 1;
-                        foreach ($reports as $report) : ?>
-                            <tr>
-                                <th scope="row"><?= $counter++; ?></th>
-                                <td><?= $report->input ?></td>
-                                <td><?= $report->count ?></td>
-                                <td><?= $date->date("l - j/F/Y - H:i", strtotime($report->updated_at)) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php endif ?>
-
-
-
-
-        </div>
-
-        <!-- Modal -->
+        <!-- modal -->
         <?php require_once(IQA_ADMIN . 'components/qa-info-modal.php'); ?>
 
     </div>

@@ -191,3 +191,8 @@ span[class*="icon-"] {
     margin: auto;
     max-width: 90%;
 }
+
+.pagination {
+    justify-content: end;
+    margin-top: 20px !important;
+}

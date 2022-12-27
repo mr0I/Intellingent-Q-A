@@ -11,7 +11,6 @@ $page = (isset($_GET['p'])) ? absint($_GET['p'])  : 1;
 $limit = absint($constants['DEFAULT_PAGINATE_LIMIT']);
 $offset = ($page - 1) * $limit;
 $reports = getReports($offset,  $limit);
-// wp_die($_SERVER['REQUEST_URI']);
 ?>
 
 
@@ -25,10 +24,10 @@ $reports = getReports($offset,  $limit);
         </div>
     <?php else : ?>
         <h1><?= __('User Reports', 'intl_qa_lan') ?></h1>
-        <table class="table">
+        <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col"><?= __('Row', 'intl_qa_lan') ?></th>
                     <th scope="col"><?= __('Search Phrase', 'intl_qa_lan') ?></th>
                     <th scope="col"><?= __('Count', 'intl_qa_lan') ?></th>
                     <th scope="col"><?= __('Date', 'intl_qa_lan') ?></th>
@@ -47,9 +46,11 @@ $reports = getReports($offset,  $limit);
             </tbody>
         </table>
 
-        <!-- paginate -->
+        <!-- pagination -->
         <?php
         $items = $reports;
+        $page = (isset($_GET['p'])) ? $_GET['p'] : 1;
+        $pagePath = menu_page_url('iqa-user-reports', false);
         require_once(IQA_ADMIN . 'components/full-paginate.php');
         ?>
 
