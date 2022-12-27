@@ -17,12 +17,23 @@ add_action('admin_menu', function () {
 
     add_submenu_page(
         null,
-        __('Agencies', 'intl_qa_lan'),
-        __('Agencies', 'socialite_lan'),
+        __('Edit QA', 'intl_qa_lan'),
+        __('Edit QA', 'intl_qa_lan'),
         'administrator',
         'iqa_editQA',
         function () {
             include(IQA_ADMIN_VIEW . 'qa-update.php');
+        }
+    );
+
+    add_submenu_page(
+        'iqa',
+        __('User Reports', 'intl_qa_lan'),
+        __('User Reports', 'intl_qa_lan'),
+        'administrator',
+        'iqa-user-reports',
+        function () {
+            include(IQA_ADMIN_VIEW . 'user-reports.php');
         }
     );
 });

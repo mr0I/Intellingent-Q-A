@@ -1,3 +1,8 @@
+/* variables */
+:root {
+    --shadowColor: #e0e0e0;
+}
+
 @font-face {
     font-family: 'mycon';
     src: url('../icons/');
@@ -171,4 +176,18 @@
 
 span[class*="icon-"] {
     vertical-align: middle;
+}
+
+.container {
+    width: 96% !important;
+    margin-top: 40px;
+    background: #fff;
+    padding: 24px;
+    box-shadow: 0 0 5px var(--shadowColor);
+    border-radius: 5px;
+}
+
+.empty {
+    margin: auto;
+    max-width: 90%;
 }

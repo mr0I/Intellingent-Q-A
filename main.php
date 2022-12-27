@@ -27,7 +27,7 @@ define('IQA_ADMIN_JS', plugin_dir_url(__FILE__) . 'admin/assets/js/');
 define('IQA_ADMIN_LIBS', plugin_dir_url(__FILE__) . 'admin/assets/libs/');
 define('ADMIN_URL', get_admin_url());
 define('QA_TABLE', 'qa');
-define('REPORT_TABLE', 'report_sqs');
+define('REPORT_TABLE', 'report_sqa');
 
 
 add_action('plugins_loaded', function () {

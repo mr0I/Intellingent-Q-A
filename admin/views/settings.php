@@ -159,7 +159,6 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
 
                 <div class="pagination">
                     <?php
-                    //wp_die(json_encode($paginatedQAnswers, JSON_PRETTY_PRINT));
                     $currentPage = $paginatedQAnswers->paginate['current_page'];
                     $lastPage = $paginatedQAnswers->paginate['last_page'];
                     ?>
@@ -184,27 +183,44 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
         </div>
 
         <div class="panel" id="panel_three">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col"><?= __('Search Phrase', 'intl_qa_lan') ?></th>
-                        <th scope="col"><?= __('Count', 'intl_qa_lan') ?></th>
-                        <th scope="col"><?= __('Date', 'intl_qa_lan') ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $counter = 1;
-                    foreach ($reports as $report) : ?>
+            <?php if (sizeof($reports) === 0) : ?>
+                <div class="empty">
+                    <div class="empty-icon">
+                        <i class="icon icon-people"></i>
+                    </div>
+                    <p class="empty-title h5">You have no new messages</p>
+                    <p class="empty-subtitle">Click the button to start a conversation.</p>
+                    <div class="empty-action">
+                        <button class="btn btn-primary">Send a message</button>
+                    </div>
+                </div>
+            <?php else : ?>
+                <table class="table">
+                    <thead>
                         <tr>
-                            <th scope="row"><?= $counter++; ?></th>
-                            <td><?= $report->input ?></td>
-                            <td><?= $report->count ?></td>
-                            <td><?= $date->date("l - j/F/Y - H:i", strtotime($report->updated_at)) ?></td>
+                            <th scope="col">#</th>
+                            <th scope="col"><?= __('Search Phrase', 'intl_qa_lan') ?></th>
+                            <th scope="col"><?= __('Count', 'intl_qa_lan') ?></th>
+                            <th scope="col"><?= __('Date', 'intl_qa_lan') ?></th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php $counter = 1;
+                        foreach ($reports as $report) : ?>
+                            <tr>
+                                <th scope="row"><?= $counter++; ?></th>
+                                <td><?= $report->input ?></td>
+                                <td><?= $report->count ?></td>
+                                <td><?= $date->date("l - j/F/Y - H:i", strtotime($report->updated_at)) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif ?>
+
+
+
+
         </div>
 
         <!-- Modal -->
