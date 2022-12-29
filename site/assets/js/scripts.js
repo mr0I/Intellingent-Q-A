@@ -21,7 +21,7 @@ const searchQA = async (e) => {
     return new Promise((resolve, reject) => {
         // $(submitBtn).val(IQA_Ajax.saving_text).attr('disabled',true);
 
-        fetch(IQA_Ajax.ajaxurl, {
+        fetch(IQA_Ajax.AJAXURL, {
             method: 'POST',
             credentials: 'same-origin',
             headers: new Headers({
@@ -29,7 +29,7 @@ const searchQA = async (e) => {
                 //'Cache-Control': 'no-cache'
             }),
             body: new URLSearchParams({
-                security: IQA_Ajax.security,
+                SECURITY: IQA_Ajax.SECURITY,
                 action: 'searchQa',
                 nonce: nonce,
                 input: input
@@ -99,14 +99,14 @@ const searchQA = async (e) => {
         });
     }).then((resolve_data) => {
         const sortedFinalRows = resolve_data.final_rows;
-        fetch(IQA_Ajax.ajaxurl, {
+        fetch(IQA_Ajax.AJAXURL, {
             method: 'POST',
             credentials: 'same-origin',
             headers: new Headers({
                 'Content-Type': 'application/x-www-form-urlencoded'
             }),
             body: new URLSearchParams({
-                security: IQA_Ajax.security,
+                SECURITY: IQA_Ajax.SECURITY,
                 action: 'incrementViewsCount',
                 nonce: nonce,
                 rows: JSON.stringify(sortedFinalRows),
@@ -192,14 +192,14 @@ const reportNonExistence = (e) => {
     thisElm.innerHTML = 'Sending...';
     thisElm.disabled = true;
 
-    fetch(IQA_Ajax.ajaxurl, {
+    fetch(IQA_Ajax.AJAXURL, {
         method: 'POST',
         credentials: 'same-origin',
         headers: new Headers({
             'Content-Type': 'application/x-www-form-urlencoded'
         }),
         body: new URLSearchParams({
-            security: IQA_Ajax.security,
+            SECURITY: IQA_Ajax.SECURITY,
             action: 'reportNonExistence',
             input: e.target.getAttribute('data-sq')
         })

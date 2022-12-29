@@ -2,13 +2,29 @@
     $(window).on("load", function () {
         "use strict";
 
-        // tagify
+        // inits
         $('input[name=tags]').tagify({
             duplicates: false,
             maxTags: 10
         });
         $('input[name=stopwords]').tagify({
             duplicates: false
+        });
+        $('#qanswers_tbl').DataTable({
+            scrollY: 300,
+            select: true,
+            language: {
+                "zeroRecords": 'موردی برای نمایش یافت نشد!',
+                "search": 'جستجو',
+                "info": "نمایش _START_ تا _END_ از _TOTAL_ ورودی",
+                "lengthMenu": "نمایش _MENU_ ورودی",
+                "paginate": {
+                    "first": "اولین",
+                    "last": "آخرین",
+                    "next": "بعدی",
+                    "previous": "قبلی"
+                },
+            }
         });
 
         // modal
@@ -41,10 +57,10 @@ jQuery(document).ready(function ($) {
         });
 
         $.ajax({
-            url: IQA_ADMIN_Ajax.ajaxurl,
+            url: IQA_ADMIN_Ajax.AJAXURL,
             type: 'POST',
             data: {
-                security: IQA_ADMIN_Ajax.security,
+                SECURITY: IQA_ADMIN_Ajax.SECURITY,
                 action: 'addQa',
                 nonce: nonce,
                 question: question,
@@ -89,10 +105,10 @@ jQuery(document).ready(function ($) {
         });
 
         $.ajax({
-            url: IQA_ADMIN_Ajax.ajaxurl,
+            url: IQA_ADMIN_Ajax.AJAXURL,
             type: 'POST',
             data: {
-                security: IQA_ADMIN_Ajax.security,
+                SECURITY: IQA_ADMIN_Ajax.SECURITY,
                 action: 'addStopWord',
                 stopwords: JSON.stringify(stopwordsArray),
                 nonce: nonce
@@ -128,10 +144,10 @@ jQuery(document).ready(function ($) {
         const { results_num, nonce } = formObj;
 
         $.ajax({
-            url: IQA_ADMIN_Ajax.ajaxurl,
+            url: IQA_ADMIN_Ajax.AJAXURL,
             type: 'POST',
             data: {
-                security: IQA_ADMIN_Ajax.security,
+                SECURITY: IQA_ADMIN_Ajax.SECURITY,
                 action: 'SetResultNum',
                 results_num: Number(results_num),
                 nonce: nonce
@@ -170,10 +186,10 @@ jQuery(document).ready(function ($) {
         });
 
         $.ajax({
-            url: IQA_ADMIN_Ajax.ajaxurl,
+            url: IQA_ADMIN_Ajax.AJAXURL,
             type: 'POST',
             data: {
-                security: IQA_ADMIN_Ajax.security,
+                SECURITY: IQA_ADMIN_Ajax.SECURITY,
                 action: 'editQa',
                 nonce: nonce,
                 qa_id: qa_id,
@@ -212,10 +228,10 @@ function deleteQA(d) {
         const nonce = d.getAttribute('data-nonce');
 
         jq.ajax({
-            url: IQA_ADMIN_Ajax.ajaxurl,
+            url: IQA_ADMIN_Ajax.AJAXURL,
             type: 'POST',
             data: {
-                security: IQA_ADMIN_Ajax.security,
+                SECURITY: IQA_ADMIN_Ajax.SECURITY,
                 action: 'DeleteQA',
                 qa_id: Number(qaID),
                 nonce: nonce
@@ -250,14 +266,14 @@ function QaInfo(d) {
     }
     modal.style.display = "block";
 
-    fetch(IQA_ADMIN_Ajax.ajaxurl, {
+    fetch(IQA_ADMIN_Ajax.AJAXURL, {
         method: 'POST',
         credentials: 'same-origin',
         headers: new Headers({
             'Content-Type': 'application/x-www-form-urlencoded'
         }),
         body: new URLSearchParams({
-            security: IQA_ADMIN_Ajax.security,
+            SECURITY: IQA_ADMIN_Ajax.SECURITY,
             action: 'getQAData',
             qa_id: qaID
         })
@@ -285,14 +301,14 @@ function goToNextPrevPage(type, np, d) {
 
     switch (type) {
         case 'qanswers':
-            fetch(IQA_ADMIN_Ajax.ajaxurl, {
+            fetch(IQA_ADMIN_Ajax.AJAXURL, {
                 method: 'POST',
                 credentials: 'same-origin',
                 headers: new Headers({
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }),
                 body: new URLSearchParams({
-                    security: IQA_ADMIN_Ajax.security,
+                    SECURITY: IQA_ADMIN_Ajax.SECURITY,
                     action: 'goToNextPrevPage',
                     type: type,
                     np: np,

@@ -111,7 +111,7 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
                 <div class="container">
                     <div class="columns">
                         <div class="column col-12">
-                            <table class="table table-striped table-hover" id="qanswers_tbl">
+                            <table class="table table-striped table-hover table-scroll" id="qanswers_tbl">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -149,29 +149,6 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
                             </table>
                         </div>
                     </div>
-                </div>
-
-                <div class="pagination">
-                    <?php
-                    $currentPage = $paginatedQAnswers->paginate['current_page'];
-                    $lastPage = $paginatedQAnswers->paginate['last_page'];
-                    ?>
-                    <ul>
-                        <li>
-                            <a href="javascript:void(0)" class="qanswers-np-btn" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'prev', this)"><i class="fa fa-arrow-right"></i></a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" class="qanswers-np-btn" data-offset="0" data-limit="5" data-cp="<?= $paginatedQAnswers->paginate['current_page'] ?>" onclick="goToNextPrevPage('qanswers', 'next', this)">
-                                <i class="fa fa-arrow-left"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <span><?= __('Page', 'intl_qa_lan') ?></span>
-                            <span>&nbsp;<?= $currentPage ?></span>
-                            <span><?= __('From', 'intl_qa_lan') ?></span>
-                            <span>&nbsp;<?= $lastPage ?></span>
-                        </li>
-                    </ul>
                 </div>
             <?php endif; ?>
         </div>

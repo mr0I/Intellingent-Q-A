@@ -42,8 +42,8 @@ add_action('wp_enqueue_scripts', function () {
     //    wp_enqueue_script('bootstrap', PL_JS.'bootstrap.min.js' , array('jquery'));
     wp_enqueue_script('main-script', IQA_JS . 'scripts.js', array('jquery'), '1.0.0');
     wp_localize_script('main-script', 'IQA_Ajax', array(
-        'ajaxurl' => admin_url('admin-ajax.php'),
-        'security' => wp_create_nonce('mnhUciSW!Zk/oBB'),
+        'AJAXURL' => admin_url('admin-ajax.php'),
+        'SECURITY' => wp_create_nonce('mnhUciSW!Zk/oBB'),
         'NO_RESULT' => __('No Result Found', 'intl_qa_lan'),
         'SUCCESS_MESSAGE' => __('Successful Operation', 'intl_qa_lan'),
         'FAILURE_MESSAGE' => __('Error In Operation ', 'intl_qa_lan'),
@@ -54,10 +54,11 @@ add_action('wp_enqueue_scripts', function () {
 });
 add_action('admin_enqueue_scripts', function () {
     wp_enqueue_script('tagify', IQA_ADMIN_LIBS . 'jQuery.tagify.min.js', array('jquery'), '4.8.1');
+    wp_enqueue_script('dataTableJs', IQA_ADMIN_JS . 'jquery.dataTables.min.js', '1.13.1');
     wp_enqueue_script('admin-script', IQA_ADMIN_JS . 'admin-scripts.js', '1.0.0');
     wp_localize_script('admin-script', 'IQA_ADMIN_Ajax', array(
-        'ajaxurl' => admin_url('admin-ajax.php'),
-        'security' => wp_create_nonce('OwpCojMcdGJ-k-o'),
+        'AJAXURL' => admin_url('admin-ajax.php'),
+        'SECURITY' => wp_create_nonce('OwpCojMcdGJ-k-o'),
         'SAVE_TEXT' => __('Save', 'intl_qa_lan'),
         'UPDATE_TEXT' => __('Update', 'intl_qa_lan'),
         'SAVING_TEXT' => __('Saving...', 'intl_qa_lan'),
@@ -68,6 +69,7 @@ add_action('admin_enqueue_scripts', function () {
         'SUCCESS_MESSAGE' => __('Successful Operation', 'intl_qa_lan'),
         'REQUEST_TIMEOUT' => 30000
     ));
+    wp_enqueue_style('dataTableCss', IQA_ADMIN_CSS . 'jquery.dataTables.min.css', '1.13.1');
     wp_enqueue_style('icomoon', IQA_STATIC . 'css/global.css', '1.0.0');
     wp_enqueue_style('spectre', IQA_STATIC . 'css/spectre.min.css', '0.5.9');
     wp_enqueue_style('tagify-styles', IQA_ADMIN_LIBS . 'tagify.min.css', '1.0.0');
