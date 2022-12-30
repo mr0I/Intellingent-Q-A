@@ -1,28 +1,11 @@
 <?php defined('ABSPATH') or die('No script kiddies please!');
+require_once(IQA_INC . 'controllers/QAController.php');
 require_once(IQA_INC . 'helpers.php');
 require_once(IQA_ROOT_DIR . 'lib/jdatetime.class.php');
 $date = new jDateTime(true, true, 'Asia/Tehran');
+$QAnswers = getAllQAs();
 ?>
 
-<?php
-// $qaTable = $wpdb->prefix . QA_TABLE;
-$offset = 0;
-$limit = 5;
-// $qanswes = $wpdb->get_results(" SELECT * FROM ${qaTable} ORDER BY updated_at DESC  LIMIT ${offset},${limit} ");
-// $qanswesCount = $wpdb->get_var(" SELECT COUNT(id) FROM ${qaTable} ");
-
-// $paginatedQAnswers = new stdClass();
-// $paginatedQAnswers->results = $qanswes;
-// $paginatedQAnswers->paginate = [
-//     'current_page' => ($offset / $limit) + 1,
-//     'last_page' => ceil(intval($qanswesCount) / $limit)
-// ];
-
-$paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
-
-// wp_die(json_encode($paginatedQAnswers->paginate['last_page'], JSON_PRETTY_PRINT));
-// exit();
-?>
 
 <div class="menu-wrapper">
     <input class="radio" id="r_one" name="group" type="radio" checked>
@@ -96,13 +79,15 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
                     </tbody>
                 </table>
                 <p class="submit">
-                    <input type="submit" class="btn btn-primary pull-left" name="submit" value="<?= __('Save', 'intl_qa_lan') ?>">
+                    <button type="submit" class="btn btn-primary" name="submit">
+                        <?= __('Save', 'intl_qa_lan') ?>
+                    </button>
                 </p>
             </form>
         </div>
 
         <div class="panel" id="panel_two">
-            <?php if (sizeof($paginatedQAnswers->data) === 0) : ?>
+            <?php if (sizeof($QAnswers->data) === 0) : ?>
                 <div class="toast">
                     <span class="icon-bell"></span>
                     <?= __('There is no item to show!', 'intl_qa_lan') ?>
@@ -125,7 +110,7 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
                                 <tbody>
                                     <?php $counter = 1;
                                     $nonce = wp_create_nonce('delete_qa');
-                                    foreach ($paginatedQAnswers->data as $qa) : ?>
+                                    foreach ($QAnswers->data as $qa) : ?>
                                         <tr>
                                             <th scope="row"><?= $counter++; ?></th>
                                             <td><?= $qa->question ?></td>
@@ -133,10 +118,8 @@ $paginatedQAnswers = getPaginatedQAnswers($offset, $limit);
                                             <td><?= $qa->enabled ?></td>
                                             <td><?= $date->date("l - j/F/Y", strtotime($qa->updated_at)) ?></td>
                                             <td>
-                                                <button type="button" class="button button-outline-primary" onclick="QaInfo(this)" data-id="<?= $qa->id ?>">
-                                                    <?= __('Info', 'intl_qa_lan') ?>
-                                                </button>
-                                                <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="<?= $qa->id ?>" data-nonce="<?= $nonce ?>">
+                                                <button class="button" data-id="qainfomodal" data-qaid="<?= $qa->id ?>" onclick="QaInfo(this)"><?= __('Info', 'intl_qa_lan') ?></button>
+                                                <button type="button" class="button" onclick="deleteQA(this)" data-id="<?= $qa->id ?>" data-nonce="<?= $nonce ?>">
                                                     <?= __('Delete', 'intl_qa_lan') ?>
                                                 </button>
                                                 <a href="<?= ADMIN_URL . 'admin.php?page=iqa_editQA&id=' . $qa->id ?>" class="button button-outline-primary" data-id="<?= $qa->id ?>">
