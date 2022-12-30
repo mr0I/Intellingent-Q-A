@@ -79,7 +79,7 @@ $QAnswers = getAllQAs();
                     </tbody>
                 </table>
                 <p class="submit">
-                    <button type="submit" class="btn btn-primary" name="submit">
+                    <button type="submit" class="btn btn-primary btn-sm px-2" name="submit">
                         <?= __('Save', 'intl_qa_lan') ?>
                     </button>
                 </p>

@@ -1,7 +1,7 @@
-<?php defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+<?php defined('ABSPATH') or die('No script kiddies please!');
 
-echo "<link rel='stylesheet' id='front-pico-css'  href='". IQA_CSS . "pico.min.css?ver=6.0.1' type='text/css' media='all' />";
-require_once IQA_INC . 'helpers.php';
+echo "<link rel='stylesheet' id='front-pico-css'  href='" . IQA_CSS . "pico.min.css?ver=6.0.1' type='text/css' media='all' />";
+require_once IQA_INC . 'controllers/QAController.php';
 
 $mostPopularQuestions = getMostPopularQuestions(3);
 ?>
@@ -13,10 +13,8 @@ $mostPopularQuestions = getMostPopularQuestions(3);
         <div class="row">
             <form action="" method="get" onsubmit="searchQA(event)">
                 <div class="form-group">
-                    <input type="text" name="search"
-                           placeholder="<?= __('Input your question...', 'intl_qa_lan') ?>">
-                    <i class="fa fa-times"
-                       onclick="document.querySelector('input[name=search]').value = '';
+                    <input type="text" name="search" placeholder="<?= __('Input your question...', 'intl_qa_lan') ?>">
+                    <i class="fa fa-times" onclick="document.querySelector('input[name=search]').value = '';
                        document.querySelector('input[name=search]').focus();">
                     </i>
                     <button type="submit"><i class="fa fa-search"></i></button>
@@ -31,13 +29,15 @@ $mostPopularQuestions = getMostPopularQuestions(3);
         </div>
 
         <div class="row">
-            <div class="answers-list"><ul></ul></div>
+            <div class="answers-list">
+                <ul></ul>
+            </div>
         </div>
 
         <div class="row">
             <div class="most-popular-questions">
                 <h2><?= __('The most popular questions', 'intl_qa_lan') ?></h2>
-                <?php foreach ($mostPopularQuestions as $item): ?>
+                <?php foreach ($mostPopularQuestions as $item) : ?>
                     <details>
                         <summary><?= $item->question; ?></summary>
                         <p><?= $item->answer; ?></p>
@@ -50,12 +50,12 @@ $mostPopularQuestions = getMostPopularQuestions(3);
 
 
 <?php
-    $stopWords = json_encode(get_option('iqa_stopwords', []));
-    $resultsNum = get_option('results_num', 3);
+$stopWords = json_encode(get_option('iqa_stopwords', []));
+$resultsNum = get_option('results_num', 3);
 ?>
 <script type="application/ld+json" id="stop_words_array">
     {
-        "stop_words" : <?= $stopWords; ?>,
-        "results_num" : <?= $resultsNum; ?>
+        "stop_words": <?= $stopWords; ?>,
+        "results_num": <?= $resultsNum; ?>
     }
 </script>
