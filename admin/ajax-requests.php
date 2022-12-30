@@ -160,7 +160,6 @@ function SetResultNum_callback()
 
     $num = absint($_POST['results_num']);
     $res = update_option('results_num', $num);
-
     if (!$res) {
         sendResponse([
             'success' => false

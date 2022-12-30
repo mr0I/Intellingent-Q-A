@@ -54,8 +54,9 @@ add_action('wp_enqueue_scripts', function () {
 });
 add_action('admin_enqueue_scripts', function () {
     wp_enqueue_script('tagify', IQA_ADMIN_LIBS . 'jQuery.tagify.min.js', array('jquery'), '4.8.1');
-    wp_enqueue_script('dataTableJs', IQA_ADMIN_JS . 'jquery.dataTables.min.js', '1.13.1');
-    wp_enqueue_script('admin-script', IQA_ADMIN_JS . 'admin-scripts.js', '1.0.0');
+    wp_enqueue_script('dataTableJs', IQA_ADMIN_JS . 'jquery.dataTables.min.js', array(), '1.13.1');
+    wp_enqueue_script('toastify-js', IQA_STATIC . 'js/toastify-js.js', array(), '1.12.0');
+    wp_enqueue_script('admin-script', IQA_ADMIN_JS . 'admin-scripts.js', array(), '1.0.0');
     wp_localize_script('admin-script', 'IQA_ADMIN_Ajax', array(
         'AJAXURL' => admin_url('admin-ajax.php'),
         'SECURITY' => wp_create_nonce('OwpCojMcdGJ-k-o'),
@@ -72,7 +73,8 @@ add_action('admin_enqueue_scripts', function () {
     wp_enqueue_style('dataTableCss', IQA_ADMIN_CSS . 'jquery.dataTables.min.css', '1.13.1');
     wp_enqueue_style('icomoon', IQA_STATIC . 'css/global.css', '1.0.0');
     wp_enqueue_style('spectre', IQA_STATIC . 'css/spectre.min.css', '0.5.9');
-    wp_enqueue_style('tagify-styles', IQA_ADMIN_LIBS . 'tagify.min.css', '1.0.0');
+    wp_enqueue_style('tagify-styles', IQA_ADMIN_LIBS . 'tagify.min.css', '1.12.0');
+    wp_enqueue_style('toastify-css', IQA_STATIC . 'css/toastify.min.css', '3.1.7');
     wp_enqueue_style('admin-styles', IQA_ADMIN_CSS . 'admin-styles.css', '1.0.1');
 });
 

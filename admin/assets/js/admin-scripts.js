@@ -26,13 +26,21 @@
                 },
             }
         });
+        Toastify({
+            duration: 2000,
+            newWindow: true,
+            close: false,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            onClick: function () { } // Callback after click
+        });
 
         // modal
         window.modal = document.getElementById("simple_modal");
         window.onclick = function (event) {
             if (event.target == modal) modal.style.display = "none";
         }
-
     });
 })(jQuery);
 jQuery(document).ready(function ($) {
@@ -72,14 +80,14 @@ jQuery(document).ready(function ($) {
             },
             success: (res, xhr) => {
                 if (xhr == 'success' && res.success) {
-                    alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
+                    showSuccessToast(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
                     $(qaForm).trigger('reset');
                 } else {
-                    alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+                    showErrorToast(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
                 }
             },
             error: (jqXHR, textStatus, errorThrown) => {
-                alert(jqXHR.responseJSON.data);
+                showErrorToast(jqXHR.responseJSON.data);
             },
             complete: () => {
                 $(submitBtn).val(IQA_ADMIN_Ajax.SAVE_TEXT).attr('disabled', false);
@@ -117,11 +125,11 @@ jQuery(document).ready(function ($) {
                 $(submitBtn).val(IQA_ADMIN_Ajax.UPDATING_TEXT).attr('disabled', true);
             },
             success: (res, xhr) => {
-                if (xhr == 'success' && res.success) alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
-                else alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+                if (xhr == 'success' && res.success) showSuccessToast(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
+                else showErrorToast(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
             },
             error: (jqXHR, textStatus, errorThrown) => {
-                alert(jqXHR.responseJSON.data);
+                showErrorToast(jqXHR.responseJSON.data);
             },
             complete: () => {
                 $(submitBtn).val(IQA_ADMIN_Ajax.UPDATE_TEXT).attr('disabled', false);
@@ -153,18 +161,16 @@ jQuery(document).ready(function ($) {
                 nonce: nonce
             },
             beforeSend: () => {
-                // $(submitBtn).val(IQA_ADMIN_Ajax.SAVING_TEXT).attr('disabled', true);
                 $(submitBtn).addClass('loading').attr('disabled', true);
             },
             success: (res, xhr) => {
-                if (xhr == 'success' && res.success) alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
-                else alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+                if (xhr == 'success' && res.success) showSuccessToast(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
+                else showErrorToast(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
             },
             error: (jqXHR, textStatus, errorThrown) => {
-                alert(jqXHR.responseJSON.data);
+                showErrorToast(jqXHR.responseJSON.data);
             },
             complete: () => {
-                // $(submitBtn).val(IQA_ADMIN_Ajax.SAVE_TEXT).attr('disabled', false);
                 $(submitBtn).removeClass('loading').attr('disabled', false);
             },
             timeout: IQA_ADMIN_Ajax.REQUEST_TIMEOUT
@@ -204,15 +210,15 @@ jQuery(document).ready(function ($) {
             },
             success: (res, xhr) => {
                 if (xhr == 'success' && res.success) {
-                    alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
+                    showSuccessToast(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
                     if ('referrer' in document) window.location = document.referrer;
                     else window.history.back();
                 } else {
-                    alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+                    showErrorToast(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
                 }
             },
             error: (jqXHR, textStatus, errorThrown) => {
-                alert(jqXHR.responseJSON.data);
+                showErrorToast(jqXHR.responseJSON.data);
             },
             complete: () => {
                 $(submitBtn).val(IQA_ADMIN_Ajax.UPDATE_TEXT).attr('disabled', false);
@@ -243,13 +249,13 @@ function deleteQA(d) {
             },
             success: (res, xhr) => {
                 if (xhr == 'success' && res.success) {
-                    alert(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
+                    showSuccessToast(IQA_ADMIN_Ajax.SUCCESS_MESSAGE);
                     window.location.reload();
                 }
-                else alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+                else showErrorToast(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
             },
             error: (jqXHR, textStatus, errorThrown) => {
-                alert(jqXHR.responseJSON.data);
+                showErrorToast(jqXHR.responseJSON.data);
             },
             complete: () => {
                 // $(submitBtn).val(IQA_ADMIN_Ajax.SAVE_TEXT).attr('disabled', false);
@@ -257,7 +263,6 @@ function deleteQA(d) {
             timeout: IQA_ADMIN_Ajax.REQUEST_TIMEOUT
         });
     }
-
 }
 
 function QaInfo(d) {
@@ -265,7 +270,7 @@ function QaInfo(d) {
     const modalID = d.getAttribute('data-id');
     console.log(modalID);
     if (qaID === '') {
-        alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+        showErrorToast(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
         return;
     }
     const modal = document.getElementById(modalID);
@@ -285,7 +290,7 @@ function QaInfo(d) {
     }).then(async (response) => {
         const res = await response.json();
         if (!res.success) {
-            alert(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
+            showErrorToast(IQA_ADMIN_Ajax.FAILURE_MESSAGE);
             return;
         }
 
@@ -303,61 +308,6 @@ function QaInfo(d) {
     })
 }
 
-// function goToNextPrevPage(type, np, d) {
-//     const currentPage = d.getAttribute('data-cp');
-//     const offset = d.getAttribute('data-offset');
-//     const limit = d.getAttribute('data-limit');
-
-//     switch (type) {
-//         case 'qanswers':
-//             fetch(IQA_ADMIN_Ajax.AJAXURL, {
-//                 method: 'POST',
-//                 credentials: 'same-origin',
-//                 headers: new Headers({
-//                     'Content-Type': 'application/x-www-form-urlencoded'
-//                 }),
-//                 body: new URLSearchParams({
-//                     SECURITY: IQA_ADMIN_Ajax.SECURITY,
-//                     action: 'goToNextPrevPage',
-//                     type: type,
-//                     np: np,
-//                     offset: offset,
-//                     limit: limit
-//                 })
-//             }).then(async (response) => {
-//                 const res = await response.json();
-//                 const tableData = res.res.results;
-//                 const newOffset = res.res.paginate.new_offset;
-//                 const table = document.getElementById('qanswers_tbl');
-
-//                 // d.setAttribute('data-offset', newOffset);
-//                 jq('.qanswers-np-btn').attr('data-offset', newOffset);
-//                 table.innerHTML = '';
-
-//                 tableData.forEach((qa, index) => {
-//                     jq(table).append(`
-//                         <tr>
-//                             <th scope="row">${++index}</th>
-//                             <td>${qa.question}</td>
-//                             <td>${qa.views}</td>
-//                             <td>${qa.enabled}</td>
-//                             <td>${qa.updated_at}</td>
-//                             <td>
-//                                 <button type="button" class="button button-outline-primary" onclick="QaInfo(this)" data-id="25">Info
-//                                 </button>
-//                                 <button type="button" class="button button-outline-danger" onclick="deleteQA(this)" data-id="25" data-nonce="70983d146a">Delete 
-//                                 </button>
-//                                 <a href="http://localhost/foton-wp/wp-admin/admin.php?page=iqa_editQA&amp;id=25" class="button button-outline-primary" data-id="25">Edit
-//                                 </a>
-//                             </td>
-//                         </tr>
-//                 `);
-//                 });
-//             })
-
-//     }
-// }
-
 
 const closeModal = (modalID) => {
     const modal = document.getElementById(modalID);
@@ -371,3 +321,22 @@ const closeModal = (modalID) => {
 const delay = (ms) => new Promise((resolve, reject) => {
     setTimeout(resolve, ms);
 });
+
+const showSuccessToast = (msg) => {
+    Toastify({
+        text: msg,
+        position: "center",
+        style: {
+            background: "#00C851",
+        }
+    }).showToast();
+};
+const showErrorToast = (msg) => {
+    Toastify({
+        text: msg,
+        position: "center",
+        style: {
+            background: "#f44",
+        }
+    }).showToast();
+}
