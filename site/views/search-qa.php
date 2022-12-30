@@ -1,8 +1,7 @@
 <?php defined('ABSPATH') or die('No script kiddies please!');
 
-echo "<link rel='stylesheet' id='front-pico-css'  href='" . IQA_CSS . "pico.min.css?ver=6.0.1' type='text/css' media='all' />";
+//echo "<link rel='stylesheet' id='front-pico-css'  href='" . IQA_CSS . "pico.min.css?ver=6.0.1' type='text/css' media='all' />";
 require_once IQA_INC . 'controllers/QAController.php';
-
 $mostPopularQuestions = getMostPopularQuestions(3);
 ?>
 
@@ -14,10 +13,13 @@ $mostPopularQuestions = getMostPopularQuestions(3);
             <form action="" method="get" onsubmit="searchQA(event)">
                 <div class="form-group">
                     <input type="text" name="search" placeholder="<?= __('Input your question...', 'intl_qa_lan') ?>">
-                    <i class="fa fa-times" onclick="document.querySelector('input[name=search]').value = '';
+                    <i class="icon-x" onclick="document.querySelector('input[name=search]').value = '';
                        document.querySelector('input[name=search]').focus();">
                     </i>
-                    <button type="submit"><i class="fa fa-search"></i></button>
+
+                    <button type="submit">
+                        <i class="icon-search"></i>
+                    </button>
                 </div>
                 <input type="hidden" name="nonce" value="<?= wp_create_nonce('search_qa') ?>">
             </form>

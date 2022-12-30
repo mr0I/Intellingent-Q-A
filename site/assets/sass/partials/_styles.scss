@@ -1,10 +1,12 @@
 /* qa search page - start */
-#qa_search_page{
-  form{
+#qa_search_page {
+  form {
     direction: rtl;
-    .form-group{
+
+    .form-group {
       position: relative;
-      input{
+
+      input {
         border-radius: 0;
         height: 60px;
         text-indent: 30px;
@@ -14,23 +16,27 @@
         border: 1px solid $borderColor;
         font-family: inherit;
         background-color: transparent;
-        &:hover{
+
+        &:hover {
           border-color: $hoverBorderColor;
           box-shadow: none;
         }
-        &:focus{
+
+        &:focus {
           border-color: $focusBorderColor;
           box-shadow: none;
         }
       }
-      i.fa-times{
+
+      i.icon-x {
         position: absolute;
-        top: 20px;
-        left: 20px;
+        top: 13px;
+        left: 5px;
         color: $secondaryTextColor;
         cursor: pointer;
       }
-      button[type=submit]{
+
+      button[type=submit] {
         position: absolute;
         width: auto;
         right: 0;
@@ -40,28 +46,38 @@
         border: none;
         color: $secondaryTextColor;
       }
+
+      i {
+        font-size: 2em;
+        padding: 0 10px;
+        cursor: pointer;
+      }
     }
   }
-  .most-popular-questions{
+
+  .most-popular-questions {
     margin: 50px auto;
     width: 80%;
-    h2{
+
+    h2 {
       text-align: center;
     }
   }
 }
-.answers-list{
-   ul {
+
+.answers-list {
+  ul {
     display: none;
   }
 }
-.alert{
+
+.alert {
   display: none;
   text-align: center;
-  //display: flex;
   flex-flow: row wrap;
   justify-content: center;
 }
+
 // Dot Pulse
 .loading-dots:after {
   overflow: hidden;
@@ -69,17 +85,20 @@
   vertical-align: bottom;
   -webkit-animation: ellipsis steps(4, end) 1500ms infinite;
   animation: ellipsis steps(4, end) 1500ms infinite;
-  content: "\2026";  // ascii code for the ellipsis character
+  content: "\2026"; // ascii code for the ellipsis character
   width: 0;
 }
+
 @keyframes ellipsis {
   to {
     width: 40px;
   }
 }
+
 @-webkit-keyframes ellipsis {
   to {
     width: 40px;
   }
 }
+
 /* qa search page - end */

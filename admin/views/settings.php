@@ -96,7 +96,7 @@ $QAnswers = getAllQAs();
                 <div class="container">
                     <div class="columns">
                         <div class="column col-12">
-                            <table class="table table-striped table-hover table-scroll" id="qanswers_tbl">
+                            <table class="table table-striped table-hover" id="qanswers_tbl">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>

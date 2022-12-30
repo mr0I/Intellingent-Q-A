@@ -11,7 +11,7 @@
             duplicates: false
         });
         $('#qanswers_tbl').DataTable({
-            scrollY: 300,
+            // scrollY: 300,
             select: true,
             language: {
                 "zeroRecords": 'موردی برای نمایش یافت نشد!',
@@ -36,11 +36,6 @@
             onClick: function () { } // Callback after click
         });
 
-        // modal
-        window.modal = document.getElementById("simple_modal");
-        window.onclick = function (event) {
-            if (event.target == modal) modal.style.display = "none";
-        }
     });
 })(jQuery);
 jQuery(document).ready(function ($) {

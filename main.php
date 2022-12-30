@@ -50,6 +50,7 @@ add_action('wp_enqueue_scripts', function () {
         'REQUEST_TIMEOUT' => 30000
     ));
     wp_enqueue_media();
+    wp_enqueue_style('global-css', IQA_STATIC . 'css/global.css', '1.0.0');
     wp_enqueue_style('main-styles', IQA_CSS . 'styles.css', '1.0.0');
 });
 add_action('admin_enqueue_scripts', function () {
@@ -71,8 +72,8 @@ add_action('admin_enqueue_scripts', function () {
         'REQUEST_TIMEOUT' => 30000
     ));
     wp_enqueue_style('dataTableCss', IQA_ADMIN_CSS . 'jquery.dataTables.min.css', '1.13.1');
-    wp_enqueue_style('icomoon', IQA_STATIC . 'css/global.css', '1.0.0');
-    wp_enqueue_style('spectre', IQA_STATIC . 'css/spectre.min.css', '0.5.9');
+    wp_enqueue_style('global-css', IQA_STATIC . 'css/global.css', '1.0.0');
+    wp_enqueue_style('spectre', IQA_STATIC . 'css/spectre.min.css', '0.5.9'); // https://picturepan2.github.io/spectre/components/accordions.html#accordions
     wp_enqueue_style('tagify-styles', IQA_ADMIN_LIBS . 'tagify.min.css', '1.12.0');
     wp_enqueue_style('toastify-css', IQA_STATIC . 'css/toastify.min.css', '3.1.7');
     wp_enqueue_style('admin-styles', IQA_ADMIN_CSS . 'admin-styles.css', '1.0.1');
